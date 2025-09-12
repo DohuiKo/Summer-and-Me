@@ -107,7 +107,7 @@ public class PlayVideoOnVisibleLock : MonoBehaviour
         {
             // 언락 직후 재락 방지 + (선택) 첫 재생 전까지만 락
             bool canLockNow = lockWhenCentered && centerArmed && !isLocked
-                              && (!lockOnlyBeforeFirstPlay || !hasPlayed);
+            && (!lockOnlyBeforeFirstPlay || !hasPlayed);
             if (canLockNow) LockScroll();
 
             // 중앙에서 자동 재생(옵션)
