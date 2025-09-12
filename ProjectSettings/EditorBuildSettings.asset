@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SummerRoom.unity
     guid: 0a19ba385aae847409620b7b033cab8d
+  - enabled: 1
+    path: Assets/Scenes/0_prolog.unity
+    guid: 2f4c447761e29ee4f964e2f4ae256b8b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
