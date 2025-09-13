@@ -5,12 +5,11 @@ using UnityEngine.UI;
 public class ScollUnloker : MonoBehaviour
 {
     [Header("Target")]
-    public ScrollRect scrollRect;            // 대상 ScrollRect (Scroll View)
+    public ScrollRect scrollRect;           // 대상 ScrollRect (Scroll View)
 
     [Header("Unlock Options")]
-    public bool allowHorizontal = false;     // 해제 후 가로 스크롤 허용 여부
-    public bool enableInertia = true;        // 해제 시 관성 사용
-    public bool resetToTopOnUnlock = true;   // 해제 시 맨 위로 이동
+    public bool allowHorizontal = false;    // 해제 후 가로 스크롤 허용 여부
+    public bool enableInertia = true;       // 해제 시 관성 사용
 
     void Awake()
     {
@@ -23,15 +22,19 @@ public class ScollUnloker : MonoBehaviour
     {
         if (!scrollRect) return;
 
-        scrollRect.enabled   = true;     // 컴포넌트 켜기
-        scrollRect.vertical  = true;     // 세로 스크롤 허용
-        scrollRect.horizontal= allowHorizontal;
-        scrollRect.inertia   = enableInertia;
+        // Unlock 하기 전에 현재 위치를 저장
+        Vector2 currentPosition = scrollRect.normalizedPosition;
 
-        // 잔류 속도 제거 + 시작 위치 보정
+        scrollRect.enabled = true;      // 컴포넌트 켜기
+        scrollRect.vertical = true;     // 세로 스크롤 허용
+        scrollRect.horizontal = allowHorizontal;
+        scrollRect.inertia = enableInertia;
+
+        // 잔류 속도 제거
         scrollRect.velocity = Vector2.zero;
-        if (resetToTopOnUnlock)
-            scrollRect.normalizedPosition = new Vector2(0f, 1f);
+
+        // 스크롤 잠금 해제 후 원래 위치로 복원
+        scrollRect.normalizedPosition = currentPosition;
     }
 
     // 필요하면 다시 잠그기
@@ -39,10 +42,10 @@ public class ScollUnloker : MonoBehaviour
     {
         if (!scrollRect) return;
 
-        scrollRect.enabled   = false;    // 컴포넌트 자체 비활성화 (완전 잠금)
-        scrollRect.vertical  = false;
-        scrollRect.horizontal= false;
-        scrollRect.inertia   = false;
-        scrollRect.velocity  = Vector2.zero;
+        scrollRect.enabled = false;     // 컴포넌트 자체 비활성화 (완전 잠금)
+        scrollRect.vertical = false;
+        scrollRect.horizontal = false;
+        scrollRect.inertia = false;
+        scrollRect.velocity = Vector2.zero;
     }
 }

@@ -1,27 +1,30 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class ContentLockManager : MonoBehaviour
 {
     [Header("Refs")]
-    public ScrollRect scrollRect; 
-    public RectTransform viewport; 
-    public RectTransform target; 
+    public ScrollRect scrollRect;
+    public RectTransform viewport;
+    public RectTransform target;
 
     [Header("Behavior")]
-    public bool lockOnCenter = true; 
-    public bool unlockManually = true; 
+    public bool lockOnCenter = true;
+    public bool unlockManually = true;
 
     [Header("Trigger (Center-based)")]
     public bool triggerAtCenter = true;
     [Range(0f, 0.5f)] public float centerTolerance = 0.1f;
 
     [Header("UI Refs")]
-    public GameObject unlockButton; 
+    public GameObject unlockButton;
+    public float fadeDuration = 1f;
 
     // 내부 상태
     private bool isLocked = false;
     private bool centerArmed = true;
+    private CanvasGroup unlockButtonCanvasGroup;
 
     // ScrollRect 상태 저장/복원
     bool prevEnabled, prevVertical, prevHorizontal, prevInertia;
@@ -40,10 +43,17 @@ public class ContentLockManager : MonoBehaviour
         if (canvas && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
             uiCam = canvas.worldCamera;
 
-        // 시작 시 버튼을 확실히 숨깁니다.
         if (unlockButton != null)
         {
-            unlockButton.SetActive(false);
+            unlockButtonCanvasGroup = unlockButton.GetComponent<CanvasGroup>();
+            if (unlockButtonCanvasGroup == null)
+            {
+                unlockButtonCanvasGroup = unlockButton.AddComponent<CanvasGroup>();
+            }
+            
+            unlockButtonCanvasGroup.alpha = 0f;
+            unlockButtonCanvasGroup.interactable = false;
+            unlockButtonCanvasGroup.blocksRaycasts = false;
         }
     }
 
@@ -128,11 +138,6 @@ public class ContentLockManager : MonoBehaviour
 
         isLocked = true;
         centerArmed = false;
-
-        if (unlockButton != null)
-        {
-            unlockButton.SetActive(true);
-        }
     }
 
     public void UnlockScroll()
@@ -143,7 +148,7 @@ public class ContentLockManager : MonoBehaviour
         {
             scrollRect.enabled = prevEnabled;
             scrollRect.vertical = prevVertical;
-            scrollRect.horizontal = prevHorizontal;
+            scrollRect.horizontal = prevVertical;
             scrollRect.inertia = prevInertia;
         }
         else
@@ -154,17 +159,54 @@ public class ContentLockManager : MonoBehaviour
         }
         isLocked = false;
         
-        if (unlockButton != null)
+        if (unlockButtonCanvasGroup != null)
         {
-            unlockButton.SetActive(false);
+            StartCoroutine(FadeCanvasGroup(unlockButtonCanvasGroup, 0f, fadeDuration, false));
         }
     }
 
     public void ShowUnlockButton()
     {
-        if (unlockButton != null && isLocked)
+        if (unlockButtonCanvasGroup != null)
         {
-            unlockButton.SetActive(true);
+            StartCoroutine(FadeCanvasGroup(unlockButtonCanvasGroup, 1f, fadeDuration, true));
+        }
+    }
+
+    private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float targetAlpha, float duration, bool enableOnComplete)
+    {
+        float startAlpha = canvasGroup.alpha;
+        float timer = 0f;
+
+        if (!enableOnComplete)
+        {
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
+
+        if (canvasGroup.gameObject != null)
+        {
+            canvasGroup.gameObject.SetActive(true);
+        }
+
+        while (timer < duration)
+        {
+            timer += Time.unscaledDeltaTime;
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, timer / duration);
+            yield return null;
+        }
+        
+        canvasGroup.alpha = targetAlpha;
+
+        if (enableOnComplete)
+        {
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+        }
+        
+        if (!enableOnComplete && canvasGroup.gameObject.activeSelf)
+        {
+            canvasGroup.gameObject.SetActive(false);
         }
     }
 }
