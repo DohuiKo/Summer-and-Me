@@ -4,20 +4,20 @@ using UnityEngine.UI;
 public class ContentLockManager : MonoBehaviour
 {
     [Header("Refs")]
-    public ScrollRect scrollRect;          // 상위 ScrollRect (비워두면 자동 탐색)
-    public RectTransform viewport;          // ScrollRect.viewport
-    public RectTransform target;            // 보이는 판정 대상
+    public ScrollRect scrollRect; 
+    public RectTransform viewport; 
+    public RectTransform target; 
 
     [Header("Behavior")]
-    public bool lockOnCenter = true;        // 중앙에 오면 즉시 락
-    public bool unlockManually = true;      // 외부에서 수동으로 언락 (버튼 등)
+    public bool lockOnCenter = true; 
+    public bool unlockManually = true; 
 
     [Header("Trigger (Center-based)")]
     public bool triggerAtCenter = true;
     [Range(0f, 0.5f)] public float centerTolerance = 0.1f;
 
     [Header("UI Refs")]
-    public GameObject unlockButton; // 언락 버튼 UI 오브젝트를 여기에 연결
+    public GameObject unlockButton; 
 
     // 내부 상태
     private bool isLocked = false;
@@ -40,7 +40,7 @@ public class ContentLockManager : MonoBehaviour
         if (canvas && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
             uiCam = canvas.worldCamera;
 
-        // 시작 시 버튼을 숨김
+        // 시작 시 버튼을 확실히 숨깁니다.
         if (unlockButton != null)
         {
             unlockButton.SetActive(false);
@@ -128,6 +128,11 @@ public class ContentLockManager : MonoBehaviour
 
         isLocked = true;
         centerArmed = false;
+
+        if (unlockButton != null)
+        {
+            unlockButton.SetActive(true);
+        }
     }
 
     public void UnlockScroll()
@@ -149,17 +154,15 @@ public class ContentLockManager : MonoBehaviour
         }
         isLocked = false;
         
-        // 스크롤이 언락되면 버튼 숨기기
         if (unlockButton != null)
         {
             unlockButton.SetActive(false);
         }
     }
 
-    // 외부에서 버튼을 활성화하기 위한 함수
     public void ShowUnlockButton()
     {
-        if (unlockButton != null && isLocked) // isLocked 조건 추가
+        if (unlockButton != null && isLocked)
         {
             unlockButton.SetActive(true);
         }
