@@ -11,8 +11,7 @@ public class PlayVideoOnVisibleLock : MonoBehaviour
     public VideoPlayer videoPlayer;
 
     [Header("W 키 재생 기능")]
-    // ✨ 변경점: 영상 종료 후 활성화할 'NextDownArrow' 오브젝트를 직접 연결합니다.
-    public GameObject nextDownArrow; 
+    public Button unlockButton; // NextDownArrow 버튼을 연결
 
     [Header("중앙 감지 설정")]
     [Range(0f, 0.5f)] public float centerTolerance = 0.1f;
@@ -45,20 +44,19 @@ public class PlayVideoOnVisibleLock : MonoBehaviour
             videoPlayer.playOnAwake = false;
             videoPlayer.loopPointReached += OnVideoEnded;
         }
-
-        // ✨ 시작할 때 NextDownArrow를 비활성화 상태로 만듭니다.
-        if (nextDownArrow != null)
+        
+        if (unlockButton)
         {
-            nextDownArrow.SetActive(false);
+            unlockButton.gameObject.SetActive(false);
+            // ✨ 버튼 클릭 시 ManualUnlock 함수를 호출하도록 미리 연결
+            unlockButton.onClick.AddListener(ManualUnlock); 
         }
     }
 
     void OnDestroy()
     {
-        if (videoPlayer)
-        {
-            videoPlayer.loopPointReached -= OnVideoEnded;
-        }
+        if (videoPlayer) videoPlayer.loopPointReached -= OnVideoEnded;
+        if (unlockButton) unlockButton.onClick.RemoveListener(ManualUnlock);
     }
 
     void Update()
@@ -76,39 +74,45 @@ public class PlayVideoOnVisibleLock : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.W))
             {
-                if (!videoPlayer.isPlaying)
-                {
-                    videoPlayer.Play();
-                }
+                if (!videoPlayer.isPlaying) videoPlayer.Play();
             }
             else
             {
-                if (videoPlayer.isPlaying)
-                {
-                    videoPlayer.Pause();
-                }
+                if (videoPlayer.isPlaying) videoPlayer.Pause();
             }
         }
     }
     
-    // 영상 재생이 끝나면 호출될 함수
+    // 동영상 재생이 끝나면 호출될 함수
     void OnVideoEnded(VideoPlayer vp)
     {
         hasFinished = true;
         isReadyToPlay = false;
 
-        // ✨ 변경점: NextDownArrow 오브젝트를 직접 활성화!
-        if (nextDownArrow != null)
+        if (unlockButton)
         {
-            nextDownArrow.SetActive(true);
+            unlockButton.gameObject.SetActive(true);
         }
-
-        // 스크롤 잠금은 자동으로 해제해 줍니다.
+        
+        // ✨ 변경점: 여기서 UnlockScroll()을 호출하지 않습니다!
+        // 스크롤은 계속 잠겨있는 상태를 유지합니다.
+    }
+    
+    // 잠금 해제 버튼을 '눌렀을 때만' 호출될 함수
+    public void ManualUnlock()
+    {
+        // ✨ 여기서 스크롤 잠금을 해제합니다.
         UnlockScroll();
+
+        // 버튼은 역할을 다했으니 다시 숨깁니다.
+        if (unlockButton)
+        {
+            unlockButton.gameObject.SetActive(false);
+        }
     }
 
     // ───────────────── 아래는 기존 유틸리티 함수 (수정 없음) ─────────────────
-    #region Utility Functions
+#region Utility Functions
     bool IsCentered()
     {
         if (!viewport || !target) return false;
@@ -170,5 +174,5 @@ public class PlayVideoOnVisibleLock : MonoBehaviour
             scrollRect.inertia = true;
         }
     }
-    #endregion
+#endregion
 }
