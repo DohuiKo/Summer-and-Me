@@ -1658,16 +1658,8 @@ MonoBehaviour:
   viewport: {fileID: 402776508}
   target: {fileID: 533819102}
   videoPlayer: {fileID: 1809907336}
-  visibleThreshold: 0.5
-  playOnlyOnce: 1
-  unlockAtEnd: 1
-  triggerAtCenter: 1
+  nextDownArrow: {fileID: 1043838016}
   centerTolerance: 0.1
-  lockWhenCentered: 1
-  autoPlayOnCenter: 1
-  unlockWhenPausedOrStopped: 1
-  lockOnlyBeforeFirstPlay: 1
-  unlockWhenLeaveCenter: 0
 --- !u!1 &536251122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2207,16 +2199,8 @@ MonoBehaviour:
   viewport: {fileID: 402776508}
   target: {fileID: 720952738}
   videoPlayer: {fileID: 1110790539}
-  visibleThreshold: 0.5
-  playOnlyOnce: 1
-  unlockAtEnd: 1
-  triggerAtCenter: 1
+  nextDownArrow: {fileID: 1043838016}
   centerTolerance: 0.1
-  lockWhenCentered: 1
-  autoPlayOnCenter: 1
-  unlockWhenPausedOrStopped: 1
-  lockOnlyBeforeFirstPlay: 1
-  unlockWhenLeaveCenter: 0
 --- !u!1 &738507152
 GameObject:
   m_ObjectHideFlags: 0
@@ -2937,16 +2921,8 @@ MonoBehaviour:
   viewport: {fileID: 402776508}
   target: {fileID: 909167869}
   videoPlayer: {fileID: 738507153}
-  visibleThreshold: 0.5
-  playOnlyOnce: 1
-  unlockAtEnd: 1
-  triggerAtCenter: 1
+  nextDownArrow: {fileID: 1043838016}
   centerTolerance: 0.1
-  lockWhenCentered: 1
-  autoPlayOnCenter: 1
-  unlockWhenPausedOrStopped: 1
-  lockOnlyBeforeFirstPlay: 1
-  unlockWhenLeaveCenter: 0
 --- !u!1 &947340886
 GameObject:
   m_ObjectHideFlags: 0
@@ -3635,16 +3611,8 @@ MonoBehaviour:
   viewport: {fileID: 402776508}
   target: {fileID: 1074993915}
   videoPlayer: {fileID: 1274329190}
-  visibleThreshold: 0.5
-  playOnlyOnce: 1
-  unlockAtEnd: 1
-  triggerAtCenter: 1
+  nextDownArrow: {fileID: 1043838016}
   centerTolerance: 0.1
-  lockWhenCentered: 1
-  autoPlayOnCenter: 1
-  unlockWhenPausedOrStopped: 1
-  lockOnlyBeforeFirstPlay: 1
-  unlockWhenLeaveCenter: 0
 --- !u!1 &1080590863
 GameObject:
   m_ObjectHideFlags: 0
@@ -3935,16 +3903,8 @@ MonoBehaviour:
   viewport: {fileID: 402776508}
   target: {fileID: 1218434305}
   videoPlayer: {fileID: 210089290}
-  visibleThreshold: 0.5
-  playOnlyOnce: 1
-  unlockAtEnd: 1
-  triggerAtCenter: 1
+  nextDownArrow: {fileID: 1043838016}
   centerTolerance: 0.1
-  lockWhenCentered: 1
-  autoPlayOnCenter: 1
-  unlockWhenPausedOrStopped: 1
-  lockOnlyBeforeFirstPlay: 1
-  unlockWhenLeaveCenter: 0
 --- !u!1 &1218493803
 GameObject:
   m_ObjectHideFlags: 0
@@ -5532,16 +5492,8 @@ MonoBehaviour:
   viewport: {fileID: 402776508}
   target: {fileID: 1806869829}
   videoPlayer: {fileID: 1746786660}
-  visibleThreshold: 0.5
-  playOnlyOnce: 1
-  unlockAtEnd: 1
-  triggerAtCenter: 1
+  nextDownArrow: {fileID: 1043838016}
   centerTolerance: 0.1
-  lockWhenCentered: 1
-  autoPlayOnCenter: 1
-  unlockWhenPausedOrStopped: 1
-  lockOnlyBeforeFirstPlay: 1
-  unlockWhenLeaveCenter: 0
 --- !u!1 &1809907335
 GameObject:
   m_ObjectHideFlags: 0
