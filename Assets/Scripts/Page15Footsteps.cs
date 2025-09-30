@@ -15,14 +15,14 @@ public class Page15Footsteps : MonoBehaviour
 
     [Header("Step Settings")]
     [Tooltip("스페이스를 1번 누를 때 발을 얼마나 위로 전진시키는지(px)")]
-    public float verticalGap = 240f;
+    public float verticalGap = 360f;
     [Tooltip("최대 스텝 수(도달 시 멈추고 Next 켜려면 > 0으로)")]
     public int targetSteps = 0;            // 0이면 무제한
     public Button nextButton;              // 완료 시 켜질 버튼(선택)
 
     [Header("Fading Footprint (자취)")]
     [Tooltip("떠난 자리의 '발자국 자취'가 사라지기까지 걸리는 시간")]
-    public float markFadeDuration = 1.2f;
+    public float markFadeDuration = 0.8f;
     [Tooltip("자취 초기 투명도(0~1)")]
     [Range(0f,1f)] public float markStartAlpha = 0.75f;
     [Tooltip("자취를 약간 작게/크게 표현하고 싶을 때 1=원본")]
