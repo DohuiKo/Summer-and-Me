@@ -10,7 +10,9 @@ public class ContentLockManager : MonoBehaviour
     public RectTransform target;
 
     [Header("Behavior")]
-    public bool lockOnCenter = true;
+    // 0_prolog 씬: 켜짐 
+    // SummerRoom 씬: 꺼짐 
+    public bool lockOnCenter = false; 
     public bool unlockManually = true;
 
     [Header("Trigger (Center-based)")]
@@ -18,13 +20,12 @@ public class ContentLockManager : MonoBehaviour
     [Range(0f, 0.5f)] public float centerTolerance = 0.1f;
 
     [Header("UI Refs")]
-    public GameObject unlockButton;
+    public GameObject unlockButton; 
     public float fadeDuration = 1f;
 
     // 내부 상태
     private bool isLocked = false;
     private bool centerArmed = true;
-    private CanvasGroup unlockButtonCanvasGroup;
 
     // ScrollRect 상태 저장/복원
     bool prevEnabled, prevVertical, prevHorizontal, prevInertia;
@@ -42,54 +43,55 @@ public class ContentLockManager : MonoBehaviour
         canvas = GetComponentInParent<Canvas>();
         if (canvas && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
             uiCam = canvas.worldCamera;
-
-        if (unlockButton != null)
-        {
-            unlockButtonCanvasGroup = unlockButton.GetComponent<CanvasGroup>();
-            if (unlockButtonCanvasGroup == null)
-            {
-                unlockButtonCanvasGroup = unlockButton.AddComponent<CanvasGroup>();
-            }
-            
-            unlockButtonCanvasGroup.alpha = 0f;
-            unlockButtonCanvasGroup.interactable = false;
-            unlockButtonCanvasGroup.blocksRaycasts = false;
-        }
     }
 
     void OnEnable()
     {
         if (scrollRect) scrollRect.onValueChanged.AddListener(OnScrolled);
-        Invoke(nameof(Evaluate), 0.05f);
+        
+        // SummerRoom (lockOnCenter=false, unlockManually=true) 초기 락
+        if (!lockOnCenter && unlockManually)
+        {
+            StartCoroutine(DelayedLock()); 
+        }
     }
     
     void OnDisable()
     {
         if (scrollRect) scrollRect.onValueChanged.RemoveListener(OnScrolled);
     }
+    
+    // SummerRoom 씬의 안정적인 초기 잠금을 위한 코루틴
+    IEnumerator DelayedLock()
+    {
+        yield return null; 
+        LockScroll();
+    }
 
     void OnScrolled(Vector2 _) => Evaluate();
-
-    void LateUpdate()
-    {
-        if (scrollRect) Evaluate();
-    }
 
     // ───────────────────── Core ─────────────────────
     void Evaluate()
     {
         if (!viewport || !target) return;
 
-        bool centered = triggerAtCenter ? IsCentered() : false;
+        // 수동 해제 모드에서는 잠금 상태일 때 스크롤링 중 잠금 로직을 실행하지 않습니다.
+        if (unlockManually && isLocked) return; 
+        
+        // 중앙 도달 시 잠금 기능 (스크롤링 중 동작)
+        if (triggerAtCenter)
+        {
+            bool centered = IsCentered();
 
-        if (centered)
-        {
-            bool canLockNow = lockOnCenter && centerArmed && !isLocked;
-            if (canLockNow) LockScroll();
-        }
-        else
-        {
-            centerArmed = true;
+            if (centered)
+            {
+                bool canLockNow = centerArmed && !isLocked;
+                if (canLockNow) LockScroll();
+            }
+            else
+            {
+                centerArmed = true;
+            }
         }
     }
     
@@ -124,12 +126,14 @@ public class ContentLockManager : MonoBehaviour
     {
         if (!scrollRect || isLocked) return;
 
+        // 현재 스크롤 설정 저장
         prevEnabled = scrollRect.enabled;
         prevVertical = scrollRect.vertical;
         prevHorizontal = scrollRect.horizontal;
         prevInertia = scrollRect.inertia;
         saved = true;
 
+        // 스크롤 비활성화 (잠금)
         scrollRect.enabled = false;
         scrollRect.vertical = false;
         scrollRect.horizontal = false;
@@ -140,73 +144,47 @@ public class ContentLockManager : MonoBehaviour
         centerArmed = false;
     }
 
-    public void UnlockScroll()
+    // 버튼 OnClick 이벤트에 직접 연결될 함수
+    public void UnlockContent() 
     {
-        if (!scrollRect || !isLocked) return;
+        // UnlockContent가 호출되면 코루틴을 시작하여 안전하게 해제 및 비활성화
+        if (!isLocked) return;
+        StartCoroutine(UnlockAndDisableCoroutine());
+    }
 
+    IEnumerator UnlockAndDisableCoroutine()
+    {
+        yield return null; // 한 프레임 대기
+
+        if (!scrollRect || !isLocked) yield break;
+
+        // 저장된 설정 복원 (스크롤 잠금 해제 로직)
         if (saved)
         {
             scrollRect.enabled = prevEnabled;
             scrollRect.vertical = prevVertical;
-            scrollRect.horizontal = prevVertical;
+            scrollRect.horizontal = prevHorizontal; 
             scrollRect.inertia = prevInertia;
         }
-        else
+        else 
         {
             scrollRect.enabled = true;
             scrollRect.vertical = true;
+            scrollRect.horizontal = true;
             scrollRect.inertia = true;
         }
         isLocked = false;
         
-        if (unlockButtonCanvasGroup != null)
-        {
-            StartCoroutine(FadeCanvasGroup(unlockButtonCanvasGroup, 0f, fadeDuration, false));
-        }
+        // ⭐ 핵심: 스크롤 잠금 해제 후 이 스크립트 컴포넌트를 비활성화하여 재잠금을 영구 중단
+        enabled = false;
     }
 
+    // Prologue 씬의 다른 스크립트 호환성을 위한 함수
     public void ShowUnlockButton()
     {
-        if (unlockButtonCanvasGroup != null)
+        if (unlockButton != null)
         {
-            StartCoroutine(FadeCanvasGroup(unlockButtonCanvasGroup, 1f, fadeDuration, true));
-        }
-    }
-
-    private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float targetAlpha, float duration, bool enableOnComplete)
-    {
-        float startAlpha = canvasGroup.alpha;
-        float timer = 0f;
-
-        if (!enableOnComplete)
-        {
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        }
-
-        if (canvasGroup.gameObject != null)
-        {
-            canvasGroup.gameObject.SetActive(true);
-        }
-
-        while (timer < duration)
-        {
-            timer += Time.unscaledDeltaTime;
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, timer / duration);
-            yield return null;
-        }
-        
-        canvasGroup.alpha = targetAlpha;
-
-        if (enableOnComplete)
-        {
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-        }
-        
-        if (!enableOnComplete && canvasGroup.gameObject.activeSelf)
-        {
-            canvasGroup.gameObject.SetActive(false);
+            unlockButton.SetActive(true); 
         }
     }
 }
