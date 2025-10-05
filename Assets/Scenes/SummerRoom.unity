@@ -303,7 +303,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42af22cf00f608049934036fddeb0ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BedModal
-  modalPanelObject: {fileID: 0}
+  modalPanelObject: {fileID: 1666519756}
+  objectsToHide:
+  - {fileID: 1581894129}
+  - {fileID: 1523759596}
+  - {fileID: 1311250237}
 --- !u!114 &151362783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,7 +1084,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 786350825}
         m_TargetAssemblyTypeName: SpriteToggler, Assembly-CSharp
-        m_MethodName: CycleSprite
+        m_MethodName: DisplayNextSprite
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1575,7 +1579,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1742659101}
+      - m_Target: {fileID: 151362782}
         m_TargetAssemblyTypeName: BedModal, Assembly-CSharp
         m_MethodName: OpenModal
         m_Mode: 1
@@ -1634,7 +1638,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 540, y: -268}
+  m_AnchoredPosition: {x: 540, y: -346.82}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &978179717
@@ -2081,7 +2085,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.2, y: 1.9}
+  m_AnchoredPosition: {x: 2.199997, y: 1.9000015}
   m_SizeDelta: {x: 44.9356, y: 63.1699}
   m_Pivot: {x: 0.5, y: 0.38}
 --- !u!114 &1076290738
@@ -2134,7 +2138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa454ce0511383841bdbe9c4cf6a1c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialController
-  maxRotationAngle: 360
+  backgroundBedImage: {fileID: 1900089606}
+  phoneBlackScreenImage: {fileID: 1996469837}
+  maxRotationAngle: 720
+  dragSensitivity: 1
 --- !u!1 &1236333734
 GameObject:
   m_ObjectHideFlags: 0
@@ -2635,8 +2642,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00067139, y: 0.0014954}
-  m_SizeDelta: {x: 1261.2, y: 702.41}
+  m_AnchoredPosition: {x: -34, y: -25}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1666519758
 MonoBehaviour:
@@ -2794,6 +2801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BedModal
   modalPanelObject: {fileID: 1666519756}
+  objectsToHide: []
 --- !u!1 &1805780638
 GameObject:
   m_ObjectHideFlags: 0
@@ -2957,7 +2965,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.000028729, y: -0.000017166}
-  m_SizeDelta: {x: 616.6838, y: 616.6788}
+  m_SizeDelta: {x: 600, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1900089604
 MonoBehaviour:
@@ -3082,13 +3090,15 @@ GameObject:
   - component: {fileID: 1996469836}
   - component: {fileID: 1996469838}
   - component: {fileID: 1996469837}
+  - component: {fileID: 1996469840}
+  - component: {fileID: 1996469839}
   m_Layer: 5
   m_Name: PhoneSkim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1996469836
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3105,8 +3115,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000024796, y: 0.0000038147}
-  m_SizeDelta: {x: 331.8193, y: 570.2}
+  m_AnchoredPosition: {x: 0.000022888, y: -0.000022888}
+  m_SizeDelta: {x: 461.8499, y: 793.6453}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1996469837
 MonoBehaviour:
@@ -3146,6 +3156,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996469835}
   m_CullTransparentMesh: 1
+--- !u!114 &1996469839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996469835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ac8524ae0d4d654888766940f590d77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteToggler
+  spritesToCycle:
+  - {fileID: 1690774267206314971, guid: 7f0138a657dfe8543be7ff2948295b2a, type: 3}
+  - {fileID: -60691802995885692, guid: 597e4e755e286844eb9ffb9c8a298f2b, type: 3}
+  - {fileID: -5651963660296976219, guid: a1f93850946fe524f84f754bbbf7f461, type: 3}
+  - {fileID: -7292229694695884559, guid: 9418d9ad7529691439476c0dcbd64781, type: 3}
+  unlockButton: {fileID: 981297323}
+--- !u!114 &1996469840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996469835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1996469837}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1996469839}
+        m_TargetAssemblyTypeName: SpriteToggler, Assembly-CSharp
+        m_MethodName: DisplayNextSprite
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2056995076
 GameObject:
   m_ObjectHideFlags: 0
