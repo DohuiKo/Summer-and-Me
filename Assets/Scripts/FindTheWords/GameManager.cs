@@ -179,7 +179,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            messageText.text = "이제 끝이다.";
+            messageText.text = "이제 끝일까?";
         }
     }
 
