@@ -48,7 +48,7 @@ public class FootstepController : MonoBehaviour
     // 버튼 클릭 시 씬 전환
     public void OnClickNext()
     {
-        SceneManager.LoadScene("SummerRoom");
+        SceneManager.LoadScene("1_open_the_door");
         // 또는 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
