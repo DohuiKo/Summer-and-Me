@@ -103,10 +103,10 @@ TextureImporter:
       name: "Diary\uD328\uB110_0"
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 0
-        width: 843
-        height: 711
+        width: 839
+        height: 429
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

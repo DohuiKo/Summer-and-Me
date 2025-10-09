@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/3_fragments_of_a_voice.unity
     guid: 9ee6e8f6f04f28347ac46a3a52e69ffc
   - enabled: 1
+    path: Assets/Scenes/3_find_the_word.unity
+    guid: 99e550cc7f61e8242b57508164c29c3b
+  - enabled: 1
     path: Assets/Scenes/2_the_pieces.unity
     guid: c2ded06ae94c85443a345d6b64d4f34b
   - enabled: 1
