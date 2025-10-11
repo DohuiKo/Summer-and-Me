@@ -9,8 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/main.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Scenes/4_what_i_say.unity
+    guid: 6e2d1cdce2609e64f9799b00ecfc3aca
+  - enabled: 1
     path: Assets/Scenes/3_fragments_of_a_voice.unity
     guid: 9ee6e8f6f04f28347ac46a3a52e69ffc
+  - enabled: 1
+    path: Assets/Scenes/3_organize_draw.unity
+    guid: 1fa143337e0f7674cac7d441ea65524f
   - enabled: 1
     path: Assets/Scenes/3_find_the_word.unity
     guid: 99e550cc7f61e8242b57508164c29c3b

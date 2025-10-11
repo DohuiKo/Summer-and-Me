@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI phaseText;
     public TextMeshProUGUI messageText;
+    public GameObject nextSceneButton;     // ✅ 모든 게임 클리어 시 활성화될 버튼
 
     [Header("배치 옵션")]
     public bool preventOverlap = true;     // 서로 겹치지 않게
@@ -44,6 +45,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (nextSceneButton != null)
+            nextSceneButton.SetActive(false); // ✅ 시작 시 비활성화
+
         InitializePhase();
     }
 
@@ -180,6 +184,10 @@ public class GameManager : MonoBehaviour
         else
         {
             messageText.text = "이제 끝일까?";
+
+            // ✅ 모든 문장 완료 → 넥스트 씬 버튼 활성화
+            if (nextSceneButton != null)
+                nextSceneButton.SetActive(true);
         }
     }
 
@@ -195,7 +203,6 @@ public class GameManager : MonoBehaviour
         if (wordObject.transform.parent == (Transform)wordContainer)
         {
             wordObject.transform.SetParent(targetContainer, worldPositionStays: false);
-            // 부모가 바뀌었으니, 현재 위치를 새 부모 경계 안으로 한번 더 보정
             rt.anchoredPosition = ClampAnchoredPosition(rt.anchoredPosition, targetContainer, rt, padding);
         }
         else
@@ -206,13 +213,10 @@ public class GameManager : MonoBehaviour
     }
 
     // ====== 유틸 ======
-
-    // 경계 정보를 반환(로컬 anchored 좌표 기준)
     private struct Bounds2D { public Vector2 min, max; public Bounds2D(Vector2 mn, Vector2 mx){ min=mn; max=mx; } }
 
     private Bounds2D GetClampBounds(RectTransform container, RectTransform child, float pad)
     {
-        // 컨테이너/자식 크기
         Vector2 cSize = container.rect.size;
         Vector2 sSize = child.rect.size;
 
@@ -230,7 +234,6 @@ public class GameManager : MonoBehaviour
         return new Bounds2D(new Vector2(minX, minY), new Vector2(maxX, maxY));
     }
 
-    // 주어진 위치를 컨테이너 경계 안으로 클램프
     private Vector2 ClampAnchoredPosition(Vector2 pos, RectTransform container, RectTransform child, float pad)
     {
         var b = GetClampBounds(container, child, pad);
@@ -239,7 +242,6 @@ public class GameManager : MonoBehaviour
         return pos;
     }
 
-    // 겹침 체크용 사각형(패딩 고려)
     private Rect GetRectAroundCenter(Vector2 center, Vector2 size, float pad)
     {
         float w = size.x + pad * 2f;
