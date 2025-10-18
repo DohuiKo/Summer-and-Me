@@ -47,7 +47,7 @@ public class WordDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     // 드래그 대신 "클릭"했을 때 호출되는 함수
     public void OnPointerClick(PointerEventData eventData)
     {
-        // GameManager에게 단어가 클릭되었다고 알려 이동 처리를 맡깁니다.
-        GameManager.instance.MoveWordOnClick(this.gameObject);
+        // [수정됨] GameManager.instance를 WordGameManager.instance로 변경
+        WordGameManager.instance.MoveWordOnClick(this.gameObject);
     }
 }

@@ -1,9 +1,9 @@
-// GameManager.cs
+// WordGameManager.cs
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;          // LayoutRebuilder
-using TMPro;                  // TextMeshProUGUI
+using TMPro;                   // TextMeshProUGUI
 
 [System.Serializable]
 public struct SentenceData
@@ -13,27 +13,27 @@ public struct SentenceData
     public string[] words;
 }
 
-public class GameManager : MonoBehaviour
+public class WordGameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static WordGameManager instance;
 
     [Header("데이터")]
     public List<SentenceData> sentences;
 
     [Header("프리팹 & 컨테이너")]
     public GameObject wordPrefab;
-    public RectTransform wordContainer;    // 상단 랜덤 배치 영역 (회색 박스)
-    public RectTransform targetContainer;  // 하단 목표 영역 (회색 박스)
+    public RectTransform wordContainer;   // 상단 랜덤 배치 영역
+    public RectTransform targetContainer; // 하단 목표 영역
 
     [Header("UI")]
     public TextMeshProUGUI phaseText;
     public TextMeshProUGUI messageText;
-    public GameObject nextSceneButton;     // ✅ 모든 게임 클리어 시 활성화될 버튼
+    public GameObject nextSceneButton;    // 모든 게임 클리어 시 활성화될 버튼
 
     [Header("배치 옵션")]
-    public bool preventOverlap = true;     // 서로 겹치지 않게
-    public float padding = 8f;             // 컨테이너/단어 간 여유
-    public int maxPlaceTriesPerWord = 80;  // 겹침 회피 재시도 수
+    public bool preventOverlap = true;
+    public float padding = 8f;
+    public int maxPlaceTriesPerWord = 80;
 
     private int currentPhase = 0;
     private int wrongAttempts = 0;
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         if (nextSceneButton != null)
-            nextSceneButton.SetActive(false); // ✅ 시작 시 비활성화
+            nextSceneButton.SetActive(false);
 
         InitializePhase();
     }
@@ -63,32 +63,22 @@ public class GameManager : MonoBehaviour
 
         // 단어 섞기
         List<string> shuffledWords = sentences[currentPhase].words.OrderBy(x => Random.value).ToList();
-
-        // 이미 배치된 단어들의 사각형(로컬 좌표 기준)을 보관
         var placedRects = new List<Rect>();
 
         foreach (string word in shuffledWords)
         {
             GameObject wordObj = Instantiate(wordPrefab, wordContainer, false);
-
             var label = wordObj.GetComponentInChildren<TextMeshProUGUI>();
             if (label) label.text = word;
 
             var wordRect = wordObj.GetComponent<RectTransform>();
-
-            // 앵커/피벗 중앙 → 로컬(anchoredPosition) 계산이 간단해짐
             wordRect.anchorMin = wordRect.anchorMax = new Vector2(0.5f, 0.5f);
             wordRect.pivot = new Vector2(0.5f, 0.5f);
 
-            // 텍스트 길이에 따른 사이즈 반영
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(wordRect);
 
-            // 경계 안에서 랜덤 후보 뽑기
             Vector2 chosenPos = Vector2.zero;
-            bool placed = false;
-
-            // 컨테이너 경계(현재 단어 크기 + padding 고려) 계산
             Bounds2D bounds = GetClampBounds(wordContainer, wordRect, padding);
 
             for (int tries = 0; tries < (preventOverlap ? maxPlaceTriesPerWord : 1); tries++)
@@ -99,13 +89,10 @@ public class GameManager : MonoBehaviour
 
                 if (!preventOverlap)
                 {
-                    placed = true;
                     break;
                 }
 
-                // 후보 사각형
                 Rect candidate = GetRectAroundCenter(chosenPos, wordRect.rect.size, padding);
-
                 bool overlaps = false;
                 for (int i = 0; i < placedRects.Count; i++)
                 {
@@ -118,15 +105,12 @@ public class GameManager : MonoBehaviour
 
                 if (!overlaps)
                 {
-                    placed = true;
                     placedRects.Add(candidate);
                     break;
                 }
             }
-
-            // 실패해도 마지막 후보를 경계 내로 보정해서 사용
+            
             chosenPos = ClampAnchoredPosition(chosenPos, wordContainer, wordRect, padding);
-
             wordRect.anchoredPosition = chosenPos;
         }
     }
@@ -173,7 +157,6 @@ public class GameManager : MonoBehaviour
         InitializePhase();
     }
 
-    // 다음 단계
     void GoToNextPhase()
     {
         currentPhase++;
@@ -184,8 +167,6 @@ public class GameManager : MonoBehaviour
         else
         {
             messageText.text = "이제 끝일까?";
-
-            // ✅ 모든 문장 완료 → 넥스트 씬 버튼 활성화
             if (nextSceneButton != null)
                 nextSceneButton.SetActive(true);
         }
@@ -195,8 +176,6 @@ public class GameManager : MonoBehaviour
     public void MoveWordOnClick(GameObject wordObject)
     {
         var rt = wordObject.GetComponent<RectTransform>();
-
-        // 앵커/피벗 중앙 고정
         rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
         rt.pivot = new Vector2(0.5f, 0.5f);
 
@@ -211,7 +190,7 @@ public class GameManager : MonoBehaviour
             rt.anchoredPosition = ClampAnchoredPosition(rt.anchoredPosition, wordContainer, rt, padding);
         }
     }
-
+    
     // ====== 유틸 ======
     private struct Bounds2D { public Vector2 min, max; public Bounds2D(Vector2 mn, Vector2 mx){ min=mn; max=mx; } }
 
@@ -219,18 +198,10 @@ public class GameManager : MonoBehaviour
     {
         Vector2 cSize = container.rect.size;
         Vector2 sSize = child.rect.size;
-
-        float halfW = cSize.x * 0.5f;
-        float halfH = cSize.y * 0.5f;
-
-        float halfWordW = sSize.x * 0.5f;
-        float halfWordH = sSize.y * 0.5f;
-
-        float minX = -halfW + halfWordW + pad;
-        float maxX =  halfW - halfWordW - pad;
-        float minY = -halfH + halfWordH + pad;
-        float maxY =  halfH - halfWordH - pad;
-
+        float halfW = cSize.x * 0.5f, halfH = cSize.y * 0.5f;
+        float halfWordW = sSize.x * 0.5f, halfWordH = sSize.y * 0.5f;
+        float minX = -halfW + halfWordW + pad, maxX = halfW - halfWordW - pad;
+        float minY = -halfH + halfWordH + pad, maxY = halfH - halfWordH - pad;
         return new Bounds2D(new Vector2(minX, minY), new Vector2(maxX, maxY));
     }
 
@@ -244,8 +215,7 @@ public class GameManager : MonoBehaviour
 
     private Rect GetRectAroundCenter(Vector2 center, Vector2 size, float pad)
     {
-        float w = size.x + pad * 2f;
-        float h = size.y + pad * 2f;
+        float w = size.x + pad * 2f, h = size.y + pad * 2f;
         return new Rect(center.x - w * 0.5f, center.y - h * 0.5f, w, h);
     }
 }

@@ -9,8 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/main.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Scenes/5_a_last_track.unity
+    guid: 7b4e445107235844384d3d616094c749
+  - enabled: 1
+    path: Assets/Scenes/4_mirror.unity
+    guid: 72fe6f401f6e22f4499c127f9bfff770
+  - enabled: 1
     path: Assets/Scenes/4_what_i_say.unity
     guid: 6e2d1cdce2609e64f9799b00ecfc3aca
+  - enabled: 1
+    path: Assets/Scenes/4_fold_the_laundry.unity
+    guid: ea5cb05b61be9384eae05bd2e4873b42
   - enabled: 1
     path: Assets/Scenes/3_fragments_of_a_voice.unity
     guid: 9ee6e8f6f04f28347ac46a3a52e69ffc
