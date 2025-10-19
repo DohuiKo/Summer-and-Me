@@ -484,7 +484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NextButtonActivator
   modal: {fileID: 1453047896}
   nextButton: {fileID: 190125026}
-  playsRequired: 2
+  playsRequired: 1
   showFadeTime: 0
 --- !u!223 &190125030
 Canvas:
@@ -2384,8 +2384,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Next
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bafb34e29440b3340a4e6d33a21cc4e8, type: 2}
-  m_sharedMaterial: {fileID: 6570274126892495538, guid: bafb34e29440b3340a4e6d33a21cc4e8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8626071197450b84fa499056311e1e47, type: 2}
+  m_sharedMaterial: {fileID: -3699316874479646013, guid: 8626071197450b84fa499056311e1e47, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -1,18 +1,18 @@
 using UnityEngine;
-using TMPro;          // 카운터 텍스트 쓰는 경우
+using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
 
     [Header("설정/상태")]
-    [SerializeField] private int totalItemsToCollect = 0; // 인스펙터에 "Total Items To Collect"
+    [SerializeField] private int totalItemsToCollect = 0; // 총 수집 개수
     [SerializeField] private int currentCount = 0;
 
     [Header("UI(선택)")]
     public TextMeshProUGUI counterText;
     public GameObject nextButton;
-    public bool autoUnlockOnComplete = false;   // 자동 언락 켜고 싶을 때만 체크
+    public bool autoUnlockOnComplete = true;   // ✅ 자동 언락 기본 켜짐
 
     void Awake()
     {
@@ -23,11 +23,10 @@ public class InventoryManager : MonoBehaviour
         UpdateUI();
     }
 
-    // ✅ WaveRevealManager가 총합을 넘겨줄 때 호출하는 메서드
+    // 외부에서 총 개수 세팅 (예: WaveRevealManager 등)
     public void SetTotalItemsToCollect(int value)
     {
         totalItemsToCollect = Mathf.Max(0, value);
-        // 이미 담은 개수가 목표보다 크면 클램프
         currentCount = Mathf.Clamp(currentCount, 0, totalItemsToCollect);
         UpdateUI();
     }
@@ -38,18 +37,40 @@ public class InventoryManager : MonoBehaviour
         currentCount = Mathf.Clamp(currentCount + 1, 0, Mathf.Max(totalItemsToCollect, currentCount + 1));
         UpdateUI();
 
+        // ✅ 수집 완료 체크
         if (totalItemsToCollect > 0 && currentCount >= totalItemsToCollect)
         {
-            if (autoUnlockOnComplete && nextButton)
-                nextButton.SetActive(true);
-            // 자동 언락을 안 쓰는 경우, 여기서는 신호만 내보내고
-            // 모달 닫힘 등에서 다음 단계로 넘어가세요.
+            OnAllItemsCollected();
         }
+    }
+
+    // ✅ 모든 아이템을 다 모았을 때 실행
+    private void OnAllItemsCollected()
+    {
+        Debug.Log($"✅ 모든 아이템 수집 완료 ({currentCount}/{totalItemsToCollect})");
+
+        if (autoUnlockOnComplete && nextButton)
+        {
+            nextButton.SetActive(true);
+            Debug.Log("➡ NextSlideArrow 버튼 활성화됨!");
+        }
+
+        // 필요 시: 모달 닫기, 사운드 재생, 연출 등 추가 가능
     }
 
     private void UpdateUI()
     {
         if (counterText)
             counterText.text = $"{currentCount} / {totalItemsToCollect}";
+    }
+
+    // 필요 시 인벤토리 리셋
+    public void ResetInventory()
+    {
+        currentCount = 0;
+        UpdateUI();
+
+        if (nextButton)
+            nextButton.SetActive(false);
     }
 }

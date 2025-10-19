@@ -5931,6 +5931,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cfa88f960cf1424594a9e2b68179363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DropZone
+  inventory: {fileID: 0}
+  specialItem: {fileID: 0}
+  hiddenPanel: {fileID: 0}
+  unlockButton: {fileID: 0}
+  showOnce: 1
+  fadeInTime: 0.35
+  holdTime: 3
+  fadeOutTime: 0.35
 --- !u!114 &1952929912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5982,7 +5990,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
   totalItemsToCollect: 6
-  scrollUnlockButton: {fileID: 710829192}
+  currentCount: 0
+  counterText: {fileID: 0}
+  nextButton: {fileID: 710829192}
+  autoUnlockOnComplete: 1
 --- !u!1 &1958834923
 GameObject:
   m_ObjectHideFlags: 0

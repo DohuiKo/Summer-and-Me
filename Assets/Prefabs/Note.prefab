@@ -68,7 +68,7 @@ MonoBehaviour:
   m_text: "\u2669"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8626071197450b84fa499056311e1e47, type: 2}
-  m_sharedMaterial: {fileID: 7930750380837598823, guid: 8626071197450b84fa499056311e1e47, type: 2}
+  m_sharedMaterial: {fileID: -3699316874479646013, guid: 8626071197450b84fa499056311e1e47, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -92,10 +92,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 40
+  m_fontSizeBase: 32
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

@@ -37,7 +37,10 @@ public class TuneNote : MonoBehaviour
         button.onClick.AddListener(OnClick);
 
         image.color = normalColor;
-        text.text = isObstacle ? "✕" : (index >= 0 ? index.ToString() : "♪");
+
+        // ▼▼▼ 이 부분이 요청하신 대로 수정되었습니다 ▼▼▼
+        text.text = isObstacle ? "-" : (index >= 0 ? index.ToString() : "♪");
+
         cg.alpha = 0f;
 
         if (isActiveAndEnabled)
@@ -68,10 +71,10 @@ public class TuneNote : MonoBehaviour
         }
         else
         {
-            // 🎯 GameManager에서 올바른 순서 여부 판단
+            // GameManager에서 올바른 순서 여부 판단
             bool correct = TuneGameManager.Instance.TryProcessNote(this);
 
-            // ✅ 맞았을 때만 사라짐
+            // 맞았을 때만 사라짐
             if (correct)
                 StartCoroutine(ClickPulse(true));   // 사라지는 연출 포함
             else
@@ -106,12 +109,12 @@ public class TuneNote : MonoBehaviour
         }
         transform.localScale = baseScale;
 
-        // ✅ 올바른 순서일 때만 fade-out 후 삭제
+        // 올바른 순서일 때만 fade-out 후 삭제
         if (shouldFadeOut)
             yield return StartCoroutine(FadeOutAndDestroy());
         else
         {
-            // ❌ 틀렸을 경우 원래 색상 복귀
+            // 틀렸을 경우 원래 색상 복귀
             float r = 0;
             while (r < 0.4f)
             {

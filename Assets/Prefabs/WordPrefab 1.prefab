@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC81C\uBC1C \uB9D0\uC880 \uB4E4\uC5B4\uB77C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bafb34e29440b3340a4e6d33a21cc4e8, type: 2}
-  m_sharedMaterial: {fileID: 6570274126892495538, guid: bafb34e29440b3340a4e6d33a21cc4e8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8626071197450b84fa499056311e1e47, type: 2}
+  m_sharedMaterial: {fileID: -3699316874479646013, guid: 8626071197450b84fa499056311e1e47, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -247,7 +247,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 7693453249316179302}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
