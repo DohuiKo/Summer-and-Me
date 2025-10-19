@@ -143,17 +143,24 @@ public class MimiModal : MonoBehaviour
             modalCanvasGroup.interactable = true;
         }
 
+        // ==================== ✨ 변경된 부분 시작 ✨ ====================
         // 순차 이미지
-        if (sequenceImage && sequenceSprites != null && sequenceSprites.Count >= 4)
+        // 조건문을 4개 이상이 아닌, 1개 이상일 때로 변경
+        if (sequenceImage && sequenceSprites != null && sequenceSprites.Count > 0)
         {
-            yield return StartCoroutine(Co_ShowSprite(sequenceSprites[0], GetStepDuration(0)));
-            PlaySfx(sfxOpen);
-            yield return StartCoroutine(Co_ShowSprite(sequenceSprites[1], GetStepDuration(1)));
-            PlaySfx(sfxInsert);
-            yield return StartCoroutine(Co_ShowSprite(sequenceSprites[2], GetStepDuration(2)));
-            PlaySfx(sfxClose);
-            yield return StartCoroutine(Co_ShowSprite(sequenceSprites[3], GetStepDuration(3)));
+            // for 반복문으로 리스트에 있는 만큼만 재생
+            for (int i = 0; i < sequenceSprites.Count; i++)
+            {
+                // SFX는 특정 순서에만 재생되도록 조건 추가
+                // (스프라이트가 1개만 있으면 아무것도 재생 안 됨)
+                if (i == 1) PlaySfx(sfxOpen);   // 두 번째 스프라이트가 나올 때
+                if (i == 2) PlaySfx(sfxInsert); // 세 번째 스프라이트가 나올 때
+                if (i == 3) PlaySfx(sfxClose);  // 네 번째 스프라이트가 나올 때
+
+                yield return StartCoroutine(Co_ShowSprite(sequenceSprites[i], GetStepDuration(i)));
+            }
         }
+        // ==================== ✨ 변경된 부분 끝 ✨ ====================
 
         OnSequenceEnd?.Invoke();
 
