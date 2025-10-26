@@ -240,7 +240,7 @@ MonoBehaviour:
   background: {fileID: 1818821016}
   nextSceneButton: {fileID: 705567029}
   nextSceneCanvasGroup: {fileID: 0}
-  nextSceneName: SummerRoom
+  nextSceneName: 5_recoding
 --- !u!4 &189160205
 Transform:
   m_ObjectHideFlags: 0
@@ -506,31 +506,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 705567030}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 705567027}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 705567028}
-        m_TargetAssemblyTypeName: NextScene, Assembly-CSharp
-        m_MethodName: Load
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &705567030
 MonoBehaviour:
   m_ObjectHideFlags: 0
