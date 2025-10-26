@@ -10,11 +10,10 @@ public class RecoTypingGame : MonoBehaviour
     public TextMeshProUGUI targetText;
     public TMP_InputField playerInput;
     public TextMeshProUGUI accumulatedText;
+    public CanvasGroup textPanelCanvas; 
 
-    [Header("페이드용")]
-    public CanvasGroup textPanelCanvas;    // RecoTextPanel
-    public CanvasGroup recodingCanvas;     // RecodingPanel
-    public Image blackOverlay;             // 검정 페이드 이미지 (화면 전체 덮기)
+    [Header("게임 완료")]
+    public GameObject scrollUnlockButton; 
 
     [Header("타이핑 구성")]
     [TextArea(3, 10)]
@@ -29,15 +28,14 @@ public class RecoTypingGame : MonoBehaviour
 
     [Header("타이밍 설정")]
     public float delayBetweenWords = 0.3f;
-    public float delayBeforeFade = 1.2f;
-    public float fadeDuration = 1.5f;
+    public float delayBeforeFade = 1.2f;  // ❗ 이름 변경 (delayBeforeComplete -> delayBeforeFade)
+    public float fadeDuration = 1.5f;   // ❗ 페이드 시간을 위한 변수 추가
 
     private int currentIndex = 0;
     private bool waitingForInput = false;
 
     void Start()
     {
-        // 초기 텍스트 설정
         targetText.text = "";
         accumulatedText.text = "";
         playerInput.text = "";
@@ -45,10 +43,9 @@ public class RecoTypingGame : MonoBehaviour
         playerInput.onValueChanged.AddListener(OnInputChanged);
 
         textPanelCanvas.alpha = 1f;
-        recodingCanvas.alpha = 0f;
-        recodingCanvas.gameObject.SetActive(false);
-        if (blackOverlay != null)
-            blackOverlay.color = new Color(0, 0, 0, 0);
+
+        if (scrollUnlockButton != null)
+            scrollUnlockButton.SetActive(false);
 
         StartCoroutine(ShowNextWord());
     }
@@ -64,7 +61,6 @@ public class RecoTypingGame : MonoBehaviour
 
             yield return new WaitUntil(() => waitingForInput == false);
 
-            // 누적 표시 (줄바꿈 반영)
             if (accumulatedText.text == "")
                 accumulatedText.text = currentWord;
             else
@@ -75,56 +71,59 @@ public class RecoTypingGame : MonoBehaviour
             currentIndex++;
         }
 
-        yield return new WaitForSeconds(delayBeforeFade);
-        StartCoroutine(FadeTransition());
+        // ❗ 타이핑 완료 후 페이드 전 딜레이
+        yield return new WaitForSeconds(delayBeforeFade); 
+        
+        OnTypingGameFinished();
     }
 
     void OnInputChanged(string input)
     {
         if (!waitingForInput) return;
-        if (input.Trim() == sentenceParts[currentIndex])
+        
+        if (input == sentenceParts[currentIndex]) 
         {
             waitingForInput = false;
         }
     }
 
-    IEnumerator FadeTransition()
+    // ❗ 게임 완료 시 호출될 함수 (수정됨)
+    void OnTypingGameFinished()
     {
-        // 🔥 1단계: 텍스트 패널이 천천히 어두워지며 사라짐
+        Debug.Log("타이핑 게임 완료! 페이드 아웃 시작.");
+
+        // ❗ 입력창과 타겟 텍스트 즉시 비활성화
+        playerInput.gameObject.SetActive(false);
+        targetText.text = ""; 
+
+        // ❗ 페이드 아웃 및 버튼 활성화 코루틴 시작
+        StartCoroutine(FadeOutAndFinish());
+    }
+
+    // ❗ 페이드 아웃 후 버튼을 활성화하는 코루틴 (새로 추가)
+    IEnumerator FadeOutAndFinish()
+    {
         float t = 0f;
+        float startAlpha = textPanelCanvas.alpha; // 현재 알파값 (1f)
+
+        // ❗ textPanelCanvas의 알파값을 0으로 천천히 변경
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
             float normalized = t / fadeDuration;
-
-            textPanelCanvas.alpha = 1f - normalized; // RecoTextPanel 사라짐
-            if (blackOverlay != null)
-                blackOverlay.color = new Color(0, 0, 0, normalized * 0.9f); // 검정 오버레이 덮임
-
+            textPanelCanvas.alpha = Mathf.Lerp(startAlpha, 0f, normalized);
             yield return null;
         }
 
-        textPanelCanvas.gameObject.SetActive(false);
-        recodingCanvas.gameObject.SetActive(true);
-        recodingCanvas.alpha = 0f;
+        textPanelCanvas.alpha = 0f;
+        textPanelCanvas.gameObject.SetActive(false); // ❗ 패널 자체를 비활성화
 
-        yield return new WaitForSeconds(0.3f); // 여운 타이밍
+        Debug.Log("페이드 아웃 완료. 스크롤락 해제 버튼 활성화.");
 
-        // 🔥 2단계: RecodingPanel이 서서히 나타나며 오버레이가 사라짐
-        t = 0f;
-        while (t < fadeDuration)
+        // ❗ 페이드 아웃이 모두 끝난 후 스크롤락 버튼 활성화
+        if (scrollUnlockButton != null)
         {
-            t += Time.deltaTime;
-            float normalized = t / fadeDuration;
-
-            recodingCanvas.alpha = normalized;
-            if (blackOverlay != null)
-                blackOverlay.color = new Color(0, 0, 0, 0.9f - normalized * 0.9f); // 점점 밝아짐
-
-            yield return null;
+            scrollUnlockButton.SetActive(true);
         }
-
-        if (blackOverlay != null)
-            blackOverlay.color = new Color(0, 0, 0, 0); // 완전 투명
     }
 }
