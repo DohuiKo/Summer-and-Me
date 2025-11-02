@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d75db61ab1f7add4d8931a3aa0f45a33, type: 3}
+  m_Name: SoundDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::SoundDatabase
+  objClickSFX: {fileID: 8300000, guid: ed4947b11483b5b4fad683a12e310a2b, type: 3}
+  getTapePieceSFX: {fileID: 8300000, guid: c5a4d413daa6af346a847f75590b6709, type: 3}
+  mymyWindingSFX: {fileID: 8300000, guid: 8d3df04c454c67b4ea43085b51670d33, type: 3}
+  mymyOpenSFX: {fileID: 8300000, guid: 59adc0ab7792cdc4c8d4bc804549df50, type: 3}
+  mainBGM: {fileID: 8300000, guid: cb473df5bbfcc56428764cdd127dea51, type: 3}
+  prologBGM: {fileID: 8300000, guid: 9031ef635d442e54f83c40b96c08a5fc, type: 3}
+  chap1BGM: {fileID: 8300000, guid: 758fb1388cd74e7468aa84505f315ff7, type: 3}
+  chap2BGM: {fileID: 8300000, guid: 7aedff10fb66d484ab6332586dacfe35, type: 3}
+  chap3BGM: {fileID: 8300000, guid: 00671ff0db084414890c02dc11d83ca0, type: 3}
+  chap4BGM: {fileID: 8300000, guid: 214b2b1d463e3c04288b57b477cb8f08, type: 3}
+  chap5BGM: {fileID: 0}
+  chap6BGM: {fileID: 8300000, guid: e50ea4f5aeeed9c4f8c7ac83fc6a99db, type: 3}
+  brokenTheTuneBGM: {fileID: 8300000, guid: c3955a2088aa28a41ab69753bbe7f7ed, type: 3}
+  trainSFX: {fileID: 8300000, guid: 3abf335f23fd5bf449b28640a9d2276e, type: 3}
+  coffeeSFX: {fileID: 8300000, guid: 31be74117d8dcb641ac6912cd5e8e07d, type: 3}
+  doorOpenSFX: {fileID: 8300000, guid: a4c5a89958b04764ebe73a0399c87ee8, type: 3}
+  baddingSFX: {fileID: 8300000, guid: 5efc762177a551e49865fa93d554893c, type: 3}
+  waterSquirtSFX: {fileID: 8300000, guid: b6028736b7164334d84c33de491d7242, type: 3}
+  dialSFX: {fileID: 8300000, guid: 125fccb369295a64fb44a465a19ddd5b, type: 3}
+  boxOpenSFX: {fileID: 8300000, guid: 922cd03bac194274ba59afc8b7ec8e58, type: 3}
+  diaryCloseSFX: {fileID: 8300000, guid: 8c03c093a46e9834ca213ba47983b922, type: 3}
+  pencilWriteSFX: {fileID: 8300000, guid: d6bb6da7ec106954ca476a38f81320dc, type: 3}
+  tapeDeckSFX: {fileID: 8300000, guid: a20199dac00ba0c41ae6806872cd94a6, type: 3}
+  tapePlaySFX: {fileID: 8300000, guid: 3caffe0d8842ec14cb03b94d83d1df6a, type: 3}
+  tapeZiziziSFX: {fileID: 8300000, guid: 8920f722a16f8454cb59ca661d1055f2, type: 3}
+  typingSFX: {fileID: 8300000, guid: 2d986e0845163404db925b420f39bd5c, type: 3}
+  foldLaundrySFX: {fileID: 8300000, guid: 08a62a5efc9da1f46830334bd00864da, type: 3}
+  mirrorBrokenSFX: {fileID: 8300000, guid: 7b8679c01f517e44da6349bcc3216a35, type: 3}
+  cassetteGoingInSFX: {fileID: 8300000, guid: 1488fd4a35c4a8343b4aa13ce8bee180, type: 3}
+  mymyDoorCloseSFX: {fileID: 8300000, guid: 0d6b8bb2a4e965f499c16066e2832407, type: 3}
+  continueTypingSFX: {fileID: 8300000, guid: 2ecf0217e5da73342b357350178851d1, type: 3}
+  recordingSFX: {fileID: 8300000, guid: 61d5d8cdc7faaef4f8153d1aa7e08951, type: 3}
+  sobbingGaeulSFX: {fileID: 8300000, guid: 624615e863bce38448e7bbcee4b01ae1, type: 3}

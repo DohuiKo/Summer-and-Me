@@ -16,19 +16,22 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    // 드래그를 시작했을 때 한 번 호출됩니다.
+        // 드래그를 시작했을 때 한 번 호출됩니다.
     public void OnBeginDrag(PointerEventData eventData)
     {
         startPosition = rectTransform.anchoredPosition;
         startParent = transform.parent;
 
-        canvasGroup.alpha = 0.6f; // 드래그하는 동안 살짝 투명하게 만듭니다.
-        // 드롭 지점을 감지하려면, 드래그 중인 아이템이 마우스 클릭을 막으면 안 됩니다.
+        canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
 
         // 드래그하는 동안 화면 맨 위에 보이도록 Canvas의 자식으로 잠시 옮깁니다.
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
+
+        // ✅ 클릭 사운드 재생 추가
+        if (Chap2SoundManager.Instance != null)
+            Chap2SoundManager.Instance.PlayMouseClick();
     }
 
     // 드래그하는 동안 매 프레임 호출됩니다.
@@ -52,4 +55,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             rectTransform.anchoredPosition = startPosition;
         }
     }
+
+
+
 }

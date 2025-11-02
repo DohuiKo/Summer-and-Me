@@ -49,7 +49,6 @@ public class RecodingGameManager : MonoBehaviour
     private Coroutine waveformRoutine;
     private Coroutine timerRoutine;
     private LayoutElement[] barLayouts;
-    private int waveformPhase = 0;
 
     void Start()
     {

@@ -1,127 +1,155 @@
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DialController : MonoBehaviour, IPointerDownHandler, IDragHandler
+public class DialController : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    // 💡 Inspector에서 연결: 회전시킬 바늘 Rect Transform (자기 자신)
     private RectTransform needleRect;
 
-    // 💡 Inspector에서 연결: 투명도가 낮아져야 할 배경 침대 Image (BedModalImage)
+    [Header("연동 이미지")]
     public Image backgroundBedImage;
-
-    // 💡 Inspector에서 연결: 검은색으로 보이는 휴대폰 Image 
     public Image phoneBlackScreenImage; 
-    
-    // 💡 바늘의 총 회전 각도 제한 (0도 ~ 720도)
-    [Tooltip("바늘이 회전할 수 있는 최대 누적 각도")]
-    public float maxRotationAngle = 720f; // 총 720도로 변경
 
+    [Header("회전 설정")]
+    [Tooltip("바늘이 회전할 수 있는 최대 누적 각도")]
+    public float maxRotationAngle = 720f;
     [Tooltip("드래그 움직임에 대한 바늘 회전 속도")]
     public float dragSensitivity = 1.0f; 
 
-    // 현재 누적된 회전 각도
     private float currentAngle = 0f;
     private Vector2 startDragPosition;
-    
-    // 각 단계의 완료 각도 정의
-    private const float PHASE_1_END = 360f; // 침대 페이드 아웃 완료 시점
-    private const float PHASE_2_END = 720f; // 검은 화면 페이드 인 완료 시점
+
+    private const float PHASE_1_END = 360f;
+    private const float PHASE_2_END = 720f;
+
+    // 🎧 사운드 관련
+    [Header("사운드 설정")]
+    private AudioSource dialAudioSource;
+    private bool isDragging = false;
+    private bool hasReachedEnd = false;
 
     void Start()
     {
         needleRect = GetComponent<RectTransform>();
-        
-        // 초기 투명도 설정: 침대는 불투명, 검은 화면은 투명
-        SetAlpha(backgroundBedImage, 1f);
-        SetAlpha(phoneBlackScreenImage, 0f); 
-    }
 
-    // Alpha 값을 설정하는 헬퍼 함수
-    private void SetAlpha(Image img, float alpha)
-    {
-        if (img != null)
+        // 초기 투명도 설정
+        SetAlpha(backgroundBedImage, 1f);
+        SetAlpha(phoneBlackScreenImage, 0f);
+
+        // 🎧 사운드 소스 초기화
+        dialAudioSource = gameObject.AddComponent<AudioSource>();
+        dialAudioSource.loop = true;
+        dialAudioSource.playOnAwake = false;
+
+        if (AudioManager.Instance != null && AudioManager.Instance.soundDB != null)
         {
-            Color color = img.color;
-            // 알파 값은 0.0f에서 1.0f 사이로 제한
-            color.a = Mathf.Clamp(alpha, 0f, 1f); 
-            img.color = color;
+            dialAudioSource.clip = AudioManager.Instance.soundDB.dialSFX;
+            dialAudioSource.volume = AudioManager.Instance.sfxVolume;
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ AudioManager 또는 dialSFX가 연결되지 않음");
         }
     }
 
-    // 마우스 클릭 시작 시 호출 
-    public void OnPointerDown(PointerEventData eventData)
+    private void SetAlpha(Image img, float alpha)
     {
-        // 💡 수정된 부분: RectTransformUtility 호출 인수를 명시적으로 채움
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            needleRect.parent.GetComponent<RectTransform>(), 
-            eventData.position, 
-            eventData.pressEventCamera, 
-            out startDragPosition);
+        if (img == null) return;
+        Color color = img.color;
+        color.a = Mathf.Clamp(alpha, 0f, 1f);
+        img.color = color;
     }
 
-    // 마우스 드래그 중 호출 (바늘 회전 및 투명도 로직)
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (hasReachedEnd) return; // 이미 끝났으면 반응 안 함
+        isDragging = true;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            needleRect.parent.GetComponent<RectTransform>(),
+            eventData.position,
+            eventData.pressEventCamera,
+            out startDragPosition);
+
+        // 🔊 드래그 시작 시 사운드 재생 시작
+        if (dialAudioSource != null && dialAudioSource.clip != null)
+            dialAudioSource.Play();
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
-        // 1. 회전 각도 계산 
+        if (hasReachedEnd) return;
+        if (!isDragging) return;
+
         Vector2 currentDragPosition;
-        
-        // 💡 수정된 부분: RectTransformUtility 호출 인수를 명시적으로 채움
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            needleRect.parent.GetComponent<RectTransform>(), 
-            eventData.position, 
-            eventData.pressEventCamera, 
+            needleRect.parent.GetComponent<RectTransform>(),
+            eventData.position,
+            eventData.pressEventCamera,
             out currentDragPosition);
-            
-        Vector2 center = needleRect.anchoredPosition; 
+
+        Vector2 center = needleRect.anchoredPosition;
         float startAngle = Mathf.Atan2(startDragPosition.y - center.y, startDragPosition.x - center.x) * Mathf.Rad2Deg;
         float currentAngleRad = Mathf.Atan2(currentDragPosition.y - center.y, currentDragPosition.x - center.x) * Mathf.Rad2Deg;
         float angleDifference = currentAngleRad - startAngle;
 
         if (angleDifference > 180) angleDifference -= 360;
         if (angleDifference < -180) angleDifference += 360;
-        
-        float adjustedAngleChange = angleDifference * dragSensitivity;
 
-        // 2. 누적 각도 업데이트 및 제한 (최대 720도)
+        float adjustedAngleChange = angleDifference * dragSensitivity;
         currentAngle = Mathf.Clamp(currentAngle - adjustedAngleChange, 0f, maxRotationAngle);
-        
-        // 3. 바늘 회전 적용
         needleRect.localRotation = Quaternion.Euler(0, 0, -currentAngle);
-        
-        // 4. 2단계 투명도 조절 실행
+
         UpdateAlphaStates();
 
         if (currentAngle >= maxRotationAngle)
         {
-            Debug.Log("다이얼 조작 완료! 검은 휴대폰 화면이 나타났습니다.");
+            hasReachedEnd = true;
+            isDragging = false;
+
+            if (dialAudioSource.isPlaying)
+                dialAudioSource.Stop();
+
+            Debug.Log("✅ 다이얼 조작 완료! 사운드 중지 및 검은 화면 완료");
         }
 
         startDragPosition = currentDragPosition;
     }
 
-    // 핵심 로직: 누적 각도에 따른 2단계 투명도 계산 (변경 없음)
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        // 🔇 드래그 종료 시 사운드 멈춤
+        if (dialAudioSource != null && dialAudioSource.isPlaying)
+            dialAudioSource.Stop();
+
+        isDragging = false;
+    }
+
     private void UpdateAlphaStates()
     {
-        // 1단계: 침대 페이드아웃 (0도 ~ 360도)
+        // 1단계: 침대 페이드아웃
         float bedAlpha;
         if (currentAngle <= PHASE_1_END)
         {
-            float progress = currentAngle / PHASE_1_END; 
+            float progress = currentAngle / PHASE_1_END;
             bedAlpha = 1f - progress;
-        } else {
+        }
+        else
+        {
             bedAlpha = 0f;
         }
         SetAlpha(backgroundBedImage, bedAlpha);
 
-        // 2단계: 검은 화면 페이드인 (360도 ~ 720도)
+        // 2단계: 검은 화면 페이드인
         float blackScreenAlpha = 0f;
         if (currentAngle >= PHASE_1_END && currentAngle <= PHASE_2_END)
         {
             float phaseDuration = PHASE_2_END - PHASE_1_END;
             float phaseProgress = (currentAngle - PHASE_1_END) / phaseDuration;
             blackScreenAlpha = phaseProgress;
-        } else if (currentAngle > PHASE_2_END) {
+        }
+        else if (currentAngle > PHASE_2_END)
+        {
             blackScreenAlpha = 1f;
         }
         SetAlpha(phoneBlackScreenImage, blackScreenAlpha);
