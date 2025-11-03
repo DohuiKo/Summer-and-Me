@@ -1761,7 +1761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   soundDB: {fileID: 11400000, guid: 6e721ca075a9ce44eb8b19d07a96461c, type: 2}
   bgmVolume: 0.5
-  sfxVolume: 0.7
+  sfxVolume: 0.3
 --- !u!4 &424966989
 Transform:
   m_ObjectHideFlags: 0
@@ -2208,7 +2208,7 @@ MonoBehaviour:
   - sprite: {fileID: 21300000, guid: c9497a1e5028593468a8ec3565da04c0, type: 3}
     overrideSize: 0
     size: {x: 0, y: 0}
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 59adc0ab7792cdc4c8d4bc804549df50, type: 3}
   - sprite: {fileID: 21300000, guid: 7b030202cfd5491438c19366ccec3c8e, type: 3}
     overrideSize: 0
     size: {x: 0, y: 0}
@@ -2220,7 +2220,7 @@ MonoBehaviour:
   - sprite: {fileID: 21300000, guid: ce39dc1d96fb4e740af8391566f42ffa, type: 3}
     overrideSize: 1
     size: {x: 800, y: 500}
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 0d6b8bb2a4e965f499c16066e2832407, type: 3}
   - sprite: {fileID: 21300000, guid: ce39dc1d96fb4e740af8391566f42ffa, type: 3}
     overrideSize: 1
     size: {x: 800, y: 500}
@@ -2229,7 +2229,7 @@ MonoBehaviour:
   objectToShowOnLastState: {fileID: 1412940408}
   useFadeTransition: 1
   fadeDuration: 1
-  useAudioOnClick: 0
+  useAudioOnClick: 1
 --- !u!114 &585297408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2298,7 +2298,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -5156,9 +5156,9 @@ MonoBehaviour:
   closeUpImage: {fileID: 1169348569}
   fullDeskImage: {fileID: 1793200647}
   emptyDeskImage: {fileID: 1935797527}
-  zoomOutDuration: 3
-  fadeDuration: 2
-  delayBetween: 1
+  zoomOutDuration: 4
+  fadeDuration: 3
+  delayBetween: 3
   cassetteFragmentButton: {fileID: 1862929538}
   nextSceneButton: {fileID: 1180547029}
 --- !u!114 &1412940414
@@ -5175,6 +5175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CassetteFragmentPickup
   fadeDuration: 1.2
   pickupSound: {fileID: 0}
+  useSoundManager: 1
 --- !u!1 &1443016134
 GameObject:
   m_ObjectHideFlags: 0
@@ -6423,6 +6424,7 @@ GameObject:
   - component: {fileID: 1862929541}
   - component: {fileID: 1862929540}
   - component: {fileID: 1862929542}
+  - component: {fileID: 1862929543}
   m_Layer: 5
   m_Name: CassetteFragmentButton
   m_TagString: Untagged
@@ -6531,6 +6533,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1862929543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862929538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 499d2ab65ec03a54d90011b3e1d00c3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CassetteFragmentFade
+  fadeDuration: 1.2
+  pickupSound: {fileID: 0}
+  useSoundManager: 1
 --- !u!1 &1893973392
 GameObject:
   m_ObjectHideFlags: 0
@@ -6611,7 +6628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1935797526
 RectTransform:
   m_ObjectHideFlags: 0
