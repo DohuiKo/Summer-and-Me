@@ -42,12 +42,14 @@ public class Chap6IntroVideoPlayer : MonoBehaviour
                 videoScreen.texture = vp.texture;
 
             vp.Play();
-            Debug.Log("[Chap6IntroVideoPlayer] ▶ 영상 재생 시작");
 
-            // 챕터 텍스트가 있다면 페이드아웃
+            // 🎬 여기 추가
+            Debug.Log($"[VideoPlayer] ▶ 영상 재생 시작: {vp.clip.name}, 길이 = {vp.clip.length:F2}초");
+
             if (chapterPageCanvas != null)
                 StartCoroutine(FadeOutChapterText());
         };
+
     }
 
     IEnumerator FadeOutChapterText()
