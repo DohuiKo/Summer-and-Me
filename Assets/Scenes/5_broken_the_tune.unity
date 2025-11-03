@@ -231,15 +231,13 @@ MonoBehaviour:
   obstaclePrefab: {fileID: 7654258941254349064, guid: 403d5bf8e540911409e5fb524d163210, type: 3}
   noteContainer: {fileID: 1596763411}
   progressBar: {fileID: 964725216}
-  phaseText: {fileID: 1753086391}
-  messageText: {fileID: 1593677430}
   darkOverlay: {fileID: 1742346121}
-  tapeDeck: {fileID: 1452761706}
   reel1: {fileID: 1361090986}
   reel2: {fileID: 1842400950}
   background: {fileID: 1818821016}
+  tapeDeck: {fileID: 1452761706}
   nextSceneButton: {fileID: 705567029}
-  nextSceneCanvasGroup: {fileID: 0}
+  nextSceneCanvasGroup: {fileID: 705567033}
   nextSceneName: 5_recoding
 --- !u!4 &189160205
 Transform:
@@ -423,6 +421,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 214345946}
   m_CullTransparentMesh: 1
+--- !u!1 &295228332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 295228334}
+  - component: {fileID: 295228333}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &295228333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295228332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6311d33ff9c4c7c41aad21ea617bfc94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  soundDB: {fileID: 11400000, guid: 6e721ca075a9ce44eb8b19d07a96461c, type: 2}
+  bgmVolume: 0.5
+  sfxVolume: 0.7
+--- !u!4 &295228334
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295228332}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 871.4477, y: 564.1451, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705567027
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,7 +952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -942,6 +987,7 @@ GameObject:
   - component: {fileID: 1452761706}
   - component: {fileID: 1452761708}
   - component: {fileID: 1452761707}
+  - component: {fileID: 1452761709}
   m_Layer: 5
   m_Name: TapeDeck
   m_TagString: Untagged
@@ -1008,6 +1054,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1452761705}
   m_CullTransparentMesh: 1
+--- !u!114 &1452761709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452761705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 818dc435dcd7c554f9029cb826be89fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TapeDeckRaycastBlocker
+  alwaysPassThrough: 1
 --- !u!1 &1593677428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,6 +1203,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593677428}
   m_CullTransparentMesh: 1
+--- !u!1 &1595421623
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1595421625}
+  - component: {fileID: 1595421624}
+  m_Layer: 0
+  m_Name: Chap5SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1595421624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595421623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 516cab2186d506345a854ca377c7d51a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Chap5SoundManager
+--- !u!4 &1595421625
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595421623}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 871.4477, y: 564.1451, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1596763410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1705,7 +1808,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1931,3 +2034,5 @@ SceneRoots:
   - {fileID: 832827710}
   - {fileID: 189160205}
   - {fileID: 819904218}
+  - {fileID: 1595421625}
+  - {fileID: 295228334}

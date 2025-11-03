@@ -171,20 +171,20 @@ public class LaundryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 for (int i = currentState; i >= 0; i--)
                 {
                     if (canvasGroup != null && revertStepTime > 0f)
-                        yield return StartCoroutine(CoFade(canvasGroup, 1f, 0.85f, revertStepTime * 0.5f));
+                        yield return StartCoroutine(CoFade(canvasGroup, 1f, 1f, revertStepTime * 1f));
 
                     itemImage.color  = dim;
                     itemImage.sprite = foldingStates[i];
 
                     if (canvasGroup != null && revertStepTime > 0f)
-                        yield return StartCoroutine(CoFade(canvasGroup, 0.85f, 1f, revertStepTime * 0.5f));
+                        yield return StartCoroutine(CoFade(canvasGroup, 1f, 1f, revertStepTime * 1f));
 
                     itemImage.color = orig;
                 }
 
                 // 마지막엔 서서히 사라짐
                 if (endFadeOutTime > 0f)
-                    yield return StartCoroutine(CoFade(canvasGroup, canvasGroup.alpha, 0f, endFadeOutTime));
+                    yield return StartCoroutine(CoFade(canvasGroup, canvasGroup.alpha, 2f, endFadeOutTime));
             }
 
             if (destroyAfterRevert) Destroy(gameObject);

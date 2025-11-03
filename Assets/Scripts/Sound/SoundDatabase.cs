@@ -44,6 +44,7 @@ public class SoundDatabase : ScriptableObject
     public AudioClip typingSFX;             // 타이핑 효과음
     
     [Header("=== Chapter 4 효과음 ===")]
+    public AudioClip alarmPipipipiSFX;      // 알람 삐삐삐삐 소리
     public AudioClip foldLaundrySFX;        // 옷 접는 효과음
     public AudioClip mirrorBrokenSFX;       // 거울 깨지는 효과음
     public AudioClip cassetteGoingInSFX;    // 마이마이에 테이프 끼는 소리

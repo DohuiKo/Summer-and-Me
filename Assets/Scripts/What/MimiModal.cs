@@ -51,13 +51,6 @@ public class MimiModal : MonoBehaviour
     [Tooltip("비디오 재생 전에 모달을 닫을지(별도 레이어에서 영상 띄울 때)")]
     public bool closeModalBeforeVideo = false;
 
-    [Header("SFX (선택)")]
-    public AudioSource sfx;
-    public AudioClip sfxOpen;    // (2) 오픈 순간
-    public AudioClip sfxInsert;  // (3) 삽입 순간
-    public AudioClip sfxClose;   // (4) 닫힘 순간
-    public AudioClip sfxStart;   // 비디오 시작 직전 효과음
-
     [Header("Scroll Lock (선택)")]
     [Tooltip("스크롤을 잠그고 싶다면 연결 (없으면 무시)")]
     public ScrollRect scrollRectToLock;
@@ -82,8 +75,6 @@ public class MimiModal : MonoBehaviour
     {
         if (!modalCanvasGroup) modalCanvasGroup = GetComponent<CanvasGroup>();
 
-        // 오브젝트는 항상 활성(Active)로 두고,
-        // 알파/레이캐스트로만 숨김 처리(코루틴 에러 방지)
         modalCanvasGroup.alpha = 0f;
         modalCanvasGroup.blocksRaycasts = false;
         modalCanvasGroup.interactable = false;
@@ -106,18 +97,15 @@ public class MimiModal : MonoBehaviour
     {
         if (isPlaying) return;
 
-        // 컴포넌트/오브젝트 활성 보장
         if (!enabled) enabled = true;
         if (!gameObject.activeSelf) gameObject.SetActive(true);
 
-        // 부모가 방금 켜졌을 수 있으므로 한 프레임 대기 후 본 코루틴 시작
         StartCoroutine(Co_PlaySafely());
     }
 
     IEnumerator Co_PlaySafely()
     {
-        yield return null; // 활성 계층 반영 대기
-
+        yield return null;
         if (!gameObject.activeInHierarchy)
         {
             Debug.LogError("[MimiModal] activeInHierarchy=false (부모 비활성). 부모를 먼저 활성화한 뒤 호출하세요.");
@@ -130,11 +118,10 @@ public class MimiModal : MonoBehaviour
     IEnumerator Co_Play()
     {
         isPlaying = true;
-        playedCount = 0; // 비디오 재생 횟수 리셋
+        playedCount = 0;
 
         if (scrollRectToLock) scrollRectToLock.enabled = false;
 
-        // 모달 페이드 인
         yield return StartCoroutine(Co_FadeCanvasGroup(modalCanvasGroup, 0f, 1f, modalFadeInTime));
 
         if (blockBackgroundInput)
@@ -143,28 +130,21 @@ public class MimiModal : MonoBehaviour
             modalCanvasGroup.interactable = true;
         }
 
-        // ==================== ✨ 변경된 부분 시작 ✨ ====================
-        // 순차 이미지
-        // 조건문을 4개 이상이 아닌, 1개 이상일 때로 변경
+        // ===== 시퀀스 재생 =====
         if (sequenceImage && sequenceSprites != null && sequenceSprites.Count > 0)
         {
-            // for 반복문으로 리스트에 있는 만큼만 재생
             for (int i = 0; i < sequenceSprites.Count; i++)
             {
-                // SFX는 특정 순서에만 재생되도록 조건 추가
-                // (스프라이트가 1개만 있으면 아무것도 재생 안 됨)
-                if (i == 1) PlaySfx(sfxOpen);   // 두 번째 스프라이트가 나올 때
-                if (i == 2) PlaySfx(sfxInsert); // 세 번째 스프라이트가 나올 때
-                if (i == 3) PlaySfx(sfxClose);  // 네 번째 스프라이트가 나올 때
+                // 🔹 Chap4SoundManager와 연동된 시퀀스 알림
+                Chap4SoundManager.Instance?.OnMimiSequenceChanged(i);
 
                 yield return StartCoroutine(Co_ShowSprite(sequenceSprites[i], GetStepDuration(i)));
             }
         }
-        // ==================== ✨ 변경된 부분 끝 ✨ ====================
 
         OnSequenceEnd?.Invoke();
 
-        // 비디오 재생
+        // ===== 비디오 재생 =====
         if (autoPlayVideoAfterSequence && videoPlayer)
         {
             if (closeModalBeforeVideo)
@@ -182,16 +162,12 @@ public class MimiModal : MonoBehaviour
     // ====== 비디오 재생/루프 보장 ======
     IEnumerator Co_StartVideo()
     {
-        if (sfxStart) PlaySfx(sfxStart);
-
         videoPlayer.Prepare();
         while (!videoPlayer.isPrepared) yield return null;
 
-        // Prepare 이후 루프 재설정(환경별 루프 풀림 방지)
         videoPlayer.isLooping = true;
 
-        // 끝에 도달 시 다시 재생(2회까지만) — 필요시 숫자 변경 가능
-        videoPlayer.loopPointReached -= OnVideoEndReplay; // 중복 등록 방지
+        videoPlayer.loopPointReached -= OnVideoEndReplay;
         videoPlayer.loopPointReached += OnVideoEndReplay;
 
         if (videoRawImage)
@@ -211,15 +187,12 @@ public class MimiModal : MonoBehaviour
         playedCount++;
         if (playedCount < 2)
         {
-            // 두 번째 재생
             vp.Play();
         }
         else
         {
-            // 2회 재생 후 종료(원하면 여기서 모달 닫기)
             vp.loopPointReached -= OnVideoEndReplay;
             vp.isLooping = false;
-            // 예: StartCoroutine(Co_CloseInternal());
         }
     }
 
@@ -315,12 +288,6 @@ public class MimiModal : MonoBehaviour
             yield return null;
         }
         c.a = b; img.color = c;
-    }
-
-    void PlaySfx(AudioClip clip)
-    {
-        if (!sfx || !clip) return;
-        sfx.PlayOneShot(clip);
     }
 
     public void CloseModal() => StartCoroutine(Co_CloseInternal());

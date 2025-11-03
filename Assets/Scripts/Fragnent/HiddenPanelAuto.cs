@@ -39,6 +39,13 @@ public class HiddenPanelAuto : MonoBehaviour
         cg.interactable = false;
         cg.alpha = 0f;
 
+        // 🎵 히든패널 등장 시 테이프 획득 사운드 재생
+        if (Chap3SoundManager.Instance != null)
+        {
+            Chap3SoundManager.Instance.PlayGetTapePiece();
+            Debug.Log("[HiddenPanelAuto] 히든패널 등장 → 테이프 획득 사운드 재생");
+        }
+
         // Fade In
         float t = 0f;
         while (t < fadeInTime)

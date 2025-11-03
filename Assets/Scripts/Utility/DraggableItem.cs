@@ -32,6 +32,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // ✅ 클릭 사운드 재생 추가
         if (Chap2SoundManager.Instance != null)
             Chap2SoundManager.Instance.PlayMouseClick();
+        
+        if (Chap3SoundManager.Instance != null)
+            Chap3SoundManager.Instance.PlayMouseClick();
     }
 
     // 드래그하는 동안 매 프레임 호출됩니다.

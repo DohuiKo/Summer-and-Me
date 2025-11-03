@@ -14,7 +14,8 @@ public class TuneNote : MonoBehaviour
     private CanvasGroup cg;
 
     private readonly Color normalColor = new Color(0.55f, 0.55f, 0.55f, 0.8f);
-    private readonly Color clickColor = new Color(0.3f, 0.75f, 0.5f, 1f);
+    private readonly Color correctColor = new Color(0.3f, 0.75f, 0.5f, 1f);
+    private readonly Color wrongColor = new Color(0.8f, 0.3f, 0.3f, 1f);
     private readonly Color obstacleColor = new Color(0.8f, 0.3f, 0.3f, 0.9f);
 
     public void Initialize(int index, bool obstacle)
@@ -37,12 +38,9 @@ public class TuneNote : MonoBehaviour
         button.onClick.AddListener(OnClick);
 
         image.color = normalColor;
-
-        // ▼▼▼ 이 부분이 요청하신 대로 수정되었습니다 ▼▼▼
         text.text = isObstacle ? "-" : (index >= 0 ? index.ToString() : "♪");
 
         cg.alpha = 0f;
-
         if (isActiveAndEnabled)
             StartCoroutine(FadeIn());
     }
@@ -68,37 +66,35 @@ public class TuneNote : MonoBehaviour
         {
             TuneGameManager.Instance.OnObstacleClicked();
             StartCoroutine(FlashError());
+            return;
         }
-        else
-        {
-            // GameManager에서 올바른 순서 여부 판단
-            bool correct = TuneGameManager.Instance.TryProcessNote(this);
 
-            // 맞았을 때만 사라짐
-            if (correct)
-                StartCoroutine(ClickPulse(true));   // 사라지는 연출 포함
-            else
-                StartCoroutine(ClickPulse(false));  // 색상만 변화 후 복귀
-        }
+        // 🎯 GameManager에게 판정 요청
+        bool isCorrect = TuneGameManager.Instance.HandleNoteClickAndReturnResult(this);
+
+        // ✅ 정답이면 Fade-out / ❌ 오답이면 색상 복귀
+        StartCoroutine(ClickPulse(isCorrect));
     }
 
     IEnumerator ClickPulse(bool shouldFadeOut)
     {
         if (image == null || cg == null) yield break;
 
-        // 색상 변화
         float t = 0;
         Color startColor = image.color;
-        while (t < 0.4f)
+        Color targetColor = shouldFadeOut ? correctColor : wrongColor;
+
+        // 색상 변화
+        while (t < 0.3f)
         {
             t += Time.deltaTime;
-            image.color = Color.Lerp(startColor, clickColor, Mathf.SmoothStep(0, 1, t / 0.4f));
+            image.color = Color.Lerp(startColor, targetColor, t / 0.3f);
             yield return null;
         }
 
-        // 둥~ 커졌다가 작아지는 펄스 효과
+        // 펄스 효과
         Vector3 baseScale = transform.localScale;
-        float pulseTime = 0.45f;
+        float pulseTime = 0.4f;
         float elapsed = 0;
         while (elapsed < pulseTime)
         {
@@ -109,17 +105,19 @@ public class TuneNote : MonoBehaviour
         }
         transform.localScale = baseScale;
 
-        // 올바른 순서일 때만 fade-out 후 삭제
+        // ✅ 정답이면 사라짐
         if (shouldFadeOut)
+        {
             yield return StartCoroutine(FadeOutAndDestroy());
+        }
         else
         {
-            // 틀렸을 경우 원래 색상 복귀
+            // ❌ 오답이면 원래 색 복귀
             float r = 0;
-            while (r < 0.4f)
+            while (r < 0.3f)
             {
                 r += Time.deltaTime;
-                image.color = Color.Lerp(clickColor, normalColor, r / 0.4f);
+                image.color = Color.Lerp(wrongColor, normalColor, r / 0.3f);
                 yield return null;
             }
             image.color = normalColor;
@@ -135,7 +133,9 @@ public class TuneNote : MonoBehaviour
             cg.alpha = Mathf.SmoothStep(1, 0, t / 1f);
             yield return null;
         }
-        Destroy(gameObject);
+
+        if (this != null && gameObject != null)
+            Destroy(gameObject);
     }
 
     IEnumerator FlashError()

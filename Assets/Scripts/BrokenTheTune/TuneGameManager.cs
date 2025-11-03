@@ -16,13 +16,11 @@ public class TuneGameManager : MonoBehaviour
     [Header("UI References")]
     public Transform noteContainer;
     public Slider progressBar;
-    public TextMeshProUGUI phaseText;
-    public TextMeshProUGUI messageText;
     public Image darkOverlay;
-    public Transform tapeDeck;
     public Transform reel1;
     public Transform reel2;
     public Image background;
+    public Transform tapeDeck;
 
     [Header("Next Scene UI")]
     public Button nextSceneButton;
@@ -33,19 +31,12 @@ public class TuneGameManager : MonoBehaviour
     private int currentPhase = 1;
     private List<GameObject> activeNotes = new List<GameObject>();
     private List<GameObject> activeObstacles = new List<GameObject>();
-    private List<TuneNote> correctSequence = new List<TuneNote>();
     private int sequenceIndex = 0;
-    private int totalNotes = 65;
     private int clearedNotes = 0;
-    private int correctClickCount = 0;
     private float startTime;
 
     private int[] noteCount = { 15, 20, 30 };
-    private string[] phaseMessages = {
-        "손끝으로, 음을 지워보세요.",
-        "순서대로 클릭하세요 (0→1→2...)",
-        "소음은 피해가는게 좋아요"
-    };
+    private float baseFlickerSpeed = 1.0f;
 
     void Awake() => Instance = this;
 
@@ -59,17 +50,14 @@ public class TuneGameManager : MonoBehaviour
     void InitializeGame()
     {
         startTime = Time.time;
-        darkOverlay.gameObject.SetActive(true);
         darkOverlay.color = new Color(0, 0, 0, 0);
         progressBar.value = 0;
-
-        ShowMessage("BROKEN THE TUNE", 3f);
         StartCoroutine(DelayedStart());
     }
 
     IEnumerator DelayedStart()
     {
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(2f);
         StartPhase(1);
     }
 
@@ -77,21 +65,19 @@ public class TuneGameManager : MonoBehaviour
     {
         currentPhase = phase;
         sequenceIndex = 0;
-        correctSequence.Clear();
-        correctClickCount = 0;
+        clearedNotes = 0;
+        activeNotes.Clear();
+        activeObstacles.Clear();
 
-        phaseText.text = $"PHASE {phase}";
-
-        Color bgColor = phase == 1 ? new Color(0.95f, 0.93f, 0.9f) :
-                        phase == 2 ? new Color(0.9f, 0.88f, 0.85f) :
-                                    new Color(0.85f, 0.82f, 0.78f);
+        Color bgColor = phase == 1 ? new Color(0.95f, 0.93f, 0.9f)
+            : phase == 2 ? new Color(0.9f, 0.88f, 0.85f)
+            : new Color(0.85f, 0.82f, 0.78f);
         background.color = bgColor;
 
-        ShowMessage(phaseMessages[phase - 1], 2f);
         StartCoroutine(SpawnNotes());
+        StartCoroutine(FlickerNotes());
     }
 
-    // 🎵 순서대로 천천히 등장 + 겹침 방지
     IEnumerator SpawnNotes()
     {
         yield return new WaitForSeconds(2.5f);
@@ -105,6 +91,7 @@ public class TuneGameManager : MonoBehaviour
 
         List<Vector2> placedPositions = new List<Vector2>();
         float minDistance = 150f;
+        RectTransform deckRect = tapeDeck.GetComponent<RectTransform>();
 
         for (int i = 0; i < count; i++)
         {
@@ -114,7 +101,8 @@ public class TuneGameManager : MonoBehaviour
             {
                 spawnPos = new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange));
                 attempts++;
-            } while (IsTooClose(spawnPos, placedPositions, minDistance) && attempts < 50);
+            }
+            while ((IsTooClose(spawnPos, placedPositions, minDistance) || IsInsideTapeDeck(spawnPos, deckRect)) && attempts < 80);
 
             placedPositions.Add(spawnPos);
 
@@ -124,26 +112,15 @@ public class TuneGameManager : MonoBehaviour
 
             TuneNote note = noteObj.GetComponent<TuneNote>();
             note.Initialize(requireSequence ? i : -1, false);
-
-            if (requireSequence)
-                note.GetComponentInChildren<TextMeshProUGUI>().text = i.ToString();
-            else
-                note.GetComponentInChildren<TextMeshProUGUI>().text = "♪";
-
-            if (requireSequence) correctSequence.Add(note);
             activeNotes.Add(noteObj);
 
-            CanvasGroup cg = noteObj.GetComponent<CanvasGroup>() ?? noteObj.AddComponent<CanvasGroup>();
-            StartCoroutine(FadeIn(cg));
-
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.25f);
         }
 
-        // 장애물 (Phase 3)
         if (currentPhase == 3)
         {
             yield return new WaitForSeconds(1f);
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 10; i++)
             {
                 GameObject obstacleObj = Instantiate(obstaclePrefab, noteContainer);
                 RectTransform rect = obstacleObj.GetComponent<RectTransform>();
@@ -151,12 +128,9 @@ public class TuneGameManager : MonoBehaviour
 
                 TuneNote obstacle = obstacleObj.GetComponent<TuneNote>();
                 obstacle.Initialize(-1, true);
-                obstacle.GetComponentInChildren<TextMeshProUGUI>().text = "-";
-
                 activeObstacles.Add(obstacleObj);
                 StartCoroutine(PulseObstacle(obstacleObj));
-
-                yield return new WaitForSeconds(0.25f);
+                yield return new WaitForSeconds(0.15f);
             }
         }
     }
@@ -169,83 +143,113 @@ public class TuneGameManager : MonoBehaviour
         return false;
     }
 
-    IEnumerator FadeIn(CanvasGroup cg)
+    bool IsInsideTapeDeck(Vector2 pos, RectTransform deckRect)
     {
-        float elapsed = 0;
-        while (elapsed < 0.8f)
-        {
-            elapsed += Time.deltaTime;
-            cg.alpha = Mathf.Lerp(0, 1, elapsed / 0.8f);
-            yield return null;
-        }
-        cg.alpha = 1;
+        Vector2 deckPos = deckRect.anchoredPosition;
+        Vector2 deckSize = deckRect.rect.size;
+        Rect deckBounds = new Rect(deckPos.x - deckSize.x / 2f, deckPos.y - deckSize.y / 2f, deckSize.x, deckSize.y);
+        return deckBounds.Contains(pos);
     }
 
-    // ✅ 순서 체크: 틀리면 사라지지 않고 흔들림만 발생
-    public void OnNoteClicked(TuneNote note)
+    // ✅ 클릭 처리 — 오답은 절대 Destroy 안됨
+    public bool HandleNoteClickAndReturnResult(TuneNote note)
     {
+        if (note == null) return false;
+
         bool isSequenceMode = currentPhase >= 2;
 
-        if (isSequenceMode)
+        if (!isSequenceMode)
         {
-            if (note.noteIndex == sequenceIndex)
-            {
-                correctClickCount++;
-                ProcessCorrectNote(note);
-                sequenceIndex++;
-            }
-            else
-            {
-                TuneSoundManager.Instance.PlayErrorSound();
-                ShowError("순서가 틀렸다...");
-                StartCoroutine(ScreenShake());
-                StartCoroutine(ShakeNote(note));
-            }
+            StartCoroutine(ProcessCorrectNote(note));
+            return true;
+        }
+
+        if (note.noteIndex == sequenceIndex && note.noteIndex >= 0)
+        {
+            sequenceIndex++;
+            StartCoroutine(ProcessCorrectNote(note));
+            return true;
         }
         else
         {
-            correctClickCount++;
-            ProcessCorrectNote(note);
+            StartCoroutine(ProcessWrongNoteVisual(note));
+            return false;
         }
+    }
+
+    // ✅ 정답 처리 (20% 확률로 ‘틀린 것처럼’ 연출)
+    IEnumerator ProcessCorrectNote(TuneNote note)
+    {
+        if (note == null) yield break;
+        TuneSoundManager.Instance.PlayBrokenSound();
+
+        // 🎭 20% 확률로 '틀린 것처럼' 보이는 연출
+        bool fakeFail = Random.value < 0.2f;
+        if (fakeFail)
+        {
+            StartCoroutine(ScreenShake(0.4f, 12f)); // 강하게 흔들림
+            yield return new WaitForSeconds(0.15f);
+        }
+
+        clearedNotes++;
+        UpdateProgress();
+        activeNotes.Remove(note.gameObject);
+        CheckPhaseComplete();
+    }
+
+    // ❌ 오답 처리 — 절대 Destroy 금지
+    IEnumerator ProcessWrongNoteVisual(TuneNote note)
+    {
+        if (note == null) yield break;
+
+        TuneSoundManager.Instance.PlayErrorSound();
+        StartCoroutine(ShakeNote(note));
+        StartCoroutine(ScreenShake(0.25f, 5f));
+        yield break;
     }
 
     IEnumerator ShakeNote(TuneNote note)
     {
         RectTransform rect = note.GetComponent<RectTransform>();
+        if (rect == null) yield break;
+
         Vector3 originalPos = rect.localPosition;
-        float duration = 0.3f;
+        float elapsed = 0;
+        float duration = 0.25f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float offsetX = Mathf.Sin(elapsed * 70f) * 6f;
+            rect.localPosition = originalPos + new Vector3(offsetX, 0, 0);
+            yield return null;
+        }
+
+        rect.localPosition = originalPos;
+    }
+
+    IEnumerator ScreenShake(float duration = 0.4f, float intensity = 8f)
+    {
+        Vector3 originalPos = noteContainer.position;
         float elapsed = 0;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float offsetX = Mathf.Sin(elapsed * 80f) * 6f;
-            rect.localPosition = originalPos + new Vector3(offsetX, 0, 0);
+            float x = Random.Range(-intensity, intensity);
+            float y = Random.Range(-intensity, intensity);
+            noteContainer.position = originalPos + new Vector3(x, y, 0);
             yield return null;
         }
-        rect.localPosition = originalPos;
-    }
 
-    void ProcessCorrectNote(TuneNote note)
-    {
-        var img = note.GetComponent<Image>();
-        if (img != null)
-            img.color = new Color(0.25f, 0.55f, 0.25f, 0.8f);
-
-        note.GetComponentInChildren<TextMeshProUGUI>().text = "♩";
-        TuneSoundManager.Instance.PlayBrokenSound();
-
-        clearedNotes++;
-        UpdateProgress();
-
-        activeNotes.Remove(note.gameObject);
-        Destroy(note.gameObject, 0.8f);
-        CheckPhaseComplete();
+        noteContainer.position = originalPos;
     }
 
     IEnumerator PulseObstacle(GameObject obstacle)
     {
+        if (obstacle == null) yield break;
         CanvasGroup cg = obstacle.GetComponent<CanvasGroup>() ?? obstacle.AddComponent<CanvasGroup>();
+
         while (obstacle != null)
         {
             float elapsed = 0;
@@ -265,50 +269,23 @@ public class TuneGameManager : MonoBehaviour
         }
     }
 
-    void ShowError(string text)
+    IEnumerator FlickerNotes()
     {
-        ShowMessage(text, 1f);
-        StartCoroutine(DarkFlash());
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(0.3f, baseFlickerSpeed + 0.3f - currentPhase * 0.2f));
+            foreach (var noteObj in activeNotes)
+            {
+                if (noteObj == null) continue;
+                var txt = noteObj.GetComponentInChildren<TextMeshProUGUI>();
+                if (txt == null) continue;
+                txt.alpha = Random.value > 0.5f ? 0f : 1f;
+            }
+        }
     }
 
-    IEnumerator ScreenShake()
-    {
-        Vector3 originalPos = noteContainer.position;
-        float duration = 0.4f;
-        float elapsed = 0;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float x = Random.Range(-8f, 8f);
-            float y = Random.Range(-8f, 8f);
-            noteContainer.position = originalPos + new Vector3(x, y, 0);
-            yield return null;
-        }
-        noteContainer.position = originalPos;
-    }
-
-    IEnumerator DarkFlash()
-    {
-        float elapsed = 0;
-        while (elapsed < 0.25f)
-        {
-            elapsed += Time.deltaTime;
-            darkOverlay.color = new Color(0, 0, 0, Mathf.Lerp(0, 0.6f, elapsed / 0.25f));
-            yield return null;
-        }
-        yield return new WaitForSeconds(0.15f);
-        elapsed = 0;
-        while (elapsed < 0.25f)
-        {
-            elapsed += Time.deltaTime;
-            darkOverlay.color = new Color(0, 0, 0, Mathf.Lerp(0.6f, 0, elapsed / 0.25f));
-            yield return null;
-        }
-        darkOverlay.color = new Color(0, 0, 0, 0);
-    }
-
-    void UpdateProgress() => progressBar.value = (float)clearedNotes / totalNotes;
+    void UpdateProgress() =>
+        progressBar.value = (float)clearedNotes / noteCount[currentPhase - 1];
 
     void CheckPhaseComplete()
     {
@@ -326,12 +303,9 @@ public class TuneGameManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         if (currentPhase < 3)
-        {
-            ShowMessage($"PHASE {currentPhase} 완료!\n\nPHASE {currentPhase + 1} 시작", 2.5f);
-            yield return new WaitForSeconds(3f);
             StartPhase(currentPhase + 1);
-        }
-        else EndGame();
+        else
+            EndGame();
     }
 
     IEnumerator SpinReels()
@@ -347,22 +321,10 @@ public class TuneGameManager : MonoBehaviour
         }
     }
 
-    void EndGame()
-    {
-        float playTime = Time.time - startTime;
-        int minutes = (int)(playTime / 60);
-        int seconds = (int)(playTime % 60);
-
-        ShowMessage($"TUNE BROKEN\n\n 플레이 타임 {minutes}:{seconds:00}\n\n 침묵이 찾아왔다", 5f);
-        background.color = new Color(0.75f, 0.72f, 0.69f);
-        darkOverlay.color = new Color(0, 0, 0, 0.3f);
-
-        StartCoroutine(FinalBreakEffect());
-    }
+    void EndGame() => StartCoroutine(FinalBreakEffect());
 
     IEnumerator FinalBreakEffect()
     {
-        // 🎞️ 릴 회전 중지
         float slowdown = 1.5f;
         float elapsed = 0f;
         while (elapsed < slowdown)
@@ -373,58 +335,20 @@ public class TuneGameManager : MonoBehaviour
             yield return null;
         }
 
-        // 💥 "뚝" 정지 효과 (카세트 정지음이 있다면 여기서 재생)
-        TuneSoundManager.Instance.PlayErrorSound(); // 혹은 StopSound()
-
-        // ⚡ 화면 흔들림
+        TuneSoundManager.Instance.PlayErrorSound();
         yield return StartCoroutine(ScreenShake());
-
-        // 🌀 노이즈 오버레이 연출
-        StartCoroutine(FinalNoiseEffect());
-
-        // 1초 대기 후 NextScene 버튼 등장
-        yield return new WaitForSeconds(1f);
         StartCoroutine(ShowNextSceneButton());
     }
-    
-        IEnumerator FinalNoiseEffect()
-    {
-        if (darkOverlay == null) yield break;
-
-        float duration = 1.2f;
-        float elapsed = 0;
-        Color startColor = darkOverlay.color;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float noise = Random.Range(0.2f, 0.7f);
-            darkOverlay.color = new Color(noise, noise, noise, Mathf.Lerp(0.3f, 0.8f, Mathf.PingPong(elapsed * 4f, 1)));
-            yield return null;
-        }
-
-        // 🔚 잔잔하게 어두워지며 마무리
-        for (float t = 0; t < 1f; t += Time.deltaTime)
-        {
-            darkOverlay.color = Color.Lerp(darkOverlay.color, new Color(0, 0, 0, 0.6f), t);
-            yield return null;
-        }
-    }
-
 
     IEnumerator ShowNextSceneButton()
     {
-        yield return new WaitForSeconds(3f);
-
+        yield return new WaitForSeconds(2f);
         if (nextSceneButton != null)
         {
             nextSceneButton.gameObject.SetActive(true);
-
             if (nextSceneCanvasGroup != null)
             {
                 nextSceneCanvasGroup.alpha = 0;
-                nextSceneCanvasGroup.interactable = true;
-
                 float t = 0;
                 while (t < 1f)
                 {
@@ -433,7 +357,6 @@ public class TuneGameManager : MonoBehaviour
                     yield return null;
                 }
             }
-
             nextSceneButton.onClick.AddListener(() =>
             {
                 SceneManager.LoadScene(nextSceneName);
@@ -441,52 +364,9 @@ public class TuneGameManager : MonoBehaviour
         }
     }
 
-    void ShowMessage(string text, float duration)
-    {
-        messageText.text = text;
-        messageText.gameObject.SetActive(true);
-        StartCoroutine(HideMessageAfter(duration));
-    }
-
-    IEnumerator HideMessageAfter(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        messageText.gameObject.SetActive(false);
-    }
-
     public void OnObstacleClicked()
     {
         TuneSoundManager.Instance.PlayErrorSound();
-        ShowError("음악이 제대로 들리지 않아");
-        StartCoroutine(ScreenShake());
-    }
-
-    // 🎯 Note 클릭 시 처리 (순서 검증 전용)
-    public bool TryProcessNote(TuneNote note)
-    {
-        bool isSequenceMode = currentPhase >= 2;
-
-        if (isSequenceMode)
-        {
-            if (note.noteIndex == sequenceIndex)
-            {
-                sequenceIndex++;
-                ProcessCorrectNote(note);
-                return true;
-            }
-            else
-            {
-                TuneSoundManager.Instance.PlayErrorSound();
-                ShowError("순서가 잘못됐어.");
-                StartCoroutine(ScreenShake());
-                StartCoroutine(ShakeNote(note));
-                return false;
-            }
-        }
-        else
-        {
-            ProcessCorrectNote(note);
-            return true;
-        }
+        StartCoroutine(ScreenShake(0.25f, 6f));
     }
 }

@@ -11,7 +11,6 @@ public class RecodingGameManager : MonoBehaviour
     public float scrollSpeed = 80f;
 
     [Header("Waveform Auto Fit")]
-    [Tooltip("파형의 가로폭을 자동 감지해서 막대 수/속도를 보정합니다.")]
     public float baseWidth = 400f;
     public float desiredBarSpacing = 2f;
     private int barCount;
@@ -28,11 +27,8 @@ public class RecodingGameManager : MonoBehaviour
     public RectTransform container;
 
     [Header("Typing Panels")]
-    [Tooltip("RecodingPanel (녹음 패널)")]
-    public GameObject recodingPanel; 
-
-    [Tooltip("RecoTextPanel (타이핑 패널)")]
-    public GameObject recoTextPanel; 
+    public GameObject recodingPanel;
+    public GameObject recoTextPanel;
 
     [Header("Button Sprites")]
     public Sprite playIcon;
@@ -40,7 +36,6 @@ public class RecodingGameManager : MonoBehaviour
 
     private bool isPlaying = false;
     private bool waveformShown = false;
-    private bool hasPlayedOnce = false;
     private float elapsed = 0f;
     private float speed = 1f;
     private int deleteClickCount = 0;
@@ -50,6 +45,9 @@ public class RecodingGameManager : MonoBehaviour
     private Coroutine timerRoutine;
     private LayoutElement[] barLayouts;
 
+    // ✅ 이어서 메시지 출력용
+    private int messageIndex = 0;
+
     void Start()
     {
         GenerateWaveform();
@@ -57,27 +55,24 @@ public class RecodingGameManager : MonoBehaviour
         speedButton.onClick.AddListener(ToggleSpeed);
         deletePopup.SetActive(false);
         popupOverlay.SetActive(false);
-        if (messageOverlay != null)
-            messageOverlay.SetActive(false);
-        if (playIcon != null && playButtonIcon != null)
-            playButtonIcon.sprite = playIcon;
-        if (timerText != null)
-            timerText.text = "00:00.00";
+
+        if (messageOverlay != null) messageOverlay.SetActive(false);
+        if (playIcon != null && playButtonIcon != null) playButtonIcon.sprite = playIcon;
+        if (timerText != null) timerText.text = "00:00.00";
     }
 
-    // ✅ 초기 파형 생성
+    // ✅ 파형 초기 생성
     void GenerateWaveform()
     {
         float wrapperWidth = waveformWrapper.rect.width;
         barCount = Mathf.Max(200, Mathf.RoundToInt(wrapperWidth / desiredBarSpacing));
-
         barLayouts = new LayoutElement[barCount];
+
         for (int i = 0; i < barCount; i++)
         {
             var bar = Instantiate(barPrefab, waveformWrapper);
             bar.SetActive(true);
             barLayouts[i] = bar.GetComponent<LayoutElement>();
-
             RectTransform barRect = bar.GetComponent<RectTransform>();
             barRect.sizeDelta = new Vector2(desiredBarSpacing - 0.5f, 20f);
         }
@@ -85,7 +80,7 @@ public class RecodingGameManager : MonoBehaviour
         waveformWrapper.anchoredPosition = Vector2.zero;
     }
 
-    // ✅ 플레이 토글
+    // ✅ 재생 / 정지 토글
     void TogglePlay()
     {
         isPlaying = !isPlaying;
@@ -94,51 +89,49 @@ public class RecodingGameManager : MonoBehaviour
         {
             playButtonIcon.sprite = pauseIcon;
 
-            if (timerRoutine != null) StopCoroutine(timerRoutine);
+            // 🔊 루프 사운드 재생
+            Chap5SoundManager.Instance?.PlayRecordingLoop();
+
+            // 타이머 재시작
+            if (timerRoutine != null)
+            {
+                StopCoroutine(timerRoutine);
+                timerRoutine = null;
+            }
             timerRoutine = StartCoroutine(TimerAnimation());
 
-            if (!hasPlayedOnce)
-            {
-                hasPlayedOnce = true;
-                StartCoroutine(StartPlaybackSequence(true));
-            }
-            else
-            {
-                StartCoroutine(StartPlaybackSequence(false));
-            }
+            // 파형이 꺼져있다면 다시 돌리기
+            if (waveformRoutine == null)
+                waveformRoutine = StartCoroutine(WaveformAnimation());
+
+            // 메시지 코루틴 (이어재생 가능)
+            if (messageRoutine == null)
+                messageRoutine = StartCoroutine(MessageSequence());
         }
         else
         {
             playButtonIcon.sprite = playIcon;
+            Chap5SoundManager.Instance?.StopRecordingLoop();
+
             isPlaying = false;
             waveformShown = false;
 
-            if (timerRoutine != null) StopCoroutine(timerRoutine);
-            if (messageRoutine != null) StopCoroutine(messageRoutine);
-            if (waveformRoutine != null) StopCoroutine(waveformRoutine);
+            // 루틴 중단 (다음 재생 시 재개 가능)
+            if (timerRoutine != null)
+            {
+                StopCoroutine(timerRoutine);
+                timerRoutine = null;
+            }
+
+            if (messageRoutine != null)
+            {
+                StopCoroutine(messageRoutine);
+                messageRoutine = null;
+            }
         }
     }
 
-    // ✅ 재생 시퀀스 시작
-    IEnumerator StartPlaybackSequence(bool delayed)
-    {
-        if (delayed)
-            yield return new WaitForSeconds(3f);
-
-        if (isPlaying)
-        {
-            waveformShown = true;
-            flatLine.SetActive(false);
-
-            if (messageOverlay != null)
-                messageOverlay.SetActive(true);
-
-            waveformRoutine = StartCoroutine(WaveformAnimation());
-            messageRoutine = StartCoroutine(MessageSequence());
-        }
-    }
-
-    // ✅ 타이머 표시
+    // ✅ 타이머
     IEnumerator TimerAnimation()
     {
         while (isPlaying)
@@ -165,61 +158,51 @@ public class RecodingGameManager : MonoBehaviour
         float minHeight = 25f;
         float baseAmplitude = 80f;
         float waveFrequency = 4f * widthRatio * 0.8f;
-        float noiseStrength = 8f;
-        float adjustedScrollSpeed = scrollSpeed * widthRatio * 0.4f;
+        float adjustedScrollSpeed = scrollSpeed * widthRatio * 0.25f;
 
-        // ✅ 감정 파형(리듬 변화) 관련 변수 복원
         float amplitudeFactor = 1f;
         float modulationTimer = 0f;
         float modulationSpeed = 0.4f;
-        float targetAmplitudeFactor = Random.Range(0.6f, 1.4f);
+        float targetAmplitudeFactor = Random.Range(0.6f, 1.2f);
 
         float[] noiseOffsets = new float[barLayouts.Length];
         for (int n = 0; n < noiseOffsets.Length; n++)
             noiseOffsets[n] = Random.Range(0f, 10f);
 
-        while (waveformShown)
+        while (true)
         {
-            // ❗감정 파형 진폭의 자연스러운 변화 (서서히 커졌다 작아짐)
+            if (!isPlaying) { yield return null; continue; }
+
             modulationTimer += Time.deltaTime * modulationSpeed;
             if (modulationTimer >= 1f)
             {
                 modulationTimer = 0f;
-                targetAmplitudeFactor = Random.Range(0.6f, 1.4f);
+                targetAmplitudeFactor = Random.Range(0.6f, 1.2f);
             }
             amplitudeFactor = Mathf.Lerp(amplitudeFactor, targetAmplitudeFactor, 0.05f);
+
+            float smoothFactor = Mathf.PingPong(Time.time * 0.2f, 0.8f) + 0.6f;
 
             for (int j = 0; j < barLayouts.Length; j++)
             {
                 if (barLayouts[j] == null) continue;
                 RectTransform barRect = barLayouts[j].GetComponent<RectTransform>();
 
-                // 기본 파형
                 float baseWave = Mathf.Abs(Mathf.Sin(Time.time * waveFrequency + j * 0.15f));
-
-                // 파형에 약간의 노이즈 추가
                 float perlin = Mathf.PerlinNoise(Time.time * 0.5f, noiseOffsets[j]) * 0.5f + 0.5f;
-                float noise = Random.Range(-noiseStrength, noiseStrength) * 0.5f;
-
-                // 감정 진폭(amplitudeFactor) 반영
                 float height = Mathf.Max(minHeight,
-                    minHeight + ((baseWave * perlin) * baseAmplitude * amplitudeFactor) + noise);
+                    minHeight + ((baseWave * perlin) * baseAmplitude * amplitudeFactor * smoothFactor));
 
-                Vector2 size = barRect.sizeDelta;
-                size.y = height;
-                barRect.sizeDelta = size;
+                barRect.sizeDelta = new Vector2(barRect.sizeDelta.x, height);
             }
 
-            // 스크롤 이동
-            scrollPos.x -= adjustedScrollSpeed * speed * Time.deltaTime;
+            scrollPos.x -= adjustedScrollSpeed * speed * Time.deltaTime * 0.8f;
             waveformWrapper.anchoredPosition = scrollPos;
-
             yield return null;
         }
     }
 
-
-    // ✅ 메시지 출력 후 삭제 팝업
+    // ✅ 메시지 시퀀스 (이어재생 지원)
     IEnumerator MessageSequence()
     {
         string[] messages = {
@@ -230,18 +213,30 @@ public class RecodingGameManager : MonoBehaviour
         };
 
         TMP_Text msgText = messageOverlay.GetComponentInChildren<TMP_Text>(true);
-        msgText.text = "";
-        msgText.alpha = 0f;
+        messageOverlay.SetActive(true);
 
-        for (int i = 0; i < messages.Length; i++)
+        for (int i = messageIndex; i < messages.Length; i++)
         {
+            while (!isPlaying)
+                yield return null;
+
             msgText.text = messages[i];
-            yield return StartCoroutine(FadeText(msgText, 0f, 1f, 0.4f));
-            yield return new WaitForSeconds(2f);
-            yield return StartCoroutine(FadeText(msgText, 1f, 0f, 0.4f));
+            yield return StartCoroutine(FadeText(msgText, 0f, 1f, 0.5f));
+
+            float waitTime = 2.2f / speed;
+            float elapsedWait = 0f;
+            while (elapsedWait < waitTime)
+            {
+                if (!isPlaying) yield return null;
+                elapsedWait += Time.deltaTime;
+                yield return null;
+            }
+
+            yield return StartCoroutine(FadeText(msgText, 1f, 0f, 0.6f));
+            messageIndex = i + 1;
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.2f);
         ShowDeletePopup();
     }
 
@@ -260,15 +255,16 @@ public class RecodingGameManager : MonoBehaviour
     {
         isPlaying = false;
         waveformShown = false;
+        Chap5SoundManager.Instance?.StopRecordingLoop();
         deletePopup.SetActive(true);
         popupOverlay.SetActive(true);
     }
 
-    // ❗ [OnDeleteClick] 수정: 흔들림/깜빡임 연출 코루틴 호출 복구
+    // 🔁 삭제 클릭 이벤트
     public void OnDeleteClick()
     {
         deleteClickCount++;
-        StartCoroutine(ShakeScreen()); // ❗ 화면 흔들림 코루틴 호출
+        StartCoroutine(ShakeScreen());
         var popupText = deletePopup.GetComponentInChildren<TMP_Text>();
 
         if (deleteClickCount >= 3)
@@ -280,23 +276,20 @@ public class RecodingGameManager : MonoBehaviour
         else
         {
             string[] warns = { "ACCESS DENIED", "WARNING: DO NOT DELETE" };
-            // ❗ 텍스트/색상 직접 변경 대신, WarningFlash 코루틴 호출
             StartCoroutine(WarningFlash(popupText, warns[deleteClickCount - 1]));
         }
     }
 
-    // ❗ [WarningFlash] 코루틴 추가: 텍스트를 깜빡이는 연출
     IEnumerator WarningFlash(TMP_Text text, string msg)
     {
         string original = text.text;
         text.text = msg;
         text.color = Color.red;
-        yield return new WaitForSeconds(1f); // 1초간 경고 메시지 표시
-        text.text = original; // 원래 텍스트로 (아마도 "DELETE")
-        text.color = new Color(1f, 0.27f, 0.27f); // 원래 색상으로 (빨간 계열)
+        yield return new WaitForSeconds(1f);
+        text.text = original;
+        text.color = new Color(1f, 0.27f, 0.27f);
     }
 
-    // ❗ [ShakeScreen] 코루틴 추가: 화면(컨테이너)을 흔드는 연출
     IEnumerator ShakeScreen()
     {
         Vector3 originalPos = container.localPosition;
@@ -315,8 +308,7 @@ public class RecodingGameManager : MonoBehaviour
         container.localPosition = originalPos;
     }
 
-
-    // ✅ 페이드 아웃 + RecodingPanel 페이드 인
+    // ✅ 패널 전환
     void OpenRecodingPanelSmooth()
     {
         StartCoroutine(OpenRecodingPanelSmoothCoroutine());
@@ -343,18 +335,19 @@ public class RecodingGameManager : MonoBehaviour
         {
             t += Time.deltaTime;
             float a = 1 - t;
-            textGroup.alpha = a;        
-            recodingGroup.alpha = t;    
+            textGroup.alpha = a;
+            recodingGroup.alpha = t;
             yield return null;
         }
 
         recodingPanel.SetActive(false);
-        Debug.Log("📘 RecodingPanel → RecoTextPanel 전환 완료"); 
+        Debug.Log("📘 RecodingPanel → RecoTextPanel 전환 완료");
     }
 
+    // ✅ 속도 조절 버튼
     void ToggleSpeed()
     {
-        float[] speeds = { 1f, 1.5f, 2f, 0.5f };
+        float[] speeds = { 1.5f, 2f, 2.5f, 1f };
         int i = System.Array.IndexOf(speeds, speed);
         speed = speeds[(i + 1) % speeds.Length];
         speedButton.GetComponentInChildren<TMP_Text>().text = $"{speed}x";

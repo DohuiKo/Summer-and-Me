@@ -22,7 +22,7 @@ MonoBehaviour:
   chap2BGM: {fileID: 8300000, guid: 7aedff10fb66d484ab6332586dacfe35, type: 3}
   chap3BGM: {fileID: 8300000, guid: 00671ff0db084414890c02dc11d83ca0, type: 3}
   chap4BGM: {fileID: 8300000, guid: 214b2b1d463e3c04288b57b477cb8f08, type: 3}
-  chap5BGM: {fileID: 0}
+  chap5BGM: {fileID: 8300000, guid: 63416c272ded1514690f0248cc525ada, type: 3}
   chap6BGM: {fileID: 8300000, guid: e50ea4f5aeeed9c4f8c7ac83fc6a99db, type: 3}
   brokenTheTuneBGM: {fileID: 8300000, guid: c3955a2088aa28a41ab69753bbe7f7ed, type: 3}
   trainSFX: {fileID: 8300000, guid: 3abf335f23fd5bf449b28640a9d2276e, type: 3}
@@ -38,7 +38,8 @@ MonoBehaviour:
   tapePlaySFX: {fileID: 8300000, guid: 3caffe0d8842ec14cb03b94d83d1df6a, type: 3}
   tapeZiziziSFX: {fileID: 8300000, guid: 8920f722a16f8454cb59ca661d1055f2, type: 3}
   typingSFX: {fileID: 8300000, guid: 2d986e0845163404db925b420f39bd5c, type: 3}
-  foldLaundrySFX: {fileID: 8300000, guid: 08a62a5efc9da1f46830334bd00864da, type: 3}
+  alarmPipipipiSFX: {fileID: 8300000, guid: 169d96a5628bf6c4fa63349dccff9ecf, type: 3}
+  foldLaundrySFX: {fileID: 8300000, guid: 8eeea9a783929794bab901dec96e8b6b, type: 3}
   mirrorBrokenSFX: {fileID: 8300000, guid: 7b8679c01f517e44da6349bcc3216a35, type: 3}
   cassetteGoingInSFX: {fileID: 8300000, guid: 1488fd4a35c4a8343b4aa13ce8bee180, type: 3}
   mymyDoorCloseSFX: {fileID: 8300000, guid: 0d6b8bb2a4e965f499c16066e2832407, type: 3}

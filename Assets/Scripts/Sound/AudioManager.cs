@@ -3,28 +3,23 @@ using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
-    // 싱글톤 인스턴스
     public static AudioManager Instance { get; private set; }
-    
-    // 오디오 플레이어들
+
     private AudioSource bgmPlayer;
     private AudioSource sfxPlayer;
-    
-    // 사운드 데이터베이스
+
     [SerializeField] public SoundDatabase soundDB;
-    
-    // 볼륨 설정
+
     [Header("볼륨 설정")]
     [Range(0f, 1f)] public float bgmVolume = 0.5f;
     [Range(0f, 1f)] public float sfxVolume = 0.7f;
-    
+
     void Awake()
     {
-        // 싱글톤 설정
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);  // 씬 전환해도 안 사라짐
+            DontDestroyOnLoad(gameObject);
             InitializeAudio();
         }
         else
@@ -32,109 +27,84 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     void InitializeAudio()
     {
-        // AudioSource 2개 생성 (BGM용, SFX용)
         bgmPlayer = gameObject.AddComponent<AudioSource>();
         sfxPlayer = gameObject.AddComponent<AudioSource>();
-        
-        // BGM은 반복 재생
+
         bgmPlayer.loop = true;
         bgmPlayer.volume = bgmVolume;
         sfxPlayer.volume = sfxVolume;
     }
-    
-    #region BGM 제어
-    
-    /// <summary>
-    /// BGM 재생
-    /// </summary>
+
+    // ======================================================
+    // 🎵 BGM 제어
+    // ======================================================
+
     public void PlayBGM(AudioClip bgm)
     {
         if (bgm == null)
         {
-            Debug.LogWarning("재생할 BGM이 null입니다!");
+            Debug.LogWarning("[AudioManager] 재생할 BGM이 null입니다!");
             return;
         }
-        
-        // 이미 같은 음악이 재생 중이면 무시
+
+        // 같은 곡이면 다시 시작하지 않음
         if (bgmPlayer.clip == bgm && bgmPlayer.isPlaying)
             return;
-        
+
         bgmPlayer.clip = bgm;
         bgmPlayer.Play();
     }
-    
-    /// <summary>
-    /// BGM 정지
-    /// </summary>
-    public void StopBGM()
-    {
-        bgmPlayer.Stop();
-    }
-    
-    /// <summary>
-    /// BGM 일시정지
-    /// </summary>
-    public void PauseBGM()
-    {
-        bgmPlayer.Pause();
-    }
-    
-    /// <summary>
-    /// BGM 재개
-    /// </summary>
-    public void ResumeBGM()
-    {
-        bgmPlayer.UnPause();
-    }
-    
-    /// <summary>
-    /// BGM 페이드 아웃 후 정지
-    /// </summary>
+
+    public void StopBGM() => bgmPlayer.Stop();
+    public void PauseBGM() => bgmPlayer.Pause();
+    public void ResumeBGM() => bgmPlayer.UnPause();
+
     public void FadeOutBGM(float duration = 1f)
     {
         StartCoroutine(FadeOutCoroutine(duration));
     }
-    
-    /// <summary>
-    /// BGM 페이드 인하며 재생
-    /// </summary>
+
     public void FadeInBGM(AudioClip bgm, float duration = 1f)
     {
         StartCoroutine(FadeInCoroutine(bgm, duration));
     }
-    
-    #endregion
-    
-    #region 효과음 제어
-    
-    /// <summary>
-    /// 효과음 재생
-    /// </summary>
+
+    /// ✅ 현재 재생 중인 BGM이 같은지 확인
+    public bool IsBGMPlaying(AudioClip clip)
+    {
+        if (bgmPlayer == null || bgmPlayer.clip == null) return false;
+        return bgmPlayer.isPlaying && bgmPlayer.clip == clip;
+    }
+
+    // ======================================================
+    // 🎚️ 효과음
+    // ======================================================
+
     public void PlaySFX(AudioClip sfx)
     {
         if (sfx == null)
         {
-            Debug.LogWarning("재생할 효과음이 null입니다!");
+            Debug.LogWarning("[AudioManager] 재생할 SFX가 null입니다!");
             return;
         }
-        
+
         sfxPlayer.PlayOneShot(sfx);
     }
-    
-    #endregion
-    
-    #region 간편 재생 메서드들 (자주 쓰는 소리)
-    
-    // === 공용 효과음 ===
+
+    // ======================================================
+    // 🎶 간편 호출용 (BGM & SFX)
+    // ======================================================
+
+    // 공용 SFX
     public void PlayObjClick() => PlaySFX(soundDB.objClickSFX);
     public void PlayGetTapePiece() => PlaySFX(soundDB.getTapePieceSFX);
     public void PlayMymyWinding() => PlaySFX(soundDB.mymyWindingSFX);
     public void PlayMymyOpen() => PlaySFX(soundDB.mymyOpenSFX);
-    
-    // === 배경음악 ===
+
+    // BGM
     public void PlayMainBGM() => PlayBGM(soundDB.mainBGM);
     public void PlayPrologBGM() => PlayBGM(soundDB.prologBGM);
     public void PlayChap1BGM() => PlayBGM(soundDB.chap1BGM);
@@ -143,92 +113,92 @@ public class AudioManager : MonoBehaviour
     public void PlayChap4BGM() => PlayBGM(soundDB.chap4BGM);
     public void PlayChap5BGM() => PlayBGM(soundDB.chap5BGM);
     public void PlayChap6BGM() => PlayBGM(soundDB.chap6BGM);
-    
-    // === Prolog 효과음 ===
-    public void PlayTrain() => PlaySFX(soundDB.trainSFX);
-    public void PlayCoffee() => PlaySFX(soundDB.coffeeSFX);
-    
-    // === Chapter 1 효과음 ===
-    public void PlayDoorOpen() => PlaySFX(soundDB.doorOpenSFX);
-    public void PlayBadding() => PlaySFX(soundDB.baddingSFX);
-    public void PlayWaterSquirt() => PlaySFX(soundDB.waterSquirtSFX);
-    
-    // === Chapter 2 효과음 ===
-    public void PlayBoxOpen() => PlaySFX(soundDB.boxOpenSFX);
-    public void PlayDiaryClose() => PlaySFX(soundDB.diaryCloseSFX);
-    public void PlayPencilWrite() => PlaySFX(soundDB.pencilWriteSFX);
-    public void PlayTapeDeck() => PlaySFX(soundDB.tapeDeckSFX);
-    
-    // === Chapter 3 효과음 ===
-    public void PlayTyping() => PlaySFX(soundDB.typingSFX);
-    
-    // === Chapter 4 효과음 ===
+
+    // ✅ 새로 추가된 부분
+    public void PlayBrokenTheTuneBGM() => PlayBGM(soundDB.brokenTheTuneBGM);
+
+    // 챕터 4 SFX
+    public void PlayAlarmPipipipi() => PlaySFX(soundDB.alarmPipipipiSFX);
     public void PlayFoldLaundry() => PlaySFX(soundDB.foldLaundrySFX);
     public void PlayMirrorBroken() => PlaySFX(soundDB.mirrorBrokenSFX);
     public void PlayCassetteGoingIn() => PlaySFX(soundDB.cassetteGoingInSFX);
     public void PlayMymyDoorClose() => PlaySFX(soundDB.mymyDoorCloseSFX);
-    
-    // === Chapter 5 효과음 ===
+
+    // 챕터 5 SFX
     public void PlayContinueTyping() => PlaySFX(soundDB.continueTypingSFX);
     public void PlayRecording() => PlaySFX(soundDB.recordingSFX);
     public void PlaySobbingGaeul() => PlaySFX(soundDB.sobbingGaeulSFX);
-    
-    #endregion
-    
-    #region 볼륨 제어
-    
-    /// <summary>
-    /// BGM 볼륨 설정
-    /// </summary>
+
+    // ======================================================
+    // 🔊 볼륨 제어
+    // ======================================================
+
     public void SetBGMVolume(float volume)
     {
         bgmVolume = Mathf.Clamp01(volume);
         bgmPlayer.volume = bgmVolume;
     }
-    
-    /// <summary>
-    /// 효과음 볼륨 설정
-    /// </summary>
+
     public void SetSFXVolume(float volume)
     {
         sfxVolume = Mathf.Clamp01(volume);
         sfxPlayer.volume = sfxVolume;
     }
-    
-    #endregion
-    
-    #region 코루틴 (페이드 효과)
-    
+
+    // ======================================================
+    // 🎬 코루틴 (페이드 효과)
+    // ======================================================
+
     IEnumerator FadeOutCoroutine(float duration)
     {
         float startVolume = bgmPlayer.volume;
-        
+
         while (bgmPlayer.volume > 0)
         {
             bgmPlayer.volume -= startVolume * Time.deltaTime / duration;
             yield return null;
         }
-        
+
         bgmPlayer.Stop();
         bgmPlayer.volume = startVolume;
     }
-    
+
     IEnumerator FadeInCoroutine(AudioClip bgm, float duration)
     {
         bgmPlayer.clip = bgm;
         bgmPlayer.volume = 0f;
         bgmPlayer.Play();
-        
+
         float targetVolume = bgmVolume;
-        
+
         while (bgmPlayer.volume < targetVolume)
         {
             bgmPlayer.volume += targetVolume * Time.deltaTime / duration;
             yield return null;
         }
-        
+
         bgmPlayer.volume = targetVolume;
     }
+
+    // === 🎧 이어듣기용 기능 추가 ===
+    // 현재 재생 중인 BGM 반환
+    public AudioClip CurrentBGM => bgmPlayer.clip;
+
+    // 현재 BGM 재생 시간 반환
+    public float GetCurrentBGMTime()
+    {
+        return bgmPlayer != null && bgmPlayer.isPlaying ? bgmPlayer.time : 0f;
+    }
+
+    // 특정 시점부터 BGM 재생 (이어듣기 지원)
+    public void PlayBGM(AudioClip bgm, float startTime)
+    {
+        if (bgm == null) return;
+        bgmPlayer.clip = bgm;
+        bgmPlayer.time = startTime;
+        bgmPlayer.Play();
+    }
     
-    #endregion
+    public AudioSource GetSFXPlayer() => sfxPlayer;
+
 }
