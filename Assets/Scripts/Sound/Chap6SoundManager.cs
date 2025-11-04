@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 /// 🎧 Chapter 6 Sound Manager
 /// - Chap6 BGM, Mymy Winding SFX 관리
 /// - Chap6, Epilogue 씬에서만 유지됨
+/// - 다른 씬으로 넘어가면 모든 사운드 종료 후 자동 파괴
 /// </summary>
 public class Chap6SoundManager : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class Chap6SoundManager : MonoBehaviour
         sfxSource.playOnAwake = false;
 
         bgmSource.loop = true;
-        sfxSource.loop = true; // 🔁 회전음은 루프필요
+        sfxSource.loop = true; // 🔁 회전음은 루프 필요
     }
 
     void Start()
@@ -54,19 +55,26 @@ public class Chap6SoundManager : MonoBehaviour
         PlayBGM();
     }
 
-    // 씬 이동 시 처리
+    // =============================================================
+    // 🚪 씬 이동 시 자동 정리
+    // =============================================================
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Chap6, epilogue 외에서는 제거
-        if (!scene.name.Contains("Chap6") && !scene.name.Contains("epilogue"))
+        string sceneName = scene.name.ToLower();
+
+        // ✅ Chap6 또는 Epilogue 외의 씬이면 사운드 종료 후 제거
+        if (!sceneName.Contains("chap6") && !sceneName.Contains("epilogue"))
         {
+            Debug.Log($"[Chap6SoundManager] 🚪 '{scene.name}' 진입 감지 → 사운드 종료 및 매니저 제거");
             StopAllSounds();
+            SceneManager.sceneLoaded -= OnSceneLoaded;
             Destroy(gameObject);
-            Debug.Log($"[Chap6SoundManager] 🚪 '{scene.name}' 이동 감지 → 매니저 제거");
         }
     }
 
+    // =============================================================
     // 🎵 BGM 재생
+    // =============================================================
     public void PlayBGM()
     {
         if (soundDB == null || soundDB.chap6BGM == null)
@@ -83,7 +91,9 @@ public class Chap6SoundManager : MonoBehaviour
         Debug.Log("[Chap6SoundManager] 🎵 Chap6 BGM 재생 시작");
     }
 
+    // =============================================================
     // 🔁 마이마이 회전 사운드
+    // =============================================================
     public void PlayMymyWindingSFX()
     {
         if (isMymyPlaying)
@@ -114,9 +124,7 @@ public class Chap6SoundManager : MonoBehaviour
 
         sfxSource.Stop();
         isMymyPlaying = false;
-        // 🔇 clip 제거는 1프레임 뒤로 (Stop 호출 중간 끊김 방지)
         StartCoroutine(ClearClipNextFrame());
-
         Debug.Log("[Chap6SoundManager] ⏹️ 회전 사운드 정지 완료");
     }
 
@@ -126,12 +134,24 @@ public class Chap6SoundManager : MonoBehaviour
         sfxSource.clip = null;
     }
 
-    // 🔇 전체 정지
+    // =============================================================
+    // 🔇 전체 정지 (씬 전환 시 호출됨)
+    // =============================================================
     public void StopAllSounds()
     {
-        if (bgmSource.isPlaying) bgmSource.Stop();
-        if (sfxSource.isPlaying) sfxSource.Stop();
+        if (bgmSource != null && bgmSource.isPlaying)
+            bgmSource.Stop();
+
+        if (sfxSource != null && sfxSource.isPlaying)
+            sfxSource.Stop();
+
         isMymyPlaying = false;
+
         Debug.Log("[Chap6SoundManager] 🔇 모든 사운드 정지됨");
+    }
+
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

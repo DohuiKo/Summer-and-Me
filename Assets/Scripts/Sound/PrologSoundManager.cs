@@ -1,11 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
-/// <summary>
-/// 세로 스크롤 감지 + 페이지별 효과음 (fade-in/out) + 이어폰 클릭 BGM 재생 통합
-/// </summary>
 public class PrologSoundManager : MonoBehaviour
 {
     public static PrologSoundManager Instance { get; private set; }
@@ -32,13 +30,19 @@ public class PrologSoundManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            SceneManager.sceneLoaded += OnSceneLoaded;  // 씬 변경 감지
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     IEnumerator Start()
     {
-        // 각 페이지별 AudioSource 생성
         for (int i = 0; i < pages.Count && i < sfxClips.Count; i++)
         {
             var src = gameObject.AddComponent<AudioSource>();
@@ -50,7 +54,6 @@ public class PrologSoundManager : MonoBehaviour
             pageCenterState[pages[i]] = false;
         }
 
-        // 초기 감지 대기 (스크롤 안정화)
         yield return new WaitForSeconds(detectionDelay);
         foreach (var page in pages)
             pageCenterState[page] = IsPageInCenter(page);
@@ -64,7 +67,6 @@ public class PrologSoundManager : MonoBehaviour
         CheckAllPagesCenter();
     }
 
-    // 🔸 페이지 중앙 감지 루프
     void CheckAllPagesCenter()
     {
         foreach (var page in pages)
@@ -84,7 +86,6 @@ public class PrologSoundManager : MonoBehaviour
         }
     }
 
-    // 🔸 세로 스크롤 기준 중앙 감지 (pivot 상관없음)
     bool IsPageInCenter(RectTransform page)
     {
         Vector3[] pageCorners = new Vector3[4];
@@ -100,12 +101,11 @@ public class PrologSoundManager : MonoBehaviour
         return distance < threshold;
     }
 
-    // 🔸 Fade In / Fade Out
     IEnumerator FadeInSFX(RectTransform page)
     {
         if (!activeSources.ContainsKey(page)) yield break;
         AudioSource src = activeSources[page];
-        if (src.isPlaying == false) src.Play();
+        if (!src.isPlaying) src.Play();
 
         float t = 0f;
         while (t < fadeDuration)
@@ -115,7 +115,6 @@ public class PrologSoundManager : MonoBehaviour
             yield return null;
         }
         src.volume = maxSFXVolume;
-        Debug.Log($"🎧 '{page.name}' fade-in 완료");
     }
 
     IEnumerator FadeOutSFX(RectTransform page)
@@ -134,40 +133,22 @@ public class PrologSoundManager : MonoBehaviour
 
         src.volume = 0f;
         src.Stop();
-        Debug.Log($"🛑 '{page.name}' fade-out 완료");
     }
 
-    // =============================================================
-    // 🔸 이어폰 클릭 → BGM 재생
-    // =============================================================
     public void PlayPrologBGM()
     {
-        if (AudioManager.Instance == null)
-        {
-            Debug.LogError("❌ AudioManager 없음");
-            return;
-        }
-
+        if (AudioManager.Instance == null) return;
         var bgmClip = AudioManager.Instance.soundDB?.prologBGM;
-        if (bgmClip == null)
-        {
-            Debug.LogError("❌ prologBGM 파일이 없음");
-            return;
-        }
-
+        if (bgmClip == null) return;
         AudioManager.Instance.PlayBGM(bgmClip);
-        Debug.Log("🎵 이어폰 클릭 → 프롤로그 BGM 재생!");
     }
 
-    // 🔸 커피 머신 클릭 → 사운드 (원클릭용)
     public void PlayCoffee()
     {
         if (AudioManager.Instance == null) return;
         var clip = AudioManager.Instance.soundDB?.coffeeSFX;
         if (clip == null) return;
-
         AudioManager.Instance.PlaySFX(clip);
-        Debug.Log("☕ 커피 소리 재생!");
     }
 
     public void PlayObjClick()
@@ -180,5 +161,32 @@ public class PrologSoundManager : MonoBehaviour
     {
         if (AudioManager.Instance == null) return;
         AudioManager.Instance.PlayGetTapePiece();
+    }
+
+    // 🔻 씬 전환 시 사운드 완전 종료
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StopAllSounds();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        StopAllSounds();
+    }
+
+    private void StopAllSounds()
+    {
+        foreach (var src in activeSources.Values)
+        {
+            if (src == null) continue;
+            src.Stop();
+            src.volume = 0f;
+        }
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.StopBGM();
+
+        Debug.Log("🔇 프롤로그 사운드 완전 종료");
     }
 }

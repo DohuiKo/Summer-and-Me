@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 /// <summary>
 /// 🎧 Chapter 4 전용 사운드 매니저
 /// - AudioManager에서 사운드 리소스를 직접 호출
-/// - 씬 이동 시 BGM 유지, 5챕터 진입 시 BGM 중단
+/// - 씬 이동 시 BGM 유지, 5챕터 진입 시 BGM 중단 및 사운드 정리
 /// - 마이마이/비디오 연출 시 BGM 교체 및 효과음 제어
 /// - RoomMainPage 중앙 도달 시 알람 삐삐삐삐 재생
 /// </summary>
@@ -29,6 +30,9 @@ public class Chap4SoundManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // ✅ 씬 변경 감지용 리스너 등록
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void Start()
@@ -37,6 +41,11 @@ public class Chap4SoundManager : MonoBehaviour
         StartCoroutine(WatchMimiVideoPlay());
         StartCoroutine(WatchRoomMainPageCenter());
         StartCoroutine(WatchMirrorBrokenAuto());
+    }
+
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     // =============================================================
@@ -133,6 +142,7 @@ public class Chap4SoundManager : MonoBehaviour
     // 🎥 비디오 감시 및 사운드 전환
     // =============================================================
 
+    [System.Obsolete]
     private IEnumerator WatchMimiVideoPlay()
     {
         yield return new WaitForSeconds(0.5f);
@@ -195,5 +205,35 @@ public class Chap4SoundManager : MonoBehaviour
         }
 
         return (roomMainPage != null && viewport != null);
+    }
+
+    // =============================================================
+    // 🚪 씬 이동 감지 및 사운드 정리
+    // =============================================================
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        string sceneName = scene.name.ToLower();
+
+        // ✅ 5챕터 진입 시 사운드 정리 및 매니저 제거
+        if (sceneName.Contains("chapter5") || sceneName.StartsWith("5"))
+        {
+            Debug.Log("[Chap4SoundManager] Chapter5 진입 감지 → 사운드 정리 및 종료");
+            StopAllChap4Sounds();
+            Destroy(gameObject);
+        }
+    }
+
+    private void StopAllChap4Sounds()
+    {
+        if (AudioManager.Instance == null) return;
+
+        AudioManager.Instance.StopBGM();
+        AudioManager.Instance.StopAllSFX();
+
+        mimiPlaySoundTriggered = false;
+        alarmTriggered = false;
+
+        Debug.Log("🔇 챕터4 관련 사운드 완전 종료");
     }
 }

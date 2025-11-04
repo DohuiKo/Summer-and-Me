@@ -181,16 +181,13 @@ public class AudioManager : MonoBehaviour
     }
 
     // === 🎧 이어듣기용 기능 추가 ===
-    // 현재 재생 중인 BGM 반환
     public AudioClip CurrentBGM => bgmPlayer.clip;
 
-    // 현재 BGM 재생 시간 반환
     public float GetCurrentBGMTime()
     {
         return bgmPlayer != null && bgmPlayer.isPlaying ? bgmPlayer.time : 0f;
     }
 
-    // 특정 시점부터 BGM 재생 (이어듣기 지원)
     public void PlayBGM(AudioClip bgm, float startTime)
     {
         if (bgm == null) return;
@@ -198,7 +195,17 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.time = startTime;
         bgmPlayer.Play();
     }
-    
+
     public AudioSource GetSFXPlayer() => sfxPlayer;
 
+    // ======================================================
+    // 🛑 모든 효과음(SFX) 중단 함수 추가 (Chap4SoundManager용)
+    // ======================================================
+    public void StopAllSFX()
+    {
+        if (sfxPlayer == null) return;
+
+        sfxPlayer.Stop(); // 루프 중인 SFX 즉시 중단
+        Debug.Log("[AudioManager] 모든 SFX 정지 완료");
+    }
 }

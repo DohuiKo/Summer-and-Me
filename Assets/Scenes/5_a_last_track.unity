@@ -3735,6 +3735,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516cab2186d506345a854ca377c7d51a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Chap5SoundManager
+  bgmSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  typingSource: {fileID: 0}
+  recordingLoopSource: {fileID: 0}
+  soundDB: {fileID: 11400000, guid: 6e721ca075a9ce44eb8b19d07a96461c, type: 2}
 --- !u!1 &1513634065
 GameObject:
   m_ObjectHideFlags: 0
