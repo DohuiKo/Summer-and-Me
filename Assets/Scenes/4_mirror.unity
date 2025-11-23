@@ -260,7 +260,7 @@ MonoBehaviour:
   lockOnCenter: 1
   unlockManually: 1
   triggerAtCenter: 1
-  centerTolerance: 0.1
+  centerTolerance: 0.01
   unlockButton: {fileID: 0}
   fadeDuration: 1
 --- !u!114 &132893214
@@ -651,6 +651,7 @@ GameObject:
   - component: {fileID: 444004412}
   - component: {fileID: 444004411}
   - component: {fileID: 444004410}
+  - component: {fileID: 444004413}
   m_Layer: 5
   m_Name: SittingPage
   m_TagString: Untagged
@@ -685,7 +686,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444004407}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
@@ -696,7 +697,7 @@ MonoBehaviour:
   lockOnCenter: 1
   unlockManually: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.1
   unlockButton: {fileID: 1286485167}
   fadeDuration: 1
 --- !u!114 &444004411
@@ -737,6 +738,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444004407}
   m_CullTransparentMesh: 1
+--- !u!114 &444004413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444004407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0ed350c38caa2545af3a13e3d91b9f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SittingPageLockInitializer
+  scrollRect: {fileID: 407222718}
+  targetPage: {fileID: 444004408}
+  unlockButton: {fileID: 1286485169}
 --- !u!1 &460048860
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,7 +848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: f1745d23f8bb3214a9291fa30a85bf0c, type: 2}
   m_Color: {r: 0.6981132, g: 0.68164825, b: 0.68164825, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -926,8 +942,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2334db95bbbfbe4aa8671b6b1b2887a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MirrorChanger
-  targetImage: {fileID: 0}
-  targetRect: {fileID: 0}
+  targetImage: {fileID: 590364901}
+  targetRect: {fileID: 590364900}
   spriteStates:
   - sprite: {fileID: 21300000, guid: fb11a3318bd1ae04b86ea0460292aab2, type: 3}
     overrideSize: 0
@@ -945,26 +961,26 @@ MonoBehaviour:
     overrideSize: 0
     size: {x: 0, y: 0}
     audioClip: {fileID: 0}
-  enableActionOnLastState: 1
+  - sprite: {fileID: 21300000, guid: 2e255645ab6f3b34b930acac8c0b3d4c, type: 3}
+    overrideSize: 0
+    size: {x: 0, y: 0}
+    audioClip: {fileID: 0}
   brokenMirror: {fileID: 1289616944}
   nextDownArrow: {fileID: 1286485167}
   delayBeforeShowOnLastState: 0.5
   blockInputOnLastState: 1
-  clickSource: {fileID: 0}
-  fullScreenEffectImage: {fileID: 0}
-  waveBlurMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
-  effectDuration: 1
-  maxDistortStrength: 2
-  maxBlurAmount: 1
-  waveSpeed: 3
-  punchScale: 0.96
-  flashMaxAlpha: 1
-  effectCurve:
+  clickSource: {fileID: 590364903}
+  sfxOnChange: {fileID: 0}
+  sfxOnBroken: {fileID: 897672471}
+  wobbleDuration: 0.42
+  wobbleScaleStrength: 0.022
+  wobbleRotateStrength: 0.5
+  wobbleCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.8404846
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -972,8 +988,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 1
+      time: 0.9833374
+      value: 0.09285736
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -983,10 +999,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  sfxOnChange: {fileID: 897672471}
   enableYeoreumFlash: 1
-  yeoreumFlashSprite: {fileID: 21300000, guid: 8c4e8b8c0821e9b45bdb825bddef8b8b, type: 3}
-  yeoreumFlashDuration: 1
+  yeoreumFlashList:
+  - {fileID: 21300000, guid: c5c22511ad25f414abd96038f5af821d, type: 3}
+  - {fileID: 21300000, guid: 4052c7db3d3d1bb49837cc14cd2e35b9, type: 3}
+  - {fileID: 21300000, guid: 8c4e8b8c0821e9b45bdb825bddef8b8b, type: 3}
+  yeoreumFlashDuration: 0.8
   flashEveryN: 2
 --- !u!1 &669784576
 GameObject:
@@ -1487,9 +1505,9 @@ MonoBehaviour:
   viewport: {fileID: 727485987}
   target: {fileID: 1079243606}
   lockOnCenter: 1
-  unlockManually: 1
+  unlockManually: 0
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.01
   unlockButton: {fileID: 1286485167}
   fadeDuration: 1
 --- !u!114 &1079243609
