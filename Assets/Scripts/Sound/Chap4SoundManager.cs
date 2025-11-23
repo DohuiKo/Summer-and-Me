@@ -6,9 +6,9 @@ using System.Collections;
 /// <summary>
 /// 🎧 Chapter 4 전용 사운드 매니저
 /// - AudioManager에서 사운드 리소스를 직접 호출
-/// - 씬 이동 시 BGM 유지, 5챕터 진입 시 BGM 중단 및 사운드 정리
-/// - 마이마이/비디오 연출 시 BGM 교체 및 효과음 제어
-/// - RoomMainPage 중앙 도달 시 알람 삐삐삐삐 재생
+/// - 5챕터 진입 시 BGM 완전 중단 및 매니저 제거
+/// - 마이마이 비디오 감지 시 BGM 교체
+/// - RoomMainPage 중앙 도달 시 알람 재생
 /// </summary>
 public class Chap4SoundManager : MonoBehaviour
 {
@@ -31,7 +31,6 @@ public class Chap4SoundManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // ✅ 씬 변경 감지용 리스너 등록
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -51,7 +50,6 @@ public class Chap4SoundManager : MonoBehaviour
     // =============================================================
     // 🎵 BGM 관련
     // =============================================================
-
     public void TryPlayChap4BGM()
     {
         if (AudioManager.Instance == null)
@@ -85,7 +83,6 @@ public class Chap4SoundManager : MonoBehaviour
     // =============================================================
     // 🎚️ 사운드 이펙트
     // =============================================================
-
     public void PlayAlarmPipipipi() => AudioManager.Instance.PlayAlarmPipipipi();
     public void PlayFoldLaundry() => AudioManager.Instance.PlayFoldLaundry();
     public void PlayMirrorBroken() => AudioManager.Instance.PlayMirrorBroken();
@@ -97,7 +94,6 @@ public class Chap4SoundManager : MonoBehaviour
     // =============================================================
     // 🪞 거울 깨짐 자동 감지
     // =============================================================
-
     private IEnumerator WatchMirrorBrokenAuto()
     {
         yield return new WaitForSeconds(0.3f);
@@ -127,7 +123,6 @@ public class Chap4SoundManager : MonoBehaviour
     // =============================================================
     // 🎬 MimiModal 시퀀스 단계별 사운드
     // =============================================================
-
     public void OnMimiSequenceChanged(int index)
     {
         switch (index)
@@ -141,8 +136,6 @@ public class Chap4SoundManager : MonoBehaviour
     // =============================================================
     // 🎥 비디오 감시 및 사운드 전환
     // =============================================================
-
-    [System.Obsolete]
     private IEnumerator WatchMimiVideoPlay()
     {
         yield return new WaitForSeconds(0.5f);
@@ -173,7 +166,6 @@ public class Chap4SoundManager : MonoBehaviour
     // =============================================================
     // 🧭 RoomMainPage 중앙 도달 감지
     // =============================================================
-
     private IEnumerator WatchRoomMainPageCenter()
     {
         yield return new WaitUntil(() => FindRoomTargets());
@@ -210,18 +202,24 @@ public class Chap4SoundManager : MonoBehaviour
     // =============================================================
     // 🚪 씬 이동 감지 및 사운드 정리
     // =============================================================
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         string sceneName = scene.name.ToLower();
 
-        // ✅ 5챕터 진입 시 사운드 정리 및 매니저 제거
-        if (sceneName.Contains("chapter5") || sceneName.StartsWith("5"))
+        // ✅ 5챕터 또는 이후 챕터 진입 시
+        if (sceneName.Contains("chapter5") || sceneName.StartsWith("5") || sceneName.Contains("chap5"))
         {
-            Debug.Log("[Chap4SoundManager] Chapter5 진입 감지 → 사운드 정리 및 종료");
-            StopAllChap4Sounds();
-            Destroy(gameObject);
+            Debug.Log("[Chap4SoundManager] Chapter5 진입 감지 → BGM 및 사운드 정리 시작");
+            StartCoroutine(StopSoundsAfterSceneChange());
         }
+    }
+
+    // 씬 변경 직후 프레임 타이밍 문제 방지용 코루틴
+    private IEnumerator StopSoundsAfterSceneChange()
+    {
+        yield return new WaitForSeconds(0.2f); // 씬 로드 후 안정화 대기
+        StopAllChap4Sounds();
+        Destroy(gameObject);
     }
 
     private void StopAllChap4Sounds()
@@ -230,6 +228,17 @@ public class Chap4SoundManager : MonoBehaviour
 
         AudioManager.Instance.StopBGM();
         AudioManager.Instance.StopAllSFX();
+
+        var bgm = AudioManager.Instance.CurrentBGM;
+        if (bgm != null)
+        {
+            var player = AudioManager.Instance.GetSFXPlayer();
+            if (player != null)
+            {
+                player.Stop();
+                player.clip = null;
+            }
+        }
 
         mimiPlaySoundTriggered = false;
         alarmTriggered = false;

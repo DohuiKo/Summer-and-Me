@@ -14,7 +14,7 @@ public class PlayVideoOnVisibleLock : MonoBehaviour
     public Button unlockButton; // NextDownArrow 버튼을 연결
 
     [Header("중앙 감지 설정")]
-    [Range(0f, 0.5f)] public float centerTolerance = 0.1f;
+    [Range(0f, 0.5f)] public float centerTolerance = 0.05f;
 
     // --- 내부 상태 변수 ---
     private bool isReadyToPlay = false;

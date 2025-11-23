@@ -568,7 +568,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 20
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 727485987}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -694,7 +694,7 @@ MonoBehaviour:
   lockOnCenter: 1
   unlockManually: 1
   triggerAtCenter: 1
-  centerTolerance: 0.1
+  centerTolerance: 0.05
   unlockButton: {fileID: 1286485167}
   fadeDuration: 1
 --- !u!114 &444004411
@@ -764,8 +764,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7d734ae936f452439c5a4662cd1cfa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Chap4SoundManager
-  bgmVolume: 0.6
-  sfxVolume: 0.9
 --- !u!4 &460048862
 Transform:
   m_ObjectHideFlags: 0
@@ -817,8 +815,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 263.6985, y: 232.27417}
-  m_SizeDelta: {x: 560, y: 650}
+  m_AnchoredPosition: {x: 244.66272, y: 204.26294}
+  m_SizeDelta: {x: 350, y: 554.4223}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &590364901
 MonoBehaviour:
@@ -840,7 +838,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c1a2cac47d40525459a7515e6ec3eb6e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fb11a3318bd1ae04b86ea0460292aab2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -929,27 +927,27 @@ MonoBehaviour:
   targetImage: {fileID: 0}
   targetRect: {fileID: 0}
   spriteStates:
-  - sprite: {fileID: 21300000, guid: c1a2cac47d40525459a7515e6ec3eb6e, type: 3}
+  - sprite: {fileID: 21300000, guid: fb11a3318bd1ae04b86ea0460292aab2, type: 3}
     overrideSize: 0
     size: {x: 0, y: 0}
     audioClip: {fileID: 0}
-  - sprite: {fileID: 21300000, guid: e5fe3043a41bab44eb9863fec6822804, type: 3}
+  - sprite: {fileID: 21300000, guid: b137ccda23d44bd41b9fec2d74cd1ba4, type: 3}
     overrideSize: 0
     size: {x: 0, y: 0}
     audioClip: {fileID: 0}
-  - sprite: {fileID: 21300000, guid: 5b72fa6b27726b347bffee98538bc32b, type: 3}
+  - sprite: {fileID: 21300000, guid: 2e255645ab6f3b34b930acac8c0b3d4c, type: 3}
     overrideSize: 0
     size: {x: 0, y: 0}
     audioClip: {fileID: 0}
-  - sprite: {fileID: 21300000, guid: 5ee92d42ec123d64d91aa90115b24adb, type: 3}
+  - sprite: {fileID: 21300000, guid: 80bf921ded2300642aa5e46f943106da, type: 3}
     overrideSize: 0
     size: {x: 0, y: 0}
     audioClip: {fileID: 0}
-  - sprite: {fileID: 21300000, guid: 0f92c0804522cf749853446829590f30, type: 3}
+  - sprite: {fileID: 21300000, guid: f2281609cbfea66408d2fec6c00db6f4, type: 3}
     overrideSize: 0
     size: {x: 0, y: 0}
     audioClip: {fileID: 0}
-  - sprite: {fileID: 21300000, guid: 2cf53488bd9784e40a7104a2b14f77f1, type: 3}
+  - sprite: {fileID: 21300000, guid: c5c22511ad25f414abd96038f5af821d, type: 3}
     overrideSize: 0
     size: {x: 0, y: 0}
     audioClip: {fileID: 0}
@@ -993,7 +991,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   sfxOnChange: {fileID: 0}
   enableYeoreumFlash: 1
-  yeoreumFlashSprite: {fileID: 21300000, guid: e79192d8ca70f6f43a810bef96f557be, type: 3}
+  yeoreumFlashSprite: {fileID: 21300000, guid: 8c4e8b8c0821e9b45bdb825bddef8b8b, type: 3}
   yeoreumFlashDuration: 1
   flashEveryN: 3
 --- !u!1 &669784576
@@ -1201,8 +1199,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 214, y: -88.27002}
-  m_SizeDelta: {x: 763.447, y: 903.46}
+  m_AnchoredPosition: {x: 222, y: -21.8627}
+  m_SizeDelta: {x: 748.2061, y: 1036.2747}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &969101522
 CanvasGroup:
@@ -1235,10 +1233,10 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 1, g: 0.9778652, b: 0.4575472, a: 1}
+    m_HighlightedColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -1292,7 +1290,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6927801820841033072, guid: c6591e2bf7beb8d4cb2fe8a0d29d6cf6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 761d4d7864b5f274f905ae3d90511556, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1368,7 +1366,7 @@ MonoBehaviour:
   lockOnCenter: 1
   unlockManually: 1
   triggerAtCenter: 1
-  centerTolerance: 0.1
+  centerTolerance: 0.05
   unlockButton: {fileID: 1286485167}
   fadeDuration: 1
 --- !u!114 &1079243609

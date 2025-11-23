@@ -26,7 +26,7 @@ MonoBehaviour:
   chap6BGM: {fileID: 8300000, guid: e50ea4f5aeeed9c4f8c7ac83fc6a99db, type: 3}
   brokenTheTuneBGM: {fileID: 8300000, guid: c3955a2088aa28a41ab69753bbe7f7ed, type: 3}
   trainSFX: {fileID: 8300000, guid: 3abf335f23fd5bf449b28640a9d2276e, type: 3}
-  coffeeSFX: {fileID: 8300000, guid: 31be74117d8dcb641ac6912cd5e8e07d, type: 3}
+  coffeeSFX: {fileID: 8300000, guid: 974d7dc060897ff4eb7208fe78e5ef1e, type: 3}
   doorOpenSFX: {fileID: 8300000, guid: a4c5a89958b04764ebe73a0399c87ee8, type: 3}
   baddingSFX: {fileID: 8300000, guid: 5efc762177a551e49865fa93d554893c, type: 3}
   waterSquirtSFX: {fileID: 8300000, guid: b6028736b7164334d84c33de491d7242, type: 3}
