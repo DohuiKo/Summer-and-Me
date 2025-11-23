@@ -22,6 +22,9 @@ public class TuneGameManager : MonoBehaviour
     public Image background;
     public Transform tapeDeck;
 
+    // ★ 추가됨: Phase 텍스트 UI
+    public TextMeshProUGUI phaseText;
+
     [Header("Next Scene UI")]
     public Button nextSceneButton;
     public CanvasGroup nextSceneCanvasGroup;
@@ -35,8 +38,11 @@ public class TuneGameManager : MonoBehaviour
     private int clearedNotes = 0;
     private float startTime;
 
-    private int[] noteCount = { 15, 20, 30 };
-    private float baseFlickerSpeed = 1.0f;
+    // 난이도 완화: 전체 노트 개수 감소
+    private int[] noteCount = { 12, 16, 22 };
+
+    // 난이도 완화: flicker 안정화
+    private float baseFlickerSpeed = 1.2f;
 
     void Awake() => Instance = this;
 
@@ -69,15 +75,24 @@ public class TuneGameManager : MonoBehaviour
         activeNotes.Clear();
         activeObstacles.Clear();
 
-        Color bgColor = phase == 1 ? new Color(0.95f, 0.93f, 0.9f)
-            : phase == 2 ? new Color(0.9f, 0.88f, 0.85f)
-            : new Color(0.85f, 0.82f, 0.78f);
+        // ★ 추가됨: Phase 텍스트 업데이트
+        if (phaseText != null)
+            phaseText.text = $"Phase {phase}";
+
+        // 난이도 완화: 색 대비 완화
+        Color bgColor =
+            phase == 1 ? new Color(0.96f, 0.94f, 0.91f) :
+            phase == 2 ? new Color(0.92f, 0.89f, 0.87f) :
+                          new Color(0.88f, 0.85f, 0.83f);
         background.color = bgColor;
 
         StartCoroutine(SpawnNotes());
         StartCoroutine(FlickerNotes());
     }
 
+    // -----------------------------
+    //      노트 스폰 (난이도 완화)
+    // -----------------------------
     IEnumerator SpawnNotes()
     {
         yield return new WaitForSeconds(2.5f);
@@ -90,7 +105,8 @@ public class TuneGameManager : MonoBehaviour
         float yRange = containerRect.rect.height / 2f - 100f;
 
         List<Vector2> placedPositions = new List<Vector2>();
-        float minDistance = 150f;
+
+        float minDistance = 180f;
         RectTransform deckRect = tapeDeck.GetComponent<RectTransform>();
 
         for (int i = 0; i < count; i++)
@@ -102,7 +118,8 @@ public class TuneGameManager : MonoBehaviour
                 spawnPos = new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange));
                 attempts++;
             }
-            while ((IsTooClose(spawnPos, placedPositions, minDistance) || IsInsideTapeDeck(spawnPos, deckRect)) && attempts < 80);
+            while ((IsTooClose(spawnPos, placedPositions, minDistance) || IsInsideTapeDeck(spawnPos, deckRect))
+                   && attempts < 80);
 
             placedPositions.Add(spawnPos);
 
@@ -110,17 +127,22 @@ public class TuneGameManager : MonoBehaviour
             RectTransform rect = noteObj.GetComponent<RectTransform>();
             rect.anchoredPosition = spawnPos;
 
+            rect.localScale = Vector3.zero;
+            StartCoroutine(PopIn(rect));
+
             TuneNote note = noteObj.GetComponent<TuneNote>();
             note.Initialize(requireSequence ? i : -1, false);
             activeNotes.Add(noteObj);
 
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.35f);
         }
 
         if (currentPhase == 3)
         {
             yield return new WaitForSeconds(1f);
-            for (int i = 0; i < 10; i++)
+
+            int obstacleCount = 5;
+            for (int i = 0; i < obstacleCount; i++)
             {
                 GameObject obstacleObj = Instantiate(obstaclePrefab, noteContainer);
                 RectTransform rect = obstacleObj.GetComponent<RectTransform>();
@@ -130,9 +152,25 @@ public class TuneGameManager : MonoBehaviour
                 obstacle.Initialize(-1, true);
                 activeObstacles.Add(obstacleObj);
                 StartCoroutine(PulseObstacle(obstacleObj));
-                yield return new WaitForSeconds(0.15f);
+
+                yield return new WaitForSeconds(0.12f);
             }
         }
+    }
+
+    IEnumerator PopIn(RectTransform rect)
+    {
+        float t = 0f;
+        float duration = 0.25f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float k = Mathf.SmoothStep(0f, 1f, t / duration);
+            rect.localScale = new Vector3(k, k, 1);
+            yield return null;
+        }
+        rect.localScale = Vector3.one;
     }
 
     bool IsTooClose(Vector2 newPos, List<Vector2> existing, float minDist)
@@ -151,20 +189,22 @@ public class TuneGameManager : MonoBehaviour
         return deckBounds.Contains(pos);
     }
 
-    // ✅ 클릭 처리 — 오답은 절대 Destroy 안됨
+    // -----------------------------
+    //        노트 클릭 처리
+    // -----------------------------
     public bool HandleNoteClickAndReturnResult(TuneNote note)
     {
         if (note == null) return false;
 
-        bool isSequenceMode = currentPhase >= 2;
+        bool isSequence = currentPhase >= 2;
 
-        if (!isSequenceMode)
+        if (!isSequence)
         {
             StartCoroutine(ProcessCorrectNote(note));
             return true;
         }
 
-        if (note.noteIndex == sequenceIndex && note.noteIndex >= 0)
+        if (note.noteIndex == sequenceIndex)
         {
             sequenceIndex++;
             StartCoroutine(ProcessCorrectNote(note));
@@ -177,18 +217,17 @@ public class TuneGameManager : MonoBehaviour
         }
     }
 
-    // ✅ 정답 처리 (20% 확률로 ‘틀린 것처럼’ 연출)
     IEnumerator ProcessCorrectNote(TuneNote note)
     {
         if (note == null) yield break;
+
         TuneSoundManager.Instance.PlayBrokenSound();
 
-        // 🎭 20% 확률로 '틀린 것처럼' 보이는 연출
-        bool fakeFail = Random.value < 0.2f;
+        bool fakeFail = Random.value < 0.20f;
         if (fakeFail)
         {
-            StartCoroutine(ScreenShake(0.4f, 12f)); // 강하게 흔들림
-            yield return new WaitForSeconds(0.15f);
+            StartCoroutine(ScreenShake(0.25f, 8f));
+            yield return new WaitForSeconds(0.08f);
         }
 
         clearedNotes++;
@@ -197,14 +236,13 @@ public class TuneGameManager : MonoBehaviour
         CheckPhaseComplete();
     }
 
-    // ❌ 오답 처리 — 절대 Destroy 금지
     IEnumerator ProcessWrongNoteVisual(TuneNote note)
     {
         if (note == null) yield break;
 
         TuneSoundManager.Instance.PlayErrorSound();
         StartCoroutine(ShakeNote(note));
-        StartCoroutine(ScreenShake(0.25f, 5f));
+        StartCoroutine(ScreenShake(0.20f, 3.5f));
         yield break;
     }
 
@@ -215,12 +253,12 @@ public class TuneGameManager : MonoBehaviour
 
         Vector3 originalPos = rect.localPosition;
         float elapsed = 0;
-        float duration = 0.25f;
+        float duration = 0.22f;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float offsetX = Mathf.Sin(elapsed * 70f) * 6f;
+            float offsetX = Mathf.Sin(elapsed * 65f) * 5.5f;
             rect.localPosition = originalPos + new Vector3(offsetX, 0, 0);
             yield return null;
         }
@@ -228,7 +266,7 @@ public class TuneGameManager : MonoBehaviour
         rect.localPosition = originalPos;
     }
 
-    IEnumerator ScreenShake(float duration = 0.4f, float intensity = 8f)
+    IEnumerator ScreenShake(float duration, float intensity)
     {
         Vector3 originalPos = noteContainer.position;
         float elapsed = 0;
@@ -253,39 +291,48 @@ public class TuneGameManager : MonoBehaviour
         while (obstacle != null)
         {
             float elapsed = 0;
-            while (elapsed < 1.2f && obstacle != null)
+            while (elapsed < 1.0f && obstacle != null)
             {
                 elapsed += Time.deltaTime;
-                cg.alpha = Mathf.Lerp(0.3f, 1f, elapsed / 1.2f);
+                cg.alpha = Mathf.Lerp(0.35f, 1f, elapsed / 1.0f);
                 yield return null;
             }
+
             elapsed = 0;
-            while (elapsed < 1.2f && obstacle != null)
+            while (elapsed < 1.0f && obstacle != null)
             {
                 elapsed += Time.deltaTime;
-                cg.alpha = Mathf.Lerp(1f, 0.3f, elapsed / 1.2f);
+                cg.alpha = Mathf.Lerp(1f, 0.35f, elapsed / 1.0f);
                 yield return null;
             }
         }
     }
 
+    // -----------------------------
+    //        숫자 깜빡임 (완화)
+    // -----------------------------
     IEnumerator FlickerNotes()
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(0.3f, baseFlickerSpeed + 0.3f - currentPhase * 0.2f));
+            yield return new WaitForSeconds(Random.Range(0.45f, baseFlickerSpeed + 0.6f));
+
             foreach (var noteObj in activeNotes)
             {
                 if (noteObj == null) continue;
                 var txt = noteObj.GetComponentInChildren<TextMeshProUGUI>();
                 if (txt == null) continue;
-                txt.alpha = Random.value > 0.5f ? 0f : 1f;
+
+                txt.alpha = (Random.value < 0.8f) ? 1f : 0f;
             }
         }
     }
 
-    void UpdateProgress() =>
-        progressBar.value = (float)clearedNotes / noteCount[currentPhase - 1];
+    // -----------------------------
+    //        진행도 / 클리어 처리
+    // -----------------------------
+    void UpdateProgress()
+        => progressBar.value = (float)clearedNotes / noteCount[currentPhase - 1];
 
     void CheckPhaseComplete()
     {
@@ -321,7 +368,10 @@ public class TuneGameManager : MonoBehaviour
         }
     }
 
-    void EndGame() => StartCoroutine(FinalBreakEffect());
+    void EndGame()
+    {
+        StartCoroutine(FinalBreakEffect());
+    }
 
     IEnumerator FinalBreakEffect()
     {
@@ -330,19 +380,22 @@ public class TuneGameManager : MonoBehaviour
         while (elapsed < slowdown)
         {
             elapsed += Time.deltaTime;
-            reel1.Rotate(0, 0, 360 * Time.deltaTime * (1f - elapsed / slowdown));
-            reel2.Rotate(0, 0, -360 * Time.deltaTime * (1f - elapsed / slowdown));
+            float speed = (1f - elapsed / slowdown);
+            reel1.Rotate(0, 0, 360 * Time.deltaTime * speed);
+            reel2.Rotate(0, 0, -360 * Time.deltaTime * speed);
             yield return null;
         }
 
         TuneSoundManager.Instance.PlayErrorSound();
-        yield return StartCoroutine(ScreenShake());
+        yield return StartCoroutine(ScreenShake(0.3f, 7f));
+
         StartCoroutine(ShowNextSceneButton());
     }
 
     IEnumerator ShowNextSceneButton()
     {
         yield return new WaitForSeconds(2f);
+
         if (nextSceneButton != null)
         {
             nextSceneButton.gameObject.SetActive(true);
@@ -357,6 +410,7 @@ public class TuneGameManager : MonoBehaviour
                     yield return null;
                 }
             }
+
             nextSceneButton.onClick.AddListener(() =>
             {
                 SceneManager.LoadScene(nextSceneName);
