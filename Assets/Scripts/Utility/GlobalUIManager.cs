@@ -16,44 +16,46 @@ public class GlobalUIManager : MonoBehaviour
     public CanvasGroup buttonGroup;
 
     [Header("애니메이션 설정")]
-    public float fadeDuration = 0.8f;
-    public float typingDelay = 0.05f;
-    public float buttonFadeDelay = 0.4f;
+    public float typingDelay = 0.05f;    // 글자 타이핑 속도
+    public float buttonFadeDuration = 0.5f; // 버튼 페이드인 속도 (기존 fadeDuration 대체)
+    public float buttonFadeDelay = 0.4f; // 타이핑 후 버튼 나올 때까지 대기 시간
 
     [Header("효과음 설정")]
     public AudioSource uiAudioSource;
-    public AudioClip openSFX;   // ESC 눌러 열 때
-    public AudioClip closeSFX;  // ESC 눌러 닫을 때
-    public AudioClip confirmSFX; // YES 눌렀을 때
-    public AudioClip cancelSFX;  // NO 눌렀을 때
+    public AudioClip openSFX;
+    public AudioClip closeSFX;
+    public AudioClip confirmSFX;
+    public AudioClip cancelSFX;
 
     private bool isShowing = false;
     private string fullMessage = "메인으로 돌아가시겠습니까?";
 
     void Awake()
     {
-        // ✅ 싱글톤 보장
+        // 🔒 싱글톤 중복 완전 차단 (이 로직이 ESC 감지에 가장 안전함)
         if (Instance != null && Instance != this)
         {
-            DestroyImmediate(gameObject);
+            if (confirmPanel != null)
+                Destroy(confirmPanel.gameObject);
+
+            Destroy(gameObject);
             return;
         }
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // ✅ AudioSource 자동 생성 (없을 경우)
         if (uiAudioSource == null)
         {
             uiAudioSource = gameObject.AddComponent<AudioSource>();
             uiAudioSource.playOnAwake = false;
         }
 
-        // ✅ UI 초기화
         if (confirmPanel != null)
         {
             confirmPanel.gameObject.SetActive(false);
-
+            
+            // 캔버스 설정 보장
             if (confirmPanel.GetComponent<Canvas>() == null)
             {
                 var canvas = confirmPanel.gameObject.AddComponent<Canvas>();
@@ -63,69 +65,69 @@ public class GlobalUIManager : MonoBehaviour
         }
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        Time.timeScale = 1f; // 씬 전환 시 일시정지 해제
+        Time.timeScale = 1f;
     }
 
     void Update()
     {
+        if (Instance != this) return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!isShowing)
+            {
                 StartCoroutine(ShowConfirmPanel());
+            }
             else
-                StartCoroutine(HideConfirmPanel());
+            {
+                // 닫을 때는 코루틴 없이 즉시 닫기 (반응성 향상)
+                HideConfirmPanelImmediate();
+            }
         }
     }
 
     private IEnumerator ShowConfirmPanel()
     {
         if (confirmPanel == null) yield break;
-        if (isShowing) yield break;
 
         isShowing = true;
+
         confirmPanel.gameObject.SetActive(true);
-        confirmPanel.alpha = 0;
+        
+        // 🔥 [수정] 페이드 없이 즉시 100% 보이게 설정
+        confirmPanel.alpha = 1f; 
+        
         buttonGroup.alpha = 0;
-        messageText.text = "";
+        messageText.text = ""; // 텍스트 초기화
 
-        // ⏸ 게임 일시정지
         Time.timeScale = 0f;
-
-        // 🎧 효과음 재생 (열림)
         PlaySFX(openSFX);
 
-        // 🎞 페이드인
-        float t = 0f;
-        while (t < fadeDuration)
-        {
-            t += Time.unscaledDeltaTime;
-            confirmPanel.alpha = Mathf.Lerp(0f, 1f, t / fadeDuration);
-            yield return null;
-        }
+        // 🔥 [삭제됨] 배경 페이드인 while 반복문 제거함
 
-        confirmPanel.alpha = 1f;
-
-        // ✍️ 타이핑
+        // 바로 메시지 타이핑 시작
         for (int i = 0; i < fullMessage.Length; i++)
         {
             messageText.text = fullMessage.Substring(0, i + 1);
             yield return new WaitForSecondsRealtime(typingDelay);
         }
 
-        // 🎨 버튼 등장
+        // 버튼 등장 대기
         yield return new WaitForSecondsRealtime(buttonFadeDelay);
+
+        // 버튼은 부드럽게 나오는 게 이쁘니까 유지
         float bt = 0f;
-        while (bt < fadeDuration)
+        while (bt < buttonFadeDuration)
         {
             bt += Time.unscaledDeltaTime;
-            buttonGroup.alpha = Mathf.Lerp(0f, 1f, bt / fadeDuration);
+            buttonGroup.alpha = Mathf.Lerp(0f, 1f, bt / buttonFadeDuration);
             yield return null;
         }
         buttonGroup.alpha = 1f;
 
-        // 버튼 이벤트
+        // 버튼 이벤트 설정
         yesButton.onClick.RemoveAllListeners();
         noButton.onClick.RemoveAllListeners();
 
@@ -141,25 +143,16 @@ public class GlobalUIManager : MonoBehaviour
         noButton.onClick.AddListener(() =>
         {
             PlaySFX(cancelSFX);
-            StartCoroutine(HideConfirmPanel());
+            HideConfirmPanelImmediate();
         });
     }
 
-    private IEnumerator HideConfirmPanel()
+    // 닫을 때는 굳이 애니메이션 볼 필요 없이 즉시 닫음
+    private void HideConfirmPanelImmediate()
     {
-        if (confirmPanel == null) yield break;
+        if (confirmPanel == null) return;
 
-        // 🎧 효과음 재생 (닫힘)
         PlaySFX(closeSFX);
-
-        float t = 0f;
-        while (t < fadeDuration)
-        {
-            t += Time.unscaledDeltaTime;
-            confirmPanel.alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
-            yield return null;
-        }
-
         confirmPanel.gameObject.SetActive(false);
         Time.timeScale = 1f;
         isShowing = false;

@@ -2,21 +2,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class ChapterSelectManager : MonoBehaviour
 {
     [Header("UI 참조")]
-    public CanvasGroup chapterPanel;  // 챕터 선택 패널
-    public Button myBoxButton;        // MY BOX 버튼
-    public Button closeButton;        // 닫기 버튼
-    public Button[] chapterButtons;   // 0~6 버튼 배열
+    public CanvasGroup chapterPanel;
+    public Button myBoxButton;
+    public Button closeButton;
+    public Button[] chapterButtons;
 
     [Header("애니메이션 설정")]
     public float fadeDuration = 0.5f;
 
-    private bool isOpen = false;
+    private bool isOpen = false;        // 패널 열림 여부
+    private bool isAnimating = false;   // 🔥 애니메이션 중인지 여부
 
-    // ✅ 씬 이름 배열
     private readonly string[] sceneNames = new string[]
     {
         "0_prolog",
@@ -30,47 +31,49 @@ public class ChapterSelectManager : MonoBehaviour
 
     void Start()
     {
-        if (chapterPanel != null)
-        {
-            chapterPanel.alpha = 0;
-            chapterPanel.interactable = false;
-            chapterPanel.blocksRaycasts = false;
-            chapterPanel.gameObject.SetActive(false);
-        }
+        chapterPanel.alpha = 0;
+        chapterPanel.interactable = false;
+        chapterPanel.blocksRaycasts = false;
+        chapterPanel.gameObject.SetActive(false);
 
-        if (myBoxButton != null)
-            myBoxButton.onClick.AddListener(TogglePanel);
+        myBoxButton.onClick.RemoveAllListeners();
+        myBoxButton.onClick.AddListener(OnMyBoxClicked);
 
         if (closeButton != null)
+        {
+            closeButton.onClick.RemoveAllListeners();
             closeButton.onClick.AddListener(() => StartCoroutine(ClosePanel()));
+        }
 
-        // 챕터 버튼 연결
         for (int i = 0; i < chapterButtons.Length; i++)
         {
-            int index = i; // 지역 변수로 고정
-            if (index < sceneNames.Length)
-            {
-                chapterButtons[i].onClick.AddListener(() => LoadChapter(index));
-            }
+            int index = i;
+            chapterButtons[i].onClick.RemoveAllListeners();
+            chapterButtons[i].onClick.AddListener(() => LoadChapter(index));
         }
     }
 
-    private void TogglePanel()
+    public void OnMyBoxClicked()
     {
-        if (isOpen)
-            StartCoroutine(ClosePanel());
-        else
+        if (isAnimating) return; // 🔥 애니메이션 중이면 클릭 무시
+
+        EventSystem.current.SetSelectedGameObject(null);
+
+        if (!isOpen)
             StartCoroutine(OpenPanel());
+        else
+            StartCoroutine(ClosePanel());
     }
 
     private IEnumerator OpenPanel()
     {
-        if (chapterPanel == null) yield break;
+        isAnimating = true;    // 🔥 애니메이션 시작
         isOpen = true;
 
         chapterPanel.gameObject.SetActive(true);
-        chapterPanel.interactable = true;
-        chapterPanel.blocksRaycasts = true;
+        chapterPanel.interactable = false;
+        chapterPanel.blocksRaycasts = false;
+        chapterPanel.alpha = 0;
 
         float t = 0f;
         while (t < fadeDuration)
@@ -81,12 +84,19 @@ public class ChapterSelectManager : MonoBehaviour
         }
 
         chapterPanel.alpha = 1f;
+        chapterPanel.interactable = true;
+        chapterPanel.blocksRaycasts = true;
+
+        isAnimating = false;   // 🔥 애니메이션 종료
     }
 
     private IEnumerator ClosePanel()
     {
-        if (chapterPanel == null) yield break;
+        isAnimating = true;    // 🔥 애니메이션 시작
         isOpen = false;
+
+        chapterPanel.interactable = false;
+        chapterPanel.blocksRaycasts = false;
 
         float t = 0f;
         while (t < fadeDuration)
@@ -96,10 +106,10 @@ public class ChapterSelectManager : MonoBehaviour
             yield return null;
         }
 
-        chapterPanel.alpha = 0f;
-        chapterPanel.interactable = false;
-        chapterPanel.blocksRaycasts = false;
+        chapterPanel.alpha = 0;
         chapterPanel.gameObject.SetActive(false);
+
+        isAnimating = false;   // 🔥 애니메이션 종료
     }
 
     private void LoadChapter(int index)
