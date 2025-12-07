@@ -83,7 +83,7 @@ public class TuneGameManager : MonoBehaviour
         Color bgColor =
             phase == 1 ? new Color(0.96f, 0.94f, 0.91f) :
             phase == 2 ? new Color(0.92f, 0.89f, 0.87f) :
-                          new Color(0.88f, 0.85f, 0.83f);
+                        new Color(0.88f, 0.85f, 0.83f);
         background.color = bgColor;
 
         StartCoroutine(SpawnNotes());
@@ -119,7 +119,7 @@ public class TuneGameManager : MonoBehaviour
                 attempts++;
             }
             while ((IsTooClose(spawnPos, placedPositions, minDistance) || IsInsideTapeDeck(spawnPos, deckRect))
-                   && attempts < 80);
+                && attempts < 80);
 
             placedPositions.Add(spawnPos);
 

@@ -57,7 +57,7 @@ public class WordGameManager : MonoBehaviour
         foreach (Transform child in wordContainer) Destroy(child.gameObject);
         foreach (Transform child in targetContainer) Destroy(child.gameObject);
 
-        messageText.text = "";
+        messageText.text = "한여름의 일기장";
         wrongAttempts = 0;
         phaseText.text = $"페이지: {currentPhase + 1} / {sentences.Count}";
 
@@ -120,7 +120,7 @@ public class WordGameManager : MonoBehaviour
     {
         if (targetContainer.childCount == 0)
         {
-            messageText.text = "여름이가 남긴 일기장을";
+            messageText.text = "한여름의 일기장";
             return;
         }
 

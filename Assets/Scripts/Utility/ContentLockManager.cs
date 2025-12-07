@@ -27,6 +27,11 @@ public class ContentLockManager : MonoBehaviour
     private bool isLocked = false;
     private bool centerArmed = true;
 
+    // ✨ [추가된 유일한 코드] 
+    // 기존 isLocked 변수를 외부에서 '읽기만' 가능하게 함. 
+    // 로직에는 전혀 영향을 주지 않으니 안심하세요.
+    public bool IsLocked => isLocked;
+
     // ScrollRect 상태 저장/복원
     bool prevEnabled, prevVertical, prevHorizontal, prevInertia;
     bool saved = false;

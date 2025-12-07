@@ -12,10 +12,10 @@ public class ChapterPageUnlocker : MonoBehaviour
     public float centerTolerance = 100f; // 중앙 판정 허용 거리(px)
     public float gazeDuration = 3f;      // 중앙 유지 시간 (초)
 
-    private Coroutine gazeCoroutine;
-    private bool isCounting = false;
-    private bool isUnlocked = false;
-    private bool isSimpleMode = false;   // ✅ 자동 모드 플래그
+    Coroutine gazeCoroutine;
+    bool isCounting = false;
+    bool isUnlocked = false;
+    bool isSimpleMode = false;   // 기본 모드 플래그
 
     void Start()
     {
@@ -26,41 +26,38 @@ public class ChapterPageUnlocker : MonoBehaviour
             return;
         }
 
-        // ✅ targetPage나 viewport가 비어있으면 ‘첫 페이지 모드’로 전환
+        // 시작할 때는 항상 버튼 숨김
+        unlockButton.SetActive(false);
+
+        // targetPage나 viewport가 없으면 기본 모드
         if (targetPage == null || viewport == null)
         {
             isSimpleMode = true;
             Debug.Log("🔹 타겟/뷰포트 미지정 → 기본모드로 동작 (씬 시작 후 타이머 즉시 시작)");
-            StartCoroutine(GazeTimerAndUnlock());
-            return;
+            gazeCoroutine = StartCoroutine(GazeTimerAndUnlock());
         }
-
-        unlockButton.SetActive(false);
     }
 
     void Update()
     {
-        // 기본 모드에서는 Update 감지 불필요
         if (isSimpleMode || isUnlocked) return;
 
-        // 현재 페이지와 Viewport 중심 차이 계산
+        if (targetPage == null || viewport == null) return;
+
         Vector3 viewCenter = viewport.TransformPoint(viewport.rect.center);
         Vector3 pageCenter = targetPage.TransformPoint(targetPage.rect.center);
 
         float distance = Mathf.Abs(viewCenter.y - pageCenter.y);
 
-        // 중앙에 들어왔을 때
         if (distance < centerTolerance && !isCounting)
         {
-            Debug.Log("📍 챕터 페이지 중앙 감지 → 타이머 시작");
             gazeCoroutine = StartCoroutine(GazeTimerAndUnlock());
             isCounting = true;
         }
-        // 중앙에서 벗어났을 때
         else if (distance >= centerTolerance && isCounting)
         {
-            Debug.Log("❌ 중앙 벗어남 → 타이머 중단");
-            StopCoroutine(gazeCoroutine);
+            if (gazeCoroutine != null)
+                StopCoroutine(gazeCoroutine);
             isCounting = false;
         }
     }
@@ -72,6 +69,8 @@ public class ChapterPageUnlocker : MonoBehaviour
 
         unlockButton.SetActive(true);
         isUnlocked = true;
+        isCounting = false;
+
         Debug.Log("✅ 버튼 활성화 완료 (중앙 유지 or 기본모드)");
     }
 }
