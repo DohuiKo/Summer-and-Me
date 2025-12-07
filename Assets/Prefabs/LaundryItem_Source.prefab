@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6619020042149063671}
   - component: {fileID: 7904832182671755340}
   - component: {fileID: 1242984667628045819}
+  - component: {fileID: 7239483026106081837}
   m_Layer: 5
   m_Name: LaundryItem_Source
   m_TagString: Untagged
@@ -89,4 +90,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaundryItem
   foldingStates: []
-  fadeDuration: 0.5
+  soundDB: {fileID: 11400000, guid: 6e721ca075a9ce44eb8b19d07a96461c, type: 2}
+  usePulse: 1
+  pulseScaleUp: 1.08
+  pulseDuration: 0.08
+  stateFadeTime: 0.06
+  spawnFadeTime: 0.15
+  revertAfterComplete: 1
+  revertDelay: 0.25
+  revertStepTime: 0.06
+  revertDimFactor: 0.75
+  endFadeOutTime: 0.25
+  destroyAfterRevert: 1
+--- !u!225 &7239483026106081837
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7737852037818024598}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

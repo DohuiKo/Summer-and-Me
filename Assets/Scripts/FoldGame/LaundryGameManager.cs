@@ -20,6 +20,10 @@ public class LaundryGameManager : MonoBehaviour
     [SerializeField] private Button nextSceneButton;
     [SerializeField] private TextMeshProUGUI clearMessageText;
 
+    [Header("클리어 연출")]
+    [Tooltip("마지막 빨래를 다 접은 뒤, 클리어 패널(Next 버튼)이 뜨기 전까지 잠깐 멈춰있는 시간(sec)")]
+    [SerializeField] private float delayBeforeClearPanel = 2.0f;
+
     [Header("게임 오브젝트 참조")]
     [SerializeField] private FoldingArea foldingArea;
 
@@ -100,7 +104,9 @@ public class LaundryGameManager : MonoBehaviour
         foreach (var pile in piles)
             if (pile != null) pile.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(1f);
+        // 🔹 마지막 빨래 다 접고 난 뒤, 클리어 패널 뜨기 전까지 잠깐 홀딩
+        if (delayBeforeClearPanel > 0f)
+            yield return new WaitForSeconds(delayBeforeClearPanel);
 
         if (clearPanel != null)
         {
@@ -142,8 +148,8 @@ public class LaundryGameManager : MonoBehaviour
         {
             int remainingLaundry = Mathf.Max(0, targetScore - score);
             instructionText.text = (remainingLaundry > 0)
-                ? "빨래더미를 클릭해서 옷을 꺼내세요!"
-                : "모든 빨래를 다 접었습니다!";
+                ? "옷더미를 클릭해서 옷을 꺼내세요!"
+                : "모든 옷들을 정리했어요.!";
         }
     }
 

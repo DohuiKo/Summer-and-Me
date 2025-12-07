@@ -1734,24 +1734,38 @@ MonoBehaviour:
   laundrySets:
   - name: SetA
     states:
-    - {fileID: 21300000, guid: 8e075e8b0a1938c48afb5e8d56cbaff8, type: 3}
-    - {fileID: 21300000, guid: 3463c3de535dd024b8843f025b80f04f, type: 3}
-    - {fileID: 21300000, guid: 002c03b0d45e7124ab17036e59f07d9b, type: 3}
-    - {fileID: 21300000, guid: 22616538155e49349ae4c8cfd2a3ea89, type: 3}
-    - {fileID: 21300000, guid: f0de98e32dec0c145875df3047f500c2, type: 3}
+    - sprite: {fileID: 21300000, guid: 8e075e8b0a1938c48afb5e8d56cbaff8, type: 3}
+      size: {x: 640, y: 600}
+    - sprite: {fileID: 21300000, guid: 3463c3de535dd024b8843f025b80f04f, type: 3}
+      size: {x: 540, y: 540}
+    - sprite: {fileID: 21300000, guid: 002c03b0d45e7124ab17036e59f07d9b, type: 3}
+      size: {x: 480, y: 340}
+    - sprite: {fileID: 21300000, guid: 22616538155e49349ae4c8cfd2a3ea89, type: 3}
+      size: {x: 430, y: 430}
+    - sprite: {fileID: 21300000, guid: f0de98e32dec0c145875df3047f500c2, type: 3}
+      size: {x: 380, y: 380}
   - name: SetB
     states:
-    - {fileID: 21300000, guid: 8e2b1a8f50d6f2d41b0589a35d53adef, type: 3}
-    - {fileID: 21300000, guid: a10ccb74521951b4a9788778051e421c, type: 3}
-    - {fileID: 21300000, guid: d1fda8ed0fd63aa45918112592807754, type: 3}
-    - {fileID: 21300000, guid: 5cf5303cb1e1e9246b49c58bd6aa40bf, type: 3}
-    - {fileID: 21300000, guid: 5a401686f89a7f345af2b315f879c247, type: 3}
+    - sprite: {fileID: 21300000, guid: 8e2b1a8f50d6f2d41b0589a35d53adef, type: 3}
+      size: {x: 480, y: 520}
+    - sprite: {fileID: 21300000, guid: a10ccb74521951b4a9788778051e421c, type: 3}
+      size: {x: 420, y: 420}
+    - sprite: {fileID: 21300000, guid: d1fda8ed0fd63aa45918112592807754, type: 3}
+      size: {x: 320, y: 320}
+    - sprite: {fileID: 21300000, guid: 5cf5303cb1e1e9246b49c58bd6aa40bf, type: 3}
+      size: {x: 260, y: 260}
+    - sprite: {fileID: 21300000, guid: 5a401686f89a7f345af2b315f879c247, type: 3}
+      size: {x: 220, y: 220}
   - name: SetC
     states:
-    - {fileID: 21300000, guid: dc8598e4bb99ee04d9b5ccc4114a1874, type: 3}
-    - {fileID: 21300000, guid: eebca68c505ebd94290ec9cec193b651, type: 3}
-    - {fileID: 21300000, guid: a249efdb0f42f794c8ddea71877789e9, type: 3}
-    - {fileID: 21300000, guid: 373052d9fdca7ec44b4eeedd5c4752b1, type: 3}
+    - sprite: {fileID: 21300000, guid: dc8598e4bb99ee04d9b5ccc4114a1874, type: 3}
+      size: {x: 540, y: 580}
+    - sprite: {fileID: 21300000, guid: eebca68c505ebd94290ec9cec193b651, type: 3}
+      size: {x: 380, y: 380}
+    - sprite: {fileID: 21300000, guid: a249efdb0f42f794c8ddea71877789e9, type: 3}
+      size: {x: 340, y: 320}
+    - sprite: {fileID: 21300000, guid: 373052d9fdca7ec44b4eeedd5c4752b1, type: 3}
+      size: {x: 260, y: 200}
   laundryItemPrefab: {fileID: 7737852037818024598, guid: 8a3188c31579b6d4caaf6b3926fee2c5, type: 3}
   spawnParent: {fileID: 107924734}
   foldingArea: {fileID: 318191271}

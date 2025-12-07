@@ -43,6 +43,7 @@ MonoBehaviour:
   mirrorBrokenSFX: {fileID: 8300000, guid: 7b8679c01f517e44da6349bcc3216a35, type: 3}
   cassetteGoingInSFX: {fileID: 8300000, guid: 1488fd4a35c4a8343b4aa13ce8bee180, type: 3}
   mymyDoorCloseSFX: {fileID: 8300000, guid: 0d6b8bb2a4e965f499c16066e2832407, type: 3}
+  laundryFailSFX: {fileID: 8300000, guid: a35e9272dd9c6c847aeba7c9399c41c6, type: 3}
   continueTypingSFX: {fileID: 8300000, guid: 2ecf0217e5da73342b357350178851d1, type: 3}
   recordingSFX: {fileID: 8300000, guid: 61d5d8cdc7faaef4f8153d1aa7e08951, type: 3}
   sobbingGaeulSFX: {fileID: 8300000, guid: 624615e863bce38448e7bbcee4b01ae1, type: 3}
