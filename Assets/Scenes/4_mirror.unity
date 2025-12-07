@@ -237,9 +237,9 @@ RectTransform:
   - {fileID: 190125024}
   m_Father: {fileID: 93562367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -2700}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &132893213
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c33ae4b361149c4f9d7fd188fbb4f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FinalPageController
-  scrollRect: {fileID: 407222718}
+  scrollRect: {fileID: 0}
   content: {fileID: 93562367}
   finalPage: {fileID: 132893212}
   miMaiModal: {fileID: 1453047896}
@@ -525,8 +525,8 @@ GameObject:
   - component: {fileID: 407222721}
   - component: {fileID: 407222720}
   - component: {fileID: 407222719}
-  - component: {fileID: 407222718}
   - component: {fileID: 407222722}
+  - component: {fileID: 407222723}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -534,36 +534,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &407222718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 407222716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
-  m_Content: {fileID: 93562367}
-  m_Horizontal: 0
-  m_Vertical: 1
-  m_MovementType: 1
-  m_Elasticity: 0.1
-  m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 10
-  m_Viewport: {fileID: 727485987}
-  m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &407222719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,11 +604,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8730776284471944c960781b99a13c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScrollStartCenterTopPage
-  scroll: {fileID: 407222718}
+  scroll: {fileID: 0}
   viewport: {fileID: 407222721}
   content: {fileID: 93562367}
   topPage: {fileID: 444004408}
   tempDisableInertia: 1
+--- !u!114 &407222723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407222716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4003ee2ed00780418a3a7ce9b83d9a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WheelOnlyScrollRect
+  m_Content: {fileID: 93562367}
+  m_Horizontal: 0
+  m_Vertical: 1
+  m_MovementType: 2
+  m_Elasticity: 0.1
+  m_Inertia: 1
+  m_DecelerationRate: 0.135
+  m_ScrollSensitivity: 1
+  m_Viewport: {fileID: 727485987}
+  m_HorizontalScrollbar: {fileID: 0}
+  m_VerticalScrollbar: {fileID: 0}
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 0
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: 0
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &444004407
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,9 +674,9 @@ RectTransform:
   - {fileID: 969101521}
   m_Father: {fileID: 93562367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -540}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &444004410
@@ -691,7 +691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ContentLockManager
-  scrollRect: {fileID: 407222718}
+  scrollRect: {fileID: 0}
   viewport: {fileID: 727485987}
   target: {fileID: 444004408}
   lockOnCenter: 1
@@ -750,7 +750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ed350c38caa2545af3a13e3d91b9f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SittingPageLockInitializer
-  scrollRect: {fileID: 407222718}
+  scrollRect: {fileID: 0}
   targetPage: {fileID: 444004408}
   unlockButton: {fileID: 1286485169}
 --- !u!1 &460048860
@@ -1773,9 +1773,9 @@ RectTransform:
   - {fileID: 1289616945}
   m_Father: {fileID: 93562367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -1620}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1079243608
@@ -1790,7 +1790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ContentLockManager
-  scrollRect: {fileID: 407222718}
+  scrollRect: {fileID: 0}
   viewport: {fileID: 727485987}
   target: {fileID: 1079243606}
   lockOnCenter: 1

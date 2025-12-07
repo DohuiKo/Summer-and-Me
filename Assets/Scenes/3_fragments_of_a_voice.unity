@@ -3811,9 +3811,9 @@ GameObject:
   - component: {fileID: 1061418467}
   - component: {fileID: 1061418466}
   - component: {fileID: 1061418465}
-  - component: {fileID: 1061418464}
   - component: {fileID: 1061418463}
   - component: {fileID: 1061418468}
+  - component: {fileID: 1061418469}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -3836,36 +3836,6 @@ MonoBehaviour:
   scrollRect: {fileID: 0}
   allowHorizontal: 0
   enableInertia: 1
---- !u!114 &1061418464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1061418462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
-  m_Content: {fileID: 1424774156}
-  m_Horizontal: 0
-  m_Vertical: 1
-  m_MovementType: 1
-  m_Elasticity: 0.1
-  m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 5
-  m_Viewport: {fileID: 371640183}
-  m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1061418465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3936,11 +3906,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8730776284471944c960781b99a13c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScrollStartCenterTopPage
-  scroll: {fileID: 1061418464}
+  scroll: {fileID: 0}
   viewport: {fileID: 371640183}
   content: {fileID: 1424774156}
   topPage: {fileID: 1961218991}
   tempDisableInertia: 1
+--- !u!114 &1061418469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061418462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4003ee2ed00780418a3a7ce9b83d9a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WheelOnlyScrollRect
+  m_Content: {fileID: 1424774156}
+  m_Horizontal: 0
+  m_Vertical: 1
+  m_MovementType: 1
+  m_Elasticity: 0.1
+  m_Inertia: 1
+  m_DecelerationRate: 0.135
+  m_ScrollSensitivity: 1
+  m_Viewport: {fileID: 371640183}
+  m_HorizontalScrollbar: {fileID: 0}
+  m_VerticalScrollbar: {fileID: 0}
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 0
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: 0
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1076313297
 GameObject:
   m_ObjectHideFlags: 0
@@ -4146,7 +4146,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 822616362273894945, guid: fedf733459fc45345a43049ed4954f9a, type: 3}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -6236,7 +6236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ContentLockManager
-  scrollRect: {fileID: 1061418464}
+  scrollRect: {fileID: 0}
   viewport: {fileID: 371640183}
   target: {fileID: 1729458480}
   lockOnCenter: 1
@@ -6913,13 +6913,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ContentLockManager
-  scrollRect: {fileID: 1061418464}
+  scrollRect: {fileID: 0}
   viewport: {fileID: 371640183}
   target: {fileID: 1877600282}
   lockOnCenter: 1
   unlockManually: 1
   triggerAtCenter: 1
-  centerTolerance: 0.01
+  centerTolerance: 0.0001
   unlockButton: {fileID: 2145190847}
   fadeDuration: 1
 --- !u!114 &1877600285
@@ -7304,7 +7304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ContentLockManager
-  scrollRect: {fileID: 1061418464}
+  scrollRect: {fileID: 0}
   viewport: {fileID: 371640183}
   target: {fileID: 1961218991}
   lockOnCenter: 1
