@@ -3092,7 +3092,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GaeulPhoneMoment
   character: {fileID: 762307220}
   fadeOverlay: {fileID: 0}
-  scrollRect: {fileID: 0}
+  scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   targetPage: {fileID: 1826487519}
   nextPage: {fileID: 774138127}
@@ -7875,7 +7875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PhotoStateChanger
   photoStates:
   - {fileID: 21300000, guid: 5dc88c6cda11a3f4ca88e071cb960f9e, type: 3}
-  - {fileID: 21300000, guid: 7920f89b1ed569a42ade3012fda8ef79, type: 3}
+  - {fileID: 5097845135907227673, guid: 6ff1b0dd3d62b2a43bf640f3f4e176b0, type: 3}
   objectToShow: {fileID: 1325177889}
   fadeDuration: 2
 --- !u!114 &1712745341

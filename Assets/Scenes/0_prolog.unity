@@ -3631,7 +3631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ContentLockManager
-  scrollRect: {fileID: 0}
+  scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 821607423}
   lockOnCenter: 1
@@ -3652,7 +3652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae9354abbb6db948aaa20d2da4029b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Page15Footsteps
-  scrollRect: {fileID: 0}
+  scrollRect: {fileID: 840654794}
   pageRoot: {fileID: 821607423}
   lane: {fileID: 821607423}
   leftTemplate: {fileID: 1051666342}
