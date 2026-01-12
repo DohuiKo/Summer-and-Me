@@ -245,7 +245,7 @@ MonoBehaviour:
   lockOnCenter: 1
   unlockManually: 0
   triggerAtCenter: 1
-  centerTolerance: 0.01
+  centerTolerance: 0.001
   unlockButton: {fileID: 0}
   fadeDuration: 1
 --- !u!114 &132893214
@@ -928,6 +928,18 @@ MonoBehaviour:
   targetRect: {fileID: 590364900}
   spriteStates:
   - sprite: {fileID: 21300000, guid: fb11a3318bd1ae04b86ea0460292aab2, type: 3}
+    overrideSize: 0
+    size: {x: 0, y: 0}
+    audioClip: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: b137ccda23d44bd41b9fec2d74cd1ba4, type: 3}
+    overrideSize: 0
+    size: {x: 0, y: 0}
+    audioClip: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: 2e255645ab6f3b34b930acac8c0b3d4c, type: 3}
+    overrideSize: 0
+    size: {x: 0, y: 0}
+    audioClip: {fileID: 0}
+  - sprite: {fileID: 21300000, guid: 80bf921ded2300642aa5e46f943106da, type: 3}
     overrideSize: 0
     size: {x: 0, y: 0}
     audioClip: {fileID: 0}
@@ -1778,7 +1790,7 @@ MonoBehaviour:
   lockOnCenter: 1
   unlockManually: 0
   triggerAtCenter: 1
-  centerTolerance: 0.01
+  centerTolerance: 0.001
   unlockButton: {fileID: 1286485167}
   fadeDuration: 1
 --- !u!114 &1079243609
