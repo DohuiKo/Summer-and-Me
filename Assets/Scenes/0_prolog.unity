@@ -232,12 +232,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 10441119}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 1043838016}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!1 &43755527
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,132 +519,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 141548074}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 1043838016}
   fadeDuration: 1
---- !u!1 &147771335
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 147771336}
-  - component: {fileID: 147771339}
-  - component: {fileID: 147771338}
-  - component: {fileID: 147771337}
-  - component: {fileID: 147771340}
-  m_Layer: 5
-  m_Name: page_13
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &147771336
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147771335}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 570490243}
-  - {fileID: 909167869}
-  m_Father: {fileID: 1789016981}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &147771337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147771335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: 1080
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
---- !u!114 &147771338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147771335}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &147771339
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147771335}
-  m_CullTransparentMesh: 1
---- !u!114 &147771340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147771335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ContentLockManager
-  scrollRect: {fileID: 840654794}
-  viewport: {fileID: 402776508}
-  target: {fileID: 147771336}
-  lockOnCenter: 1
-  unlockManually: 0
-  triggerAtCenter: 1
-  centerTolerance: 0.001
-  unlockButton: {fileID: 0}
-  fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!1 &192029474
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +663,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192029474}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
@@ -727,12 +671,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 192029475}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.001
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 0}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!1 &210089289
 GameObject:
   m_ObjectHideFlags: 0
@@ -2068,12 +2044,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 520843000}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 1043838016}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!1 &533819101
 GameObject:
   m_ObjectHideFlags: 0
@@ -2164,127 +2172,38 @@ MonoBehaviour:
   target: {fileID: 533819102}
   videoPlayer: {fileID: 1809907336}
   unlockButton: {fileID: 1043838020}
+  holdTarget: {fileID: 0}
+  holdPulseScale: 1.03
+  holdPulseSpeed: 6
+  snapOnApproach: 1
+  snapThreshold: 0.35
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  contentLock: {fileID: 0}
+  debugLog: 0
+  debugInterval: 0.5
   centerTolerance: 0.01
---- !u!1 &536251122
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 536251123}
-  - component: {fileID: 536251126}
-  - component: {fileID: 536251125}
-  - component: {fileID: 536251124}
-  - component: {fileID: 536251127}
-  m_Layer: 5
-  m_Name: page_10
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &536251123
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 536251122}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1699538628}
-  - {fileID: 720952738}
-  m_Father: {fileID: 1789016981}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &536251124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 536251122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: 1080
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
---- !u!114 &536251125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 536251122}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &536251126
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 536251122}
-  m_CullTransparentMesh: 1
---- !u!114 &536251127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 536251122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ContentLockManager
-  scrollRect: {fileID: 840654794}
-  viewport: {fileID: 402776508}
-  target: {fileID: 536251123}
-  lockOnCenter: 1
-  unlockManually: 0
-  triggerAtCenter: 1
-  centerTolerance: 0.001
-  unlockButton: {fileID: 0}
-  fadeDuration: 1
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
+  useVisibleRatio: 1
+  requireCenterForLock: 1
+  visibleThreshold: 0.5
+  lockOncePerPage: 1
+  resetLockWhenOutOfView: 1
+  resetVisibleRatio: 0.02
+  unlockTimeout: 0
+  endTimeEpsilon: 0.05
 --- !u!1 &549697163
 GameObject:
   m_ObjectHideFlags: 0
@@ -2450,158 +2369,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549697163}
   m_CullTransparentMesh: 1
---- !u!1 &570490242
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 570490243}
-  - component: {fileID: 570490246}
-  - component: {fileID: 570490245}
-  - component: {fileID: 570490244}
-  m_Layer: 5
-  m_Name: InfoText (TMP)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &570490243
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 570490242}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 147771336}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -540}
-  m_SizeDelta: {x: 1920, y: 20.773329}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &570490244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 570490242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5024bf088a23f094aa571e28a065e8e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WalkHintController
-  videoPlayer: {fileID: 738507153}
-  uiText: {fileID: 0}
-  tmpText: {fileID: 570490245}
---- !u!114 &570490245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 570490242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "(W)\uB97C \uAFB9 \uB20C\uB7EC \uAC78\uC5B4\uBCF4\uC138\uC694."
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 32fbf2748294e3b4b9a1d33db714348a, type: 2}
-  m_sharedMaterial: {fileID: 2315743192267983915, guid: 32fbf2748294e3b4b9a1d33db714348a, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &570490246
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 570490242}
-  m_CullTransparentMesh: 1
 --- !u!1 &590750042
 GameObject:
   m_ObjectHideFlags: 0
@@ -2708,7 +2475,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 590750042}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
@@ -2716,12 +2483,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 590750043}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.001
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 0}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!1 &601671076
 GameObject:
   m_ObjectHideFlags: 0
@@ -2835,12 +2634,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 601671077}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 1
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 1043838016}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2925,97 +2756,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &720952737
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 720952738}
-  - component: {fileID: 720952740}
-  - component: {fileID: 720952739}
-  - component: {fileID: 720952741}
-  m_Layer: 5
-  m_Name: VideoPlayerGo03
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &720952738
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720952737}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 536251123}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 670.5}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &720952739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720952737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 91f0a3d769e9893419d8b32eb2d6620f, type: 2}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!222 &720952740
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720952737}
-  m_CullTransparentMesh: 1
---- !u!114 &720952741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720952737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fddc038d146e4674b9628faac00ff25c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayVideoOnVisibleLock
-  scrollRect: {fileID: 840654794}
-  viewport: {fileID: 402776508}
-  target: {fileID: 720952738}
-  videoPlayer: {fileID: 1110790539}
-  unlockButton: {fileID: 1043838020}
-  centerTolerance: 0.01
 --- !u!1 &738507152
 GameObject:
   m_ObjectHideFlags: 0
@@ -3714,7 +3454,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 821607422}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
@@ -3722,12 +3462,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 821607423}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.01
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 0}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!114 &821607428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3951,6 +3723,8 @@ MonoBehaviour:
   scrollRect: {fileID: 0}
   allowHorizontal: 0
   enableInertia: 1
+  unlockContentLocks: 1
+  disableContentLocksAfterUnlock: 0
 --- !u!114 &840654793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4134,97 +3908,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878805261}
   m_CullTransparentMesh: 1
---- !u!1 &909167868
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 909167869}
-  - component: {fileID: 909167871}
-  - component: {fileID: 909167870}
-  - component: {fileID: 909167872}
-  m_Layer: 5
-  m_Name: VideoPlayerGo06
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &909167869
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909167868}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 147771336}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 670.5}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &909167870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909167868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 2e1d2197fd9f01c42b2858e843841a12, type: 2}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!222 &909167871
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909167868}
-  m_CullTransparentMesh: 1
---- !u!114 &909167872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909167868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fddc038d146e4674b9628faac00ff25c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayVideoOnVisibleLock
-  scrollRect: {fileID: 840654794}
-  viewport: {fileID: 402776508}
-  target: {fileID: 909167869}
-  videoPlayer: {fileID: 738507153}
-  unlockButton: {fileID: 1043838020}
-  centerTolerance: 0.01
 --- !u!1 &920732900
 GameObject:
   m_ObjectHideFlags: 0
@@ -4474,12 +4157,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 995407656}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 1043838016}
   fadeDuration: 0.5
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!1 &1037215290
 GameObject:
   m_ObjectHideFlags: 0
@@ -5234,7 +4949,38 @@ MonoBehaviour:
   target: {fileID: 1074993915}
   videoPlayer: {fileID: 1274329190}
   unlockButton: {fileID: 1043838020}
+  holdTarget: {fileID: 0}
+  holdPulseScale: 1.03
+  holdPulseSpeed: 6
+  snapOnApproach: 1
+  snapThreshold: 0.35
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  contentLock: {fileID: 0}
+  debugLog: 1
+  debugInterval: 0.5
   centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
+  useVisibleRatio: 1
+  requireCenterForLock: 1
+  visibleThreshold: 0.5
+  lockOncePerPage: 1
+  resetLockWhenOutOfView: 1
+  resetVisibleRatio: 0.02
+  unlockTimeout: 0
+  endTimeEpsilon: 0.05
 --- !u!1 &1080590863
 GameObject:
   m_ObjectHideFlags: 0
@@ -5908,7 +5654,38 @@ MonoBehaviour:
   target: {fileID: 1218434305}
   videoPlayer: {fileID: 210089290}
   unlockButton: {fileID: 1043838020}
+  holdTarget: {fileID: 0}
+  holdPulseScale: 1.03
+  holdPulseSpeed: 6
+  snapOnApproach: 1
+  snapThreshold: 0.35
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  contentLock: {fileID: 0}
+  debugLog: 0
+  debugInterval: 0.5
   centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
+  useVisibleRatio: 1
+  requireCenterForLock: 1
+  visibleThreshold: 0.5
+  lockOncePerPage: 1
+  resetLockWhenOutOfView: 1
+  resetVisibleRatio: 0.02
+  unlockTimeout: 0
+  endTimeEpsilon: 0.05
 --- !u!1 &1218493803
 GameObject:
   m_ObjectHideFlags: 0
@@ -6036,7 +5813,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1230232186}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
@@ -6044,12 +5821,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 1230232187}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 0
   unlockManually: 1
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 1043838016}
   fadeDuration: 0.5
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!114 &1230232190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6361,12 +6170,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 1246406496}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 1043838016}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!1 &1259072017
 GameObject:
   m_ObjectHideFlags: 0
@@ -6686,7 +6527,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1343308216}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
@@ -6694,12 +6535,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 1343308217}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.001
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 0}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!1 &1351900779
 GameObject:
   m_ObjectHideFlags: 0
@@ -7307,158 +7180,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!1 &1699538627
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1699538628}
-  - component: {fileID: 1699538631}
-  - component: {fileID: 1699538630}
-  - component: {fileID: 1699538629}
-  m_Layer: 5
-  m_Name: InfoText (TMP)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1699538628
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699538627}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 536251123}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -540}
-  m_SizeDelta: {x: 1920, y: 20.773329}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1699538629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699538627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5024bf088a23f094aa571e28a065e8e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WalkHintController
-  videoPlayer: {fileID: 1110790539}
-  uiText: {fileID: 0}
-  tmpText: {fileID: 1699538630}
---- !u!114 &1699538630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699538627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "(W)\uB97C \uAFB9 \uB20C\uB7EC \uAC78\uC5B4\uBCF4\uC138\uC694."
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 32fbf2748294e3b4b9a1d33db714348a, type: 2}
-  m_sharedMaterial: {fileID: 2315743192267983915, guid: 32fbf2748294e3b4b9a1d33db714348a, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1699538631
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699538627}
-  m_CullTransparentMesh: 1
 --- !u!1 &1704955026
 GameObject:
   m_ObjectHideFlags: 0
@@ -7573,12 +7294,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 1704955027}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 1043838016}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!1 &1715210133
 GameObject:
   m_ObjectHideFlags: 0
@@ -7874,17 +7627,15 @@ RectTransform:
   - {fileID: 1246406496}
   - {fileID: 590750043}
   - {fileID: 192029475}
-  - {fileID: 536251123}
   - {fileID: 1343308217}
   - {fileID: 2033605876}
-  - {fileID: 147771336}
   - {fileID: 821607423}
   m_Father: {fileID: 402776508}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 16200}
+  m_SizeDelta: {x: 1920, y: 14000}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1789016982
 MonoBehaviour:
@@ -8054,7 +7805,38 @@ MonoBehaviour:
   target: {fileID: 1806869829}
   videoPlayer: {fileID: 1746786660}
   unlockButton: {fileID: 1043838020}
+  holdTarget: {fileID: 0}
+  holdPulseScale: 1.03
+  holdPulseSpeed: 6
+  snapOnApproach: 1
+  snapThreshold: 0.35
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  contentLock: {fileID: 0}
+  debugLog: 1
+  debugInterval: 0.5
   centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
+  useVisibleRatio: 1
+  requireCenterForLock: 1
+  visibleThreshold: 0.5
+  lockOncePerPage: 1
+  resetLockWhenOutOfView: 1
+  resetVisibleRatio: 0.02
+  unlockTimeout: 0
+  endTimeEpsilon: 0.05
 --- !u!1 &1809907335
 GameObject:
   m_ObjectHideFlags: 0
@@ -9263,7 +9045,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033605875}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c09aebb600c8d242a3cfb10292e8a62, type: 3}
   m_Name: 
@@ -9271,12 +9053,44 @@ MonoBehaviour:
   scrollRect: {fileID: 840654794}
   viewport: {fileID: 402776508}
   target: {fileID: 2033605876}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.001
+  centerTolerance: 0.2
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 0}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.25
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!1 &2110885289
 GameObject:
   m_ObjectHideFlags: 0

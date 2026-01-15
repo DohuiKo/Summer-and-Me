@@ -1,48 +1,90 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/// 처음엔 ScrollRect를 꺼 두고, Unlock() 호출 시 세로 스크롤을 켭니다.
+/// 처음??ScrollRect�?�??�고, Unlock() ?�출 ???�로 ?�크롤을 �?��??
 public class ScollUnloker : MonoBehaviour
 {
     [Header("Target")]
-    public ScrollRect scrollRect;           // 대상 ScrollRect (Scroll View)
+    public ScrollRect scrollRect;           // ?�??ScrollRect (Scroll View)
 
     [Header("Unlock Options")]
-    public bool allowHorizontal = false;    // 해제 후 가로 스크롤 허용 여부
-    public bool enableInertia = true;       // 해제 시 관성 사용
+    public bool allowHorizontal = false;    // ?�제 ??가�??�크�??�용 ?��?
+    public bool enableInertia = true;       // ?�제 ??관???�용
+    public bool unlockContentLocks = true;  // ContentLockManager???�께 ?�제
+    public bool disableContentLocksAfterUnlock = false; // ?�제 ???�잠�?방�?
 
     void Awake()
     {
         if (!scrollRect) scrollRect = GetComponent<ScrollRect>();
-        Lock(); // 시작 시 잠금
+        disableContentLocksAfterUnlock = false;
+        Lock(); // ?�작 ???�금
     }
 
-    // 버튼 OnClick에 연결: 스크롤 해제
+    // 버튼 OnClick???�결: ?�크�??�제
     public void Unlock()
     {
+        if (unlockContentLocks)
+            StartCoroutine(UnlockContentLocksAfterFrame());
+
         if (!scrollRect) return;
 
-        // Unlock 하기 전에 현재 위치를 저장
+        // Unlock ?�기 ?�에 ?�재 ?�치�??�??
         Vector2 currentPosition = scrollRect.normalizedPosition;
 
-        scrollRect.enabled = true;      // 컴포넌트 켜기
-        scrollRect.vertical = true;     // 세로 스크롤 허용
+        scrollRect.enabled = true;      // 컴포?�트 켜기
+        scrollRect.vertical = true;     // ?�로 ?�크�??�용
         scrollRect.horizontal = allowHorizontal;
         scrollRect.inertia = enableInertia;
 
-        // 잔류 속도 제거
+        // ?�류 ?�도 ?�거
         scrollRect.velocity = Vector2.zero;
 
-        // 스크롤 잠금 해제 후 원래 위치로 복원
+        // ?�크�??�금 ?�제 ???�래 ?�치�?복원
         scrollRect.normalizedPosition = currentPosition;
     }
 
-    // 필요하면 다시 잠그기
+    // ?�요?�면 ?�시 ?�그�?
+    System.Collections.IEnumerator UnlockContentLocksAfterFrame()
+    {
+#if UNITY_2023_1_OR_NEWER
+        var locks = Object.FindObjectsByType<ContentLockManager>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None);
+#else
+        var locks = Object.FindObjectsOfType<ContentLockManager>(true);
+#endif
+        foreach (var cl in locks)
+        {
+            if (cl != null && cl.IsLocked)
+                cl.UnlockContent();
+        }
+
+        // Wait two frames so UnlockContent() coroutine can complete before disabling.
+        yield return null;
+        yield return null;
+
+        if (!disableContentLocksAfterUnlock)
+            yield break;
+
+#if UNITY_2023_1_OR_NEWER
+        locks = Object.FindObjectsByType<ContentLockManager>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None);
+#else
+        locks = Object.FindObjectsOfType<ContentLockManager>(true);
+#endif
+        foreach (var cl in locks)
+        {
+            if (cl != null)
+            {
+                cl.enabled = false;
+            }
+        }
+    }
+
     public void Lock()
     {
         if (!scrollRect) return;
 
-        scrollRect.enabled = false;     // 컴포넌트 자체 비활성화 (완전 잠금)
+        scrollRect.enabled = false;     // 컴포?�트 ?�체 비활?�화 (?�전 ?�금)
         scrollRect.vertical = false;
         scrollRect.horizontal = false;
         scrollRect.inertia = false;

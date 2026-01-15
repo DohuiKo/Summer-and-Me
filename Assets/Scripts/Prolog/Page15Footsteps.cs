@@ -97,19 +97,15 @@ public class Page15Footsteps : MonoBehaviour
         if (stepCount == 0 && !IsPageCentered()) return;
 
         float input = Input.GetAxisRaw("Vertical");
+        bool keyPressedNow = input > 0.5f;
+        bool mousePressedNow = Input.GetMouseButtonDown(0);
 
-        if (input > 0.5f)
+        if (mousePressedNow || (keyPressedNow && !isKeyPressed))
         {
-            if (!isKeyPressed)
-            {
-                StepOnce();
-                isKeyPressed = true;
-            }
+            StepOnce();
         }
-        else
-        {
-            isKeyPressed = false;
-        }
+
+        isKeyPressed = keyPressedNow;
     }
 
     void StepOnce()

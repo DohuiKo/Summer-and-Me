@@ -1,6 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ContentLockManager : MonoBehaviour
 {
@@ -8,31 +10,92 @@ public class ContentLockManager : MonoBehaviour
     public ScrollRect scrollRect;
     public RectTransform viewport;
     public RectTransform target;
+    public bool useChildGraphicCenter = true;
+    public string[] excludeGraphicNameContains = new string[] { "modal", "layer", "bg", "background", "modeload", "mode", "load" };
+    public string lockTargetName = "LockTarget";
 
     [Header("Behavior")]
-    // 0_prolog 씬: 켜짐 
-    // SummerRoom 씬: 꺼짐 
+    // 0_prolog ?? 켜짐 
+    // SummerRoom ?? 꺼짐 
     public bool lockOnCenter = false; 
     public bool unlockManually = true;
+    public bool lockOncePerPage = true;
 
     [Header("Trigger (Center-based)")]
     public bool triggerAtCenter = true;
     [Range(0f, 0.5f)] public float centerTolerance = 0.1f;
+    public bool usePixelTolerance = true;
+    public float centerTolerancePx = 20f;
+
+    [Header("Center Tuning")]
+    public bool autoTightenCenterTolerance = true;
+    public float autoCenterTolerancePx = 5f;
+    public float autoCenterToleranceRatio = 0.01f;
 
     [Header("UI Refs")]
     public GameObject unlockButton; 
     public float fadeDuration = 1f;
 
-    // 내부 상태
+    [Header("Snap to Center (Optional)")]
+    public bool snapOnApproach = false;
+    public bool snapOnlyInProlog = true;
+    public bool snapUseVisibleRatio = true;
+    [Range(0.05f, 1f)] public float snapThreshold = 0.25f;
+    public float snapDuration = 0.35f;
+    public bool snapStopVelocity = true;
+    public bool snapDisableInertia = true;
+    public bool autoEnableSnapInProlog = true;
+
+    [Header("Snap Tuning")]
+    public bool autoTuneSnap = true;
+    public float autoSnapThreshold = 0.65f;
+    public float autoSnapDuration = 0.6f;
+
+    [Header("Auto Snap (Chapter 4)")]
+    public bool autoEnableSnapInChapter4 = true;
+
+    [Header("Scroll Tuning")]
+    public bool autoTuneScrollSensitivity = true;
+    public float autoScrollSensitivity = 1.5f;
+
+    [Header("Scroll Bounds")]
+    public bool autoClampScroll = true;
+    public float autoElasticity = 0f;
+
+    [Header("Auto Lock (Prolog Only)")]
+    public bool autoEnableLockInProlog = true;
+
+    [Header("LockTarget")]
+    public bool autoCenterLockTarget = true;
+
+    [Header("Debug")]
+    public bool debugLog = false;
+    public float debugInterval = 0.5f;
+
+    // ?��? ?�태
     private bool isLocked = false;
     private bool centerArmed = true;
+    private Coroutine snapCo;
+    private bool snapSaved = false;
+    private bool snapPrevInertia = false;
+    private bool pendingLockAfterSnap = false;
+    private float nextDebugTime = 0f;
+    private bool snapArmed = true;
+    private bool hasLockedOnce = false;
+    private bool unlockRequested = false;
+    private Button unlockBtnComponent;
+    private bool lockedByThis = false;
+    private bool lockedContentPosSaved = false;
+    private Vector2 lockedContentPos;
+    private Coroutine lockEnforceCo;
+    private bool layoutReady = false;
 
-    // ✨ [추가된 유일한 코드] 
-    // 기존 isLocked 변수를 외부에서 '읽기만' 가능하게 함. 
-    // 로직에는 전혀 영향을 주지 않으니 안심하세요.
+    // ??[추�????�일??코드] 
+    // 기존 isLocked 변?��? ?��??�서 '?�기�? 가?�하�??? 
+    // 로직?�는 ?��? ?�향??주�? ?�으???�심?�세??
     public bool IsLocked => isLocked;
 
-    // ScrollRect 상태 저장/복원
+    // ScrollRect ?�태 ?�??복원
     bool prevEnabled, prevVertical, prevHorizontal, prevInertia;
     bool saved = false;
 
@@ -53,38 +116,145 @@ public class ContentLockManager : MonoBehaviour
     void OnEnable()
     {
         if (scrollRect) scrollRect.onValueChanged.AddListener(OnScrolled);
+
+        if (unlockButton && unlockBtnComponent == null)
+            unlockBtnComponent = unlockButton.GetComponent<Button>();
+        if (unlockBtnComponent)
+            unlockBtnComponent.onClick.AddListener(UnlockContent);
+
+        if (SceneManager.GetActiveScene().name == "0_prolog" && !lockOncePerPage)
+            lockOncePerPage = true;
+
+        if (autoEnableSnapInProlog && snapOnlyInProlog && SceneManager.GetActiveScene().name == "0_prolog")
+            snapOnApproach = true;
+
+        if (autoEnableSnapInChapter4)
+        {
+            string sceneName = SceneManager.GetActiveScene().name;
+            if (sceneName == "4_what_i_say" || sceneName == "4_mirror")
+            {
+                snapOnApproach = true;
+                snapOnlyInProlog = false;
+            }
+        }
+
+        if (autoEnableLockInProlog && SceneManager.GetActiveScene().name == "0_prolog")
+            AutoConfigurePrologLocks();
+
+        if (autoCenterLockTarget)
+            CenterLockTarget();
+
+        if (autoTightenCenterTolerance)
+        {
+            if (usePixelTolerance)
+                centerTolerancePx = autoCenterTolerancePx;
+            else
+                centerTolerance = autoCenterToleranceRatio;
+        }
+
+        if (autoTuneSnap)
+        {
+            snapThreshold = autoSnapThreshold;
+            snapDuration = autoSnapDuration;
+        }
+
+        if (autoTuneScrollSensitivity && scrollRect)
+            scrollRect.scrollSensitivity = autoScrollSensitivity;
+
+        if (autoClampScroll && scrollRect)
+        {
+            scrollRect.movementType = ScrollRect.MovementType.Clamped;
+            scrollRect.elasticity = autoElasticity;
+        }
         
-        // SummerRoom (lockOnCenter=false, unlockManually=true) 초기 락
+        // SummerRoom (lockOnCenter=false, unlockManually=true) 초기 ??
         if (!lockOnCenter && unlockManually)
         {
             StartCoroutine(DelayedLock()); 
         }
+
+        layoutReady = false;
+        StartCoroutine(DelayedEvaluate());
     }
     
     void OnDisable()
     {
         if (scrollRect) scrollRect.onValueChanged.RemoveListener(OnScrolled);
+        if (unlockBtnComponent)
+            unlockBtnComponent.onClick.RemoveListener(UnlockContent);
+    }
+
+    void LateUpdate()
+    {
+        if (!isLocked || !scrollRect) return;
+        if (scrollRect.enabled || scrollRect.vertical || scrollRect.horizontal || scrollRect.inertia)
+        {
+            scrollRect.enabled = false;
+            scrollRect.vertical = false;
+            scrollRect.horizontal = false;
+            scrollRect.inertia = false;
+            scrollRect.velocity = Vector2.zero;
+        }
+        if (lockedContentPosSaved && scrollRect.content)
+            scrollRect.content.anchoredPosition = lockedContentPos;
     }
     
-    // SummerRoom 씬의 안정적인 초기 잠금을 위한 코루틴
+    // SummerRoom ?�의 ?�정?�인 초기 ?�금???�한 코루??
     IEnumerator DelayedLock()
     {
         yield return null; 
         LockScroll();
     }
 
+    IEnumerator DelayedEvaluate()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        Canvas.ForceUpdateCanvases();
+        layoutReady = true;
+        Evaluate();
+    }
+
     void OnScrolled(Vector2 _) => Evaluate();
 
-    // ───────────────────── Core ─────────────────────
+    // ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?� Core ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
     void Evaluate()
     {
+        if (!layoutReady) return;
         if (!viewport || !target) return;
+        if (lockOncePerPage && hasLockedOnce && !isLocked) return;
 
-        // 수동 해제 모드에서는 잠금 상태일 때 스크롤링 중 잠금 로직을 실행하지 않습니다.
+        if (debugLog && Time.unscaledTime >= nextDebugTime)
+        {
+            float visibleRatio = GetVisibleRatio();
+            bool centered = IsCentered();
+            RectTransform effective = GetEffectiveTarget();
+            string targetName = target ? target.name : "null";
+            string effectiveName = effective ? effective.name : "null";
+            Debug.Log($"[ContentLockManager] locked={isLocked} lockOnce={lockOncePerPage} hasLockedOnce={hasLockedOnce} lockOnCenter={lockOnCenter} triggerAtCenter={triggerAtCenter} vis={visibleRatio:F2} centered={centered} snap={(snapCo != null)} target={targetName} effectiveTarget={effectiveName}", this);
+            nextDebugTime = Time.unscaledTime + Mathf.Max(0.1f, debugInterval);
+        }
+
+        if (snapArmed && ShouldSnap())
+        {
+            if (snapCo == null && !isLocked)
+            {
+                BeginSnap();
+                pendingLockAfterSnap = lockOnCenter || triggerAtCenter;
+                snapArmed = false;
+                snapCo = StartCoroutine(SnapToCenter());
+            }
+        }
+        else if (!snapArmed && ShouldRearmSnap())
+        {
+            snapArmed = true;
+        }
+
+        // ?�동 ?�제 모드?�서???�금 ?�태?????�크롤링 �??�금 로직???�행?��? ?�습?�다.
         if (unlockManually && isLocked) return; 
         
-        // 중앙 도달 시 잠금 기능 (스크롤링 중 동작)
-        if (triggerAtCenter)
+        // 중앙 ?�달 ???�금 기능 (?�크롤링 �??�작)
+        if (triggerAtCenter || lockOnCenter)
         {
             bool centered = IsCentered();
 
@@ -100,18 +270,34 @@ public class ContentLockManager : MonoBehaviour
         }
     }
     
-    // ───────────────── Visibility / Center ──────────
+    // ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?� Visibility / Center ?�?�?�?�?�?�?�?�?�?�
     bool IsCentered()
     {
-        Rect rv = GetScreenRect(viewport);
-        Rect rt = GetScreenRect(target);
+        RectTransform effectiveTarget = GetEffectiveTarget();
+        if (!scrollRect || !scrollRect.content || !viewport || !effectiveTarget) return false;
 
-        Vector2 vpCenter = rv.center;
-        if (!rt.Contains(vpCenter)) return false;
-
-        float dy = Mathf.Abs(vpCenter.y - rt.center.y);
-        float tolPx = rt.height * Mathf.Max(0f, centerTolerance);
+        float dy = GetCenterDistancePx(effectiveTarget);
+        float tolPx = usePixelTolerance
+            ? Mathf.Max(0f, centerTolerancePx)
+            : effectiveTarget.rect.height * Mathf.Max(0f, centerTolerance);
         return dy <= tolPx;
+    }
+
+    float GetCenterDistancePx(RectTransform effectiveTarget)
+    {
+        Vector2 vpLocal;
+        Vector2 tgtLocal;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            scrollRect.content,
+            RectTransformUtility.WorldToScreenPoint(uiCam, viewport.TransformPoint(viewport.rect.center)),
+            uiCam,
+            out vpLocal);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            scrollRect.content,
+            RectTransformUtility.WorldToScreenPoint(uiCam, effectiveTarget.TransformPoint(effectiveTarget.rect.center)),
+            uiCam,
+            out tgtLocal);
+        return Mathf.Abs(vpLocal.y - tgtLocal.y);
     }
 
     Rect GetScreenRect(RectTransform rt)
@@ -126,44 +312,79 @@ public class ContentLockManager : MonoBehaviour
         return new Rect(xMin,yMin,xMax-xMin,yMax-yMin);
     }
 
-    // ───────── Lock / Unlock ─────────
+    // ?�?�?�?�?�?�?�?�?� Lock / Unlock ?�?�?�?�?�?�?�?�?�
     void LockScroll()
     {
         if (!scrollRect || isLocked) return;
 
-        // 현재 스크롤 설정 저장
+        if (snapCo != null)
+        {
+            StopCoroutine(snapCo);
+            snapCo = null;
+            EndSnap();
+        }
+        pendingLockAfterSnap = false;
+
+        // ?�재 ?�크�??�정 ?�??
         prevEnabled = scrollRect.enabled;
         prevVertical = scrollRect.vertical;
         prevHorizontal = scrollRect.horizontal;
         prevInertia = scrollRect.inertia;
         saved = true;
 
-        // 스크롤 비활성화 (잠금)
+        // ?�크�?비활?�화 (?�금)
         scrollRect.enabled = false;
         scrollRect.vertical = false;
         scrollRect.horizontal = false;
         scrollRect.inertia = false;
         scrollRect.velocity = Vector2.zero;
 
+        if (scrollRect.content)
+        {
+            // Force content to the exact center before locking.
+            scrollRect.content.anchoredPosition = GetContentPositionForCenter(scrollRect.content);
+            lockedContentPos = scrollRect.content.anchoredPosition;
+            lockedContentPosSaved = true;
+        }
+
         isLocked = true;
+        lockedByThis = true;
+        if (lockEnforceCo == null)
+            lockEnforceCo = StartCoroutine(EnforceLock());
         centerArmed = false;
+        hasLockedOnce = true;
+        if (debugLog)
+            Debug.Log($"[ContentLockManager] LOCK by {name} target={(target ? target.name : "null")}", this);
+
+        if (unlockRequested)
+        {
+            UnlockContent();
+            return;
+        }
     }
 
-    // 버튼 OnClick 이벤트에 직접 연결될 함수
+    // 버튼 OnClick ?�벤?�에 직접 ?�결???�수
     public void UnlockContent() 
     {
-        // UnlockContent가 호출되면 코루틴을 시작하여 안전하게 해제 및 비활성화
-        if (!isLocked) return;
+        // UnlockContent가 ?�출?�면 코루?�을 ?�작?�여 ?�전?�게 ?�제 �?비활?�화
+        if (!isLocked)
+        {
+            if (!IsCentered()) return;
+            unlockRequested = true;
+            if (debugLog)
+                Debug.Log($"[ContentLockManager] UNLOCK requested before lock by {name} target={(target ? target.name : "null")}", this);
+            return;
+        }
         StartCoroutine(UnlockAndDisableCoroutine());
     }
 
     IEnumerator UnlockAndDisableCoroutine()
     {
-        yield return null; // 한 프레임 대기
+        yield return null; // ???�레???��?
 
         if (!scrollRect || !isLocked) yield break;
 
-        // 저장된 설정 복원 (스크롤 잠금 해제 로직)
+        // ?�?�된 ?�정 복원 (?�크�??�금 ?�제 로직)
         if (saved)
         {
             scrollRect.enabled = prevEnabled;
@@ -179,12 +400,45 @@ public class ContentLockManager : MonoBehaviour
             scrollRect.inertia = true;
         }
         isLocked = false;
+        hasLockedOnce = true;
+        unlockRequested = false;
+        lockedContentPosSaved = false;
+        if (lockedByThis)
+        {
+            scrollRect.enabled = true;
+            scrollRect.vertical = true;
+            lockedByThis = false;
+        }
+        if (lockEnforceCo != null)
+        {
+            StopCoroutine(lockEnforceCo);
+            lockEnforceCo = null;
+        }
+        if (debugLog)
+            Debug.Log($"[ContentLockManager] UNLOCK by {name} target={(target ? target.name : "null")}", this);
         
-        // ⭐ 핵심: 스크롤 잠금 해제 후 이 스크립트 컴포넌트를 비활성화하여 재잠금을 영구 중단
-        enabled = false;
+        // �??�심: ?�크�??�금 ?�제 ?????�크립트 컴포?�트�?비활?�화?�여 ?�잠금을 ?�구 중단
+        // Keep this component enabled so later pages can lock again.
     }
 
-    // Prologue 씬의 다른 스크립트 호환성을 위한 함수
+    // Prologue ?�의 ?�른 ?�크립트 ?�환?�을 ?�한 ?�수
+    IEnumerator EnforceLock()
+    {
+        var wait = new WaitForEndOfFrame();
+        while (isLocked && scrollRect)
+        {
+            yield return wait;
+            scrollRect.enabled = false;
+            scrollRect.vertical = false;
+            scrollRect.horizontal = false;
+            scrollRect.inertia = false;
+            scrollRect.velocity = Vector2.zero;
+            if (lockedContentPosSaved && scrollRect.content)
+                scrollRect.content.anchoredPosition = lockedContentPos;
+        }
+        lockEnforceCo = null;
+    }
+
     public void ShowUnlockButton()
     {
         if (unlockButton != null)
@@ -192,4 +446,224 @@ public class ContentLockManager : MonoBehaviour
             unlockButton.SetActive(true); 
         }
     }
+
+    void AutoConfigurePrologLocks()
+    {
+        lockOnCenter = true;
+        triggerAtCenter = true;
+    }
+
+    bool ShouldSnap()
+    {
+        if (!snapOnApproach) return false;
+        if (snapOnlyInProlog && SceneManager.GetActiveScene().name != "0_prolog") return false;
+        if (!scrollRect || !scrollRect.content || !viewport || !GetEffectiveTarget()) return false;
+        if (!triggerAtCenter && !lockOnCenter) return false;
+
+        if (snapUseVisibleRatio)
+        {
+            RectTransform effectiveTarget = GetEffectiveTarget();
+            float area = effectiveTarget ? Mathf.Abs(effectiveTarget.rect.width * effectiveTarget.rect.height) : 0f;
+            if (area > 1f)
+                return GetVisibleRatio() >= Mathf.Clamp01(snapThreshold);
+        }
+
+        RectTransform targetRt = GetEffectiveTarget();
+        float dy = GetCenterDistancePx(targetRt);
+        float thresholdPx = Mathf.Clamp01(snapThreshold) * viewport.rect.height;
+        return dy <= thresholdPx;
+    }
+
+    bool ShouldRearmSnap()
+    {
+        if (!snapOnApproach) return false;
+        if (!scrollRect || !scrollRect.content || !viewport || !GetEffectiveTarget()) return false;
+
+        if (snapUseVisibleRatio)
+        {
+            RectTransform effectiveTarget = GetEffectiveTarget();
+            float area = effectiveTarget ? Mathf.Abs(effectiveTarget.rect.width * effectiveTarget.rect.height) : 0f;
+            if (area > 1f)
+                return GetVisibleRatio() < Mathf.Clamp01(snapThreshold);
+        }
+
+        RectTransform targetRt = GetEffectiveTarget();
+        float dy = GetCenterDistancePx(targetRt);
+        float thresholdPx = Mathf.Clamp01(snapThreshold) * viewport.rect.height;
+        return dy > thresholdPx;
+    }
+
+    float GetVisibleRatio()
+    {
+        RectTransform effectiveTarget = GetEffectiveTarget();
+        if (!effectiveTarget) return 0f;
+        Rect rv = GetScreenRect(viewport);
+        Rect rt = GetScreenRect(effectiveTarget);
+        if (rt.width <= 0f || rt.height <= 0f) return 0f;
+
+        float xMin = Mathf.Max(rv.xMin, rt.xMin);
+        float yMin = Mathf.Max(rv.yMin, rt.yMin);
+        float xMax = Mathf.Min(rv.xMax, rt.xMax);
+        float yMax = Mathf.Min(rv.yMax, rt.yMax);
+
+        float iw = Mathf.Max(0f, xMax - xMin);
+        float ih = Mathf.Max(0f, yMax - yMin);
+        float interArea = iw * ih;
+        float targetArea = rt.width * rt.height;
+        return targetArea > 0f ? (interArea / targetArea) : 0f;
+    }
+
+    void BeginSnap()
+    {
+        if (!scrollRect) return;
+        if (snapStopVelocity) scrollRect.velocity = Vector2.zero;
+
+        if (snapDisableInertia && !snapSaved)
+        {
+            snapSaved = true;
+            snapPrevInertia = scrollRect.inertia;
+            scrollRect.inertia = false;
+        }
+    }
+
+    void EndSnap()
+    {
+        if (!scrollRect) return;
+        if (snapSaved)
+        {
+            scrollRect.inertia = snapPrevInertia;
+            snapSaved = false;
+        }
+    }
+
+    IEnumerator SnapToCenter()
+    {
+        if (!scrollRect || !scrollRect.content || !viewport || !GetEffectiveTarget())
+        {
+            snapCo = null;
+            yield break;
+        }
+
+        RectTransform content = scrollRect.content;
+        Vector2 start = content.anchoredPosition;
+        Vector2 targetPos = GetContentPositionForCenter(content);
+
+        float t = 0f;
+        float dur = Mathf.Max(0.05f, snapDuration);
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / dur;
+            content.anchoredPosition = Vector2.Lerp(start, targetPos, Mathf.SmoothStep(0f, 1f, t));
+            yield return null;
+        }
+        content.anchoredPosition = targetPos;
+        EndSnap();
+        if (pendingLockAfterSnap && !isLocked && (lockOnCenter || triggerAtCenter) && !(lockOncePerPage && hasLockedOnce))
+        {
+            pendingLockAfterSnap = false;
+            LockScroll();
+        }
+        snapCo = null;
+    }
+
+    Vector2 GetContentPositionForCenter(RectTransform content)
+    {
+        Vector3 vpCenterW = viewport.TransformPoint(viewport.rect.center);
+        RectTransform effectiveTarget = GetEffectiveTarget();
+        if (!effectiveTarget) return content.anchoredPosition;
+        Vector3 tgtCenterW = effectiveTarget.TransformPoint(effectiveTarget.rect.center);
+
+        Vector2 vpLocal;
+        Vector2 tgtLocal;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            content, RectTransformUtility.WorldToScreenPoint(uiCam, vpCenterW), uiCam, out vpLocal);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            content, RectTransformUtility.WorldToScreenPoint(uiCam, tgtCenterW), uiCam, out tgtLocal);
+
+        Vector2 delta = vpLocal - tgtLocal;
+        return content.anchoredPosition + new Vector2(0f, delta.y);
+    }
+
+    RectTransform GetEffectiveTarget()
+    {
+        RectTransform namedTarget = FindLockTarget();
+        if (namedTarget) return namedTarget;
+        if (!useChildGraphicCenter || !target) return target;
+
+        Graphic[] graphics = target.GetComponentsInChildren<Graphic>(true);
+        RectTransform best = null;
+        float bestArea = 0f;
+
+        foreach (Graphic graphic in graphics)
+        {
+            if (!graphic) continue;
+            RectTransform rt = graphic.rectTransform;
+            if (!rt) continue;
+            if (rt == target) continue;
+            if (ShouldExcludeGraphic(rt.name)) continue;
+            if (!HasRenderableSource(graphic)) continue;
+            Rect r = rt.rect;
+            float area = Mathf.Abs(r.width * r.height);
+            if (area <= 0f) continue;
+            if (area > bestArea)
+            {
+                bestArea = area;
+                best = rt;
+            }
+        }
+
+        return best ? best : target;
+    }
+
+    RectTransform FindLockTarget()
+    {
+        if (!target || string.IsNullOrEmpty(lockTargetName)) return null;
+        RectTransform[] children = target.GetComponentsInChildren<RectTransform>(true);
+        foreach (RectTransform child in children)
+        {
+            if (child && child.name == lockTargetName)
+                return child;
+        }
+        return null;
+    }
+
+    void CenterLockTarget()
+    {
+        RectTransform lt = FindLockTarget();
+        if (!lt || !target) return;
+        lt.anchorMin = new Vector2(0.5f, 0.5f);
+        lt.anchorMax = new Vector2(0.5f, 0.5f);
+        lt.pivot = new Vector2(0.5f, 0.5f);
+        lt.anchoredPosition = Vector2.zero;
+        lt.sizeDelta = target.rect.size;
+    }
+
+    bool ShouldExcludeGraphic(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return false;
+        if (excludeGraphicNameContains == null || excludeGraphicNameContains.Length == 0) return false;
+        string lower = name.ToLowerInvariant();
+        foreach (string token in excludeGraphicNameContains)
+        {
+            if (string.IsNullOrEmpty(token)) continue;
+            if (lower.Contains(token.ToLowerInvariant())) return true;
+        }
+        return false;
+    }
+
+    bool HasRenderableSource(Graphic graphic)
+    {
+        Image image = graphic as Image;
+        if (image != null)
+            return image.sprite != null;
+
+        RawImage raw = graphic as RawImage;
+        if (raw != null)
+            return raw.texture != null;
+
+        return true;
+    }
 }
+
+
+

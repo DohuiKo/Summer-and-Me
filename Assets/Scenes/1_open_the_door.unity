@@ -348,11 +348,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 245908821}
+  - {fileID: 346777437}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -540}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &137511987
@@ -387,12 +388,47 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 137511986}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.05
+  centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 5
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 981297323}
   fadeDuration: 0.1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!114 &137511989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1430,6 +1466,41 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &346777436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 346777437}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &346777437
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346777436}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 137511986}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &410709975
 GameObject:
   m_ObjectHideFlags: 0
@@ -2264,6 +2335,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 579530824}
   m_CullTransparentMesh: 1
+--- !u!1 &613631842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 613631843}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &613631843
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613631842}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1742659097}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &651813616
 GameObject:
   m_ObjectHideFlags: 0
@@ -3028,17 +3134,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 762307225}
-        m_TargetAssemblyTypeName: GaeulPhoneMoment, Assembly-CSharp
-        m_MethodName: OnTap
-        m_Mode: 1
+      - m_Target: {fileID: 981297323}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &762307223
 MonoBehaviour:
@@ -3085,7 +3191,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 762307219}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8453b356932bac4681251d2c4d92520, type: 3}
   m_Name: 
@@ -3248,11 +3354,12 @@ RectTransform:
   - {fileID: 270355014}
   - {fileID: 1696818456}
   - {fileID: 139643511}
+  - {fileID: 1061869702}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -6480}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &774138128
@@ -3270,12 +3377,47 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 774138127}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
   centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 5
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 0}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!114 &774138129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4836,11 +4978,12 @@ RectTransform:
   m_Children:
   - {fileID: 786350821}
   - {fileID: 1553436703}
+  - {fileID: 1705629168}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -1620}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &997986460
@@ -4896,12 +5039,47 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 997986459}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.001
+  centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 5
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 981297323}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!1 &1017428654
 GameObject:
   m_ObjectHideFlags: 0
@@ -4977,6 +5155,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1017428654}
   m_CullTransparentMesh: 1
+--- !u!1 &1061869701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1061869702}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1061869702
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061869701}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 774138127}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1066035767
 GameObject:
   m_ObjectHideFlags: 0
@@ -6103,6 +6316,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1294808573}
   m_CullTransparentMesh: 1
+--- !u!1 &1299460281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1299460282}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1299460282
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299460281}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2127125430}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1302202585
 GameObject:
   m_ObjectHideFlags: 0
@@ -6495,6 +6743,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b906559cfd66448ba4769dde0f94c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SafeAreaFitter
+--- !u!1 &1366043776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1366043777}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1366043777
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366043776}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1826487519}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1446453388
 GameObject:
   m_ObjectHideFlags: 0
@@ -7111,11 +7394,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1118871191}
+  - {fileID: 2076303802}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -4860}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1608877462
@@ -7171,12 +7455,47 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 1608877461}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.001
+  centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 5
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 981297323}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!1 &1624548003
 GameObject:
   m_ObjectHideFlags: 0
@@ -7606,7 +7925,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 822616362273894945, guid: fedf733459fc45345a43049ed4954f9a, type: 3}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -7822,6 +8141,41 @@ MonoBehaviour:
   fadeInTime: 0
   allowSceneActivation: 1
   progressBar: {fileID: 0}
+--- !u!1 &1705629167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1705629168}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1705629168
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705629167}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 997986459}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1712745338
 GameObject:
   m_ObjectHideFlags: 0
@@ -8090,11 +8444,12 @@ RectTransform:
   - {fileID: 1581894130}
   - {fileID: 1523759597}
   - {fileID: 1311250238}
+  - {fileID: 613631843}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -2160}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1742659098
@@ -8150,12 +8505,47 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 1742659097}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.0001
+  centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 5
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 981297323}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!114 &1742659101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8264,6 +8654,8 @@ MonoBehaviour:
   scrollRect: {fileID: 0}
   allowHorizontal: 0
   enableInertia: 1
+  unlockContentLocks: 1
+  disableContentLocksAfterUnlock: 0
 --- !u!114 &1805780644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8343,11 +8735,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 762307220}
+  - {fileID: 1366043777}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -5940}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1826487520
@@ -8365,12 +8758,47 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 1826487519}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.001
+  centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 5
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 981297323}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!114 &1826487521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9374,6 +9802,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067373700}
   m_CullTransparentMesh: 1
+--- !u!1 &2076303801
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2076303802}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2076303802
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076303801}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1608877461}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2101357300
 GameObject:
   m_ObjectHideFlags: 0
@@ -9540,11 +10003,12 @@ RectTransform:
   m_Children:
   - {fileID: 200596993}
   - {fileID: 717950018}
+  - {fileID: 1299460282}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -3780}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2127125431
@@ -9600,12 +10064,47 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 2127125430}
+  useChildGraphicCenter: 1
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
-  centerTolerance: 0.001
+  centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 5
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
   unlockButton: {fileID: 981297323}
   fadeDuration: 1
+  snapOnApproach: 1
+  snapOnlyInProlog: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.75
+  autoSnapDuration: 0.45
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 0
+  debugInterval: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
