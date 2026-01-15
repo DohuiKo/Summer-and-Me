@@ -230,6 +230,8 @@ public class LaundryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     yield return StartCoroutine(CoFade(canvasGroup, canvasGroup.alpha, 0f, endFadeOutTime));
             }
 
+            LaundryGameManager.Instance?.ShowFailCutForScore();
+
             if (destroyAfterRevert)
                 Destroy(gameObject);
 

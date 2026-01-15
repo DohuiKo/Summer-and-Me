@@ -40,6 +40,7 @@ public class LaundryPile : MonoBehaviour, IPointerClickHandler
     [SerializeField] private FoldingArea foldingArea;
 
     private int currentSetIndex = 0;
+    private bool startCutShown = false;
 
 
     // ───────────────────────────────────────────────
@@ -47,6 +48,7 @@ public class LaundryPile : MonoBehaviour, IPointerClickHandler
     // ───────────────────────────────────────────────
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (CutPopupManager.IsShowing) return;
         // 클리어 후에는 생성 X
         if (LaundryGameManager.Instance != null && LaundryGameManager.Instance.IsGameCleared())
             return;
@@ -55,14 +57,24 @@ public class LaundryPile : MonoBehaviour, IPointerClickHandler
         if (foldingArea != null && foldingArea.GetCurrentItem() != null)
             return;
 
-        SpawnLaundry(eventData);
+        var cutPopup = CutPopupManager.GetOrFind();
+        if (!startCutShown && currentSetIndex == 0 && cutPopup != null)
+        {
+            startCutShown = true;
+            Vector2 screenPos = eventData.position;
+            Camera cam = eventData.pressEventCamera;
+            cutPopup.ShowCut(0, () => SpawnLaundry(screenPos, cam));
+            return;
+        }
+
+        SpawnLaundry(eventData.position, eventData.pressEventCamera);
     }
 
 
     // ───────────────────────────────────────────────
     //  빨래 스폰 로직
     // ───────────────────────────────────────────────
-    private void SpawnLaundry(PointerEventData eventData)
+    private void SpawnLaundry(Vector2 screenPos, Camera eventCamera)
     {
         if (laundryItemPrefab == null || laundrySets == null || laundrySets.Length == 0)
             return;
@@ -77,8 +89,8 @@ public class LaundryPile : MonoBehaviour, IPointerClickHandler
         // 클릭 지점으로 위치 이동
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             spawnParent as RectTransform,
-            eventData.position,
-            eventData.pressEventCamera,
+            screenPos,
+            eventCamera,
             out Vector2 localPoint
         );
         rect.anchoredPosition = localPoint;

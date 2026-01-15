@@ -55,6 +55,7 @@ public class LaundryGameManager : MonoBehaviour
     void Update()
     {
         if (isGameCleared) return;
+        if (CutPopupManager.IsShowing) return;
 
         // ── 입력 체크 (신·구 병행) ───────────────────────────────
         bool spacePressed = false;
@@ -91,6 +92,15 @@ public class LaundryGameManager : MonoBehaviour
             StartCoroutine(ShowClearScreen());
     }
 
+    public void ShowFailCutForScore()
+    {
+        var cutPopup = CutPopupManager.GetOrFind();
+        if (cutPopup == null) return;
+        if (score < 1) return;
+        int cutIndex = Mathf.Clamp(score, 1, 3);
+        cutPopup.ShowCut(cutIndex);
+    }
+
     private IEnumerator ShowClearScreen()
     {
         isGameCleared = true;
@@ -107,6 +117,9 @@ public class LaundryGameManager : MonoBehaviour
         // 🔹 마지막 빨래 다 접고 난 뒤, 클리어 패널 뜨기 전까지 잠깐 홀딩
         if (delayBeforeClearPanel > 0f)
             yield return new WaitForSeconds(delayBeforeClearPanel);
+
+        if (CutPopupManager.IsShowing)
+            yield return new WaitUntil(() => !CutPopupManager.IsShowing);
 
         if (clearPanel != null)
         {
