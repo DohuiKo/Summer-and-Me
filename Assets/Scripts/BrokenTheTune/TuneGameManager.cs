@@ -22,9 +22,16 @@ public class TuneGameManager : MonoBehaviour
     public Image background;
     public Transform tapeDeck;
 
-    // ‚òÖ Ï∂îÍ∞ÄÎê®: Phase ÌÖçÏä§Ìä∏ UI
+    // ??Ï∂îÍ??? Phase ?çÏä§??UI
     public TextMeshProUGUI phaseText;
 
+    [Header("Fake Fail")]
+    public bool enableFakeFail = true;
+    [Range(0f, 1f)] public float fakeFailChance = 0.2f;
+    public int fakeFailMaxSets = 3;
+    [TextArea] public string[] fakeFailLines = new string[] { "∫–∏Ì µÈæ˙¥¬µ•... ¿ﬂ æ» µÈ∑¡", "∏¬¥¬ ¿Ω¿Œ¡ˆ ∏∏£∞⁄æÓ", "∏µŒ, ¥Ÿ ∞∞¿∫ º“∏Æ∑Œ µÈ∑¡" };
+    public Color fakeFailOverlayColor = new Color(0f, 0f, 0f, 0.6f);
+    public TextMeshProUGUI fakeFailText;
     [Header("Next Scene UI")]
     public Button nextSceneButton;
     public CanvasGroup nextSceneCanvasGroup;
@@ -38,19 +45,32 @@ public class TuneGameManager : MonoBehaviour
     private int clearedNotes = 0;
     private float startTime;
 
-    // ÎÇúÏù¥ÎèÑ ÏôÑÌôî: Ï†ÑÏ≤¥ ÎÖ∏Ìä∏ Í∞úÏàò Í∞êÏÜå
+    // ?úÏù¥???ÑÌôî: ?ÑÏ≤¥ ?∏Ìä∏ Í∞úÏàò Í∞êÏÜå
     private int[] noteCount = { 12, 16, 22 };
 
-    // ÎÇúÏù¥ÎèÑ ÏôÑÌôî: flicker ÏïàÏ†ïÌôî
+    // flicker speed
     private float baseFlickerSpeed = 1.2f;
 
+    // ?úÏù¥???ÑÌôî: flicker ?àÏ†ï??
+    private bool isFakeFailShowing = false;
+    private float fakeFailPrevTimeScale = 1f;
+    private int fakeFailShownCount = 0;
+    private int fakeFailLineIndex = 0;
     void Awake() => Instance = this;
 
     void Start()
     {
         InitializeGame();
+        SetupFakeFailUI();
         if (nextSceneButton != null)
             nextSceneButton.gameObject.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (!isFakeFailShowing) return;
+        if (Input.GetMouseButtonDown(0))
+            HideFakeFailOverlay();
     }
 
     void InitializeGame()
@@ -75,11 +95,11 @@ public class TuneGameManager : MonoBehaviour
         activeNotes.Clear();
         activeObstacles.Clear();
 
-        // ‚òÖ Ï∂îÍ∞ÄÎê®: Phase ÌÖçÏä§Ìä∏ ÏóÖÎç∞Ïù¥Ìä∏
+        // ??Ï∂îÍ??? Phase ?çÏä§???ÖÎç∞?¥Ìä∏
         if (phaseText != null)
             phaseText.text = $"Phase {phase}";
 
-        // ÎÇúÏù¥ÎèÑ ÏôÑÌôî: ÏÉâ ÎåÄÎπÑ ÏôÑÌôî
+        // ?úÏù¥???ÑÌôî: ???ÄÎπ??ÑÌôî
         Color bgColor =
             phase == 1 ? new Color(0.96f, 0.94f, 0.91f) :
             phase == 2 ? new Color(0.92f, 0.89f, 0.87f) :
@@ -91,7 +111,7 @@ public class TuneGameManager : MonoBehaviour
     }
 
     // -----------------------------
-    //      ÎÖ∏Ìä∏ Ïä§Ìè∞ (ÎÇúÏù¥ÎèÑ ÏôÑÌôî)
+    //      ?∏Ìä∏ ?§Ìè∞ (?úÏù¥???ÑÌôî)
     // -----------------------------
     IEnumerator SpawnNotes()
     {
@@ -190,11 +210,12 @@ public class TuneGameManager : MonoBehaviour
     }
 
     // -----------------------------
-    //        ÎÖ∏Ìä∏ ÌÅ¥Î¶≠ Ï≤òÎ¶¨
+    //        ?∏Ìä∏ ?¥Î¶≠ Ï≤òÎ¶¨
     // -----------------------------
     public bool HandleNoteClickAndReturnResult(TuneNote note)
     {
         if (note == null) return false;
+        if (isFakeFailShowing) return false;
 
         bool isSequence = currentPhase >= 2;
 
@@ -223,11 +244,18 @@ public class TuneGameManager : MonoBehaviour
 
         TuneSoundManager.Instance.PlayBrokenSound();
 
-        bool fakeFail = Random.value < 0.20f;
+        bool fakeFail = enableFakeFail && Random.value < fakeFailChance;
         if (fakeFail)
         {
-            StartCoroutine(ScreenShake(0.25f, 8f));
-            yield return new WaitForSeconds(0.08f);
+            TuneSoundManager.Instance.PlayErrorSound();
+            StartCoroutine(ShakeNote(note));
+            StartCoroutine(ScreenShake(0.20f, 3.5f));
+
+            if (fakeFailShownCount < fakeFailMaxSets)
+            {
+                ShowFakeFailOverlay();
+                yield return new WaitUntil(() => !isFakeFailShowing);
+            }
         }
 
         clearedNotes++;
@@ -309,8 +337,80 @@ public class TuneGameManager : MonoBehaviour
     }
 
     // -----------------------------
-    //        Ïà´Ïûê ÍπúÎπ°ÏûÑ (ÏôÑÌôî)
+    //        ?´Ïûê ÍπúÎπ°??(?ÑÌôî)
     // -----------------------------
+    void SetupFakeFailUI()
+    {
+        if (!darkOverlay) return;
+
+        darkOverlay.color = new Color(0f, 0f, 0f, 0f);
+        darkOverlay.raycastTarget = false;
+
+        if (!fakeFailText)
+        {
+            fakeFailText = CreateOverlayText("FakeFailText", new Vector2(0f, 20f), 42f, FontStyles.Bold);
+            var rt = fakeFailText.rectTransform;
+            rt.sizeDelta = new Vector2(900f, 240f);
+        }
+
+        fakeFailText.gameObject.SetActive(false);
+    }
+
+    TextMeshProUGUI CreateOverlayText(string name, Vector2 anchoredPos, float fontSize, FontStyles style)
+    {
+        GameObject go = new GameObject(name, typeof(RectTransform));
+        go.transform.SetParent(darkOverlay.transform, false);
+        RectTransform rt = go.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = anchoredPos;
+
+        TextMeshProUGUI tmp = go.AddComponent<TextMeshProUGUI>();
+        tmp.fontSize = fontSize;
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.fontStyle = style;
+        tmp.color = new Color(1f, 1f, 1f, 0.95f);
+        tmp.enableWordWrapping = true;
+        return tmp;
+    }
+
+    void ShowFakeFailOverlay()
+    {
+        if (!darkOverlay || isFakeFailShowing) return;
+        if (fakeFailLines == null || fakeFailLines.Length == 0) return;
+
+        isFakeFailShowing = true;
+        fakeFailPrevTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+
+        darkOverlay.gameObject.SetActive(true);
+        darkOverlay.color = fakeFailOverlayColor;
+        darkOverlay.raycastTarget = true;
+
+        if (fakeFailText)
+        {
+            fakeFailText.text = fakeFailLines[fakeFailLineIndex % fakeFailLines.Length];
+            fakeFailLineIndex++;
+            fakeFailShownCount++;
+            fakeFailText.gameObject.SetActive(true);
+        }
+    }
+
+    void HideFakeFailOverlay()
+    {
+        if (!isFakeFailShowing) return;
+        isFakeFailShowing = false;
+
+        Time.timeScale = fakeFailPrevTimeScale <= 0f ? 1f : fakeFailPrevTimeScale;
+
+        if (darkOverlay)
+        {
+            darkOverlay.color = new Color(0f, 0f, 0f, 0f);
+            darkOverlay.raycastTarget = false;
+        }
+        if (fakeFailText) fakeFailText.gameObject.SetActive(false);
+    }
     IEnumerator FlickerNotes()
     {
         while (true)
@@ -329,7 +429,7 @@ public class TuneGameManager : MonoBehaviour
     }
 
     // -----------------------------
-    //        ÏßÑÌñâÎèÑ / ÌÅ¥Î¶¨Ïñ¥ Ï≤òÎ¶¨
+    //        ÏßÑÌñâ??/ ?¥Î¶¨??Ï≤òÎ¶¨
     // -----------------------------
     void UpdateProgress()
         => progressBar.value = (float)clearedNotes / noteCount[currentPhase - 1];
