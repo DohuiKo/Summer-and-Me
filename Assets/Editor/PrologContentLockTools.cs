@@ -37,7 +37,7 @@ public static class PrologContentLockTools
         foreach (var cl in locks)
         {
             if (cl == null) continue;
-            ApplyPreset(cl, prologOnly: true);
+            ApplyPreset(cl);
         }
 
         EditorSceneManager.MarkSceneDirty(scene);
@@ -63,7 +63,7 @@ public static class PrologContentLockTools
         foreach (var cl in locks)
         {
             if (cl == null) continue;
-            ApplyPreset(cl, prologOnly: false);
+            ApplyPreset(cl);
         }
 
         EditorSceneManager.MarkSceneDirty(scene);
@@ -187,10 +187,9 @@ public static class PrologContentLockTools
         Debug.Log($"[ContentLockTools] Removed {removed} LockTarget objects in '{scene.name}'.");
     }
 
-    private static void ApplyPreset(ContentLockManager cl, bool prologOnly)
+    private static void ApplyPreset(ContentLockManager cl)
     {
         cl.snapOnApproach = true;
-        cl.snapOnlyInProlog = prologOnly;
         cl.snapUseVisibleRatio = true;
         cl.snapThreshold = SnapThreshold;
         cl.snapDuration = SnapDuration;
@@ -205,7 +204,6 @@ public static class PrologContentLockTools
     private static void DisableSnap(ContentLockManager cl)
     {
         cl.snapOnApproach = false;
-        cl.snapOnlyInProlog = true;
         cl.snapUseVisibleRatio = true;
         cl.snapThreshold = SnapThreshold;
         cl.snapDuration = SnapDuration;

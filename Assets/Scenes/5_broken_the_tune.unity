@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
 OcclusionCullingSettings:
@@ -2998,12 +2998,39 @@ MonoBehaviour:
   scrollRect: {fileID: 0}
   viewport: {fileID: 0}
   target: {fileID: 1818821013}
-  lockOnCenter: 1
-  unlockManually: 1
-  triggerAtCenter: 1
-  centerTolerance: 0.1
   unlockButton: {fileID: 0}
-  fadeDuration: 1
+  useChildGraphicCenter: 1
+  lockTargetName: LockTarget
+  lockOnCenter: 1
+  unlockManually: 0
+  lockOncePerPage: 1
+  triggerAtCenter: 1
+  centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
+  fadeDuration: 0.1
+  snapOnApproach: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!114 &1818821016
 MonoBehaviour:
   m_ObjectHideFlags: 0

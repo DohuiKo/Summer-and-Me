@@ -38,7 +38,6 @@ public class ContentLockManager : MonoBehaviour
 
     [Header("Snap to Center (Optional)")]
     public bool snapOnApproach = false;
-    public bool snapOnlyInProlog = true;
     public bool snapUseVisibleRatio = true;
     [Range(0.05f, 1f)] public float snapThreshold = 0.25f;
     public float snapDuration = 0.35f;
@@ -125,7 +124,7 @@ public class ContentLockManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "0_prolog" && !lockOncePerPage)
             lockOncePerPage = true;
 
-        if (autoEnableSnapInProlog && snapOnlyInProlog && SceneManager.GetActiveScene().name == "0_prolog")
+        if (autoEnableSnapInProlog && SceneManager.GetActiveScene().name == "0_prolog")
             snapOnApproach = true;
 
         if (autoEnableSnapInChapter4)
@@ -134,7 +133,6 @@ public class ContentLockManager : MonoBehaviour
             if (sceneName == "4_what_i_say" || sceneName == "4_mirror")
             {
                 snapOnApproach = true;
-                snapOnlyInProlog = false;
             }
         }
 
@@ -456,7 +454,6 @@ public class ContentLockManager : MonoBehaviour
     bool ShouldSnap()
     {
         if (!snapOnApproach) return false;
-        if (snapOnlyInProlog && SceneManager.GetActiveScene().name != "0_prolog") return false;
         if (!scrollRect || !scrollRect.content || !viewport || !GetEffectiveTarget()) return false;
         if (!triggerAtCenter && !lockOnCenter) return false;
 

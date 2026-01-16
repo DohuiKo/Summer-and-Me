@@ -18,6 +18,7 @@ public class PlayVideoOnVisibleLock : MonoBehaviour
     public RectTransform holdTarget;
     public float holdPulseScale = 1.003f;
     public float holdPulseSpeed = 0.7f;
+    public bool disablePulseWhilePlaying = true;
 
     [Header("Snap to Center")]
     public bool snapOnApproach = true;
@@ -312,6 +313,12 @@ public class PlayVideoOnVisibleLock : MonoBehaviour
     void UpdateHoldPulse(bool isHolding)
     {
         if (!holdTarget) return;
+
+        if (disablePulseWhilePlaying && videoPlayer != null && videoPlayer.isPlaying)
+        {
+            holdTarget.localScale = holdBaseScale;
+            return;
+        }
 
         if (!isHolding)
         {

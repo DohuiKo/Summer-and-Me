@@ -58,20 +58,20 @@ public class LaundryGameManager : MonoBehaviour
         if (CutPopupManager.IsShowing) return;
 
         // ── 입력 체크 (신·구 병행) ───────────────────────────────
-        bool spacePressed = false;
+        bool clickPressed = false;
 #if UNITY_2023_1_OR_NEWER
-        if (Keyboard.current != null)
-            spacePressed = Keyboard.current.spaceKey.wasPressedThisFrame;
+        if (Mouse.current != null)
+            clickPressed = Mouse.current.leftButton.wasPressedThisFrame;
 #endif
-        if (!spacePressed)
-            spacePressed = Input.GetKeyDown(KeyCode.Space);
+        if (!clickPressed)
+            clickPressed = Input.GetMouseButtonDown(0);
         // ─────────────────────────────────────────────────────────
 
-        if (!spacePressed) return;
+        if (!clickPressed) return;
 
         bool hasArea = foldingArea != null;
         bool hasItem = hasArea && foldingArea.GetCurrentItem() != null;
-        Debug.Log($"[Fold] Space pressed | hasArea={hasArea} hasItem={hasItem}");
+        Debug.Log($"[Fold] Click pressed | hasArea={hasArea} hasItem={hasItem}");
 
         if (!hasItem) return;
 
@@ -155,7 +155,7 @@ public class LaundryGameManager : MonoBehaviour
         {
             var item = foldingArea.GetCurrentItem();
             int remaining = Mathf.Max(0, item.GetMaxState() - item.GetCurrentState());
-            instructionText.text = $"스페이스바를 눌러 접으세요! ({remaining}단계 남음)";
+            instructionText.text = $"클릭해서 접으세요! ({remaining}단계 남음)";
         }
         else
         {

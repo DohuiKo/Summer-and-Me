@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
 OcclusionCullingSettings:
@@ -351,9 +351,9 @@ RectTransform:
   - {fileID: 346777437}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -540}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &137511987
@@ -388,7 +388,6 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 137511986}
-  useChildGraphicCenter: 1
   excludeGraphicNameContains:
   - modal
   - layer
@@ -397,6 +396,9 @@ MonoBehaviour:
   - modeload
   - mode
   - load
+  unlockButton: {fileID: 981297323}
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
   lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
@@ -404,14 +406,12 @@ MonoBehaviour:
   triggerAtCenter: 1
   centerTolerance: 0.01
   usePixelTolerance: 1
-  centerTolerancePx: 5
+  centerTolerancePx: 20
   autoTightenCenterTolerance: 1
   autoCenterTolerancePx: 5
   autoCenterToleranceRatio: 0.01
-  unlockButton: {fileID: 981297323}
   fadeDuration: 0.1
   snapOnApproach: 1
-  snapOnlyInProlog: 1
   snapUseVisibleRatio: 0
   snapThreshold: 0.25
   snapDuration: 0.35
@@ -419,15 +419,16 @@ MonoBehaviour:
   snapDisableInertia: 1
   autoEnableSnapInProlog: 1
   autoTuneSnap: 1
-  autoSnapThreshold: 0.75
-  autoSnapDuration: 0.45
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
   autoTuneScrollSensitivity: 1
   autoScrollSensitivity: 1.5
   autoClampScroll: 1
   autoElasticity: 0
   autoEnableLockInProlog: 1
   autoCenterLockTarget: 1
-  debugLog: 0
+  debugLog: 1
   debugInterval: 0.5
 --- !u!114 &137511989
 MonoBehaviour:
@@ -3357,9 +3358,9 @@ RectTransform:
   - {fileID: 1061869702}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -6480}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &774138128
@@ -3377,7 +3378,6 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 774138127}
-  useChildGraphicCenter: 1
   excludeGraphicNameContains:
   - modal
   - layer
@@ -3386,6 +3386,9 @@ MonoBehaviour:
   - modeload
   - mode
   - load
+  unlockButton: {fileID: 0}
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
   lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
@@ -3393,14 +3396,12 @@ MonoBehaviour:
   triggerAtCenter: 1
   centerTolerance: 0.01
   usePixelTolerance: 1
-  centerTolerancePx: 5
+  centerTolerancePx: 20
   autoTightenCenterTolerance: 1
   autoCenterTolerancePx: 5
   autoCenterToleranceRatio: 0.01
-  unlockButton: {fileID: 0}
-  fadeDuration: 1
+  fadeDuration: 0.1
   snapOnApproach: 1
-  snapOnlyInProlog: 1
   snapUseVisibleRatio: 0
   snapThreshold: 0.25
   snapDuration: 0.35
@@ -3408,15 +3409,16 @@ MonoBehaviour:
   snapDisableInertia: 1
   autoEnableSnapInProlog: 1
   autoTuneSnap: 1
-  autoSnapThreshold: 0.75
-  autoSnapDuration: 0.45
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
   autoTuneScrollSensitivity: 1
   autoScrollSensitivity: 1.5
   autoClampScroll: 1
   autoElasticity: 0
   autoEnableLockInProlog: 1
   autoCenterLockTarget: 1
-  debugLog: 0
+  debugLog: 1
   debugInterval: 0.5
 --- !u!114 &774138129
 MonoBehaviour:
@@ -4981,9 +4983,9 @@ RectTransform:
   - {fileID: 1705629168}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -1620}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &997986460
@@ -5039,7 +5041,6 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 997986459}
-  useChildGraphicCenter: 1
   excludeGraphicNameContains:
   - modal
   - layer
@@ -5048,6 +5049,9 @@ MonoBehaviour:
   - modeload
   - mode
   - load
+  unlockButton: {fileID: 981297323}
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
   lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
@@ -5055,14 +5059,12 @@ MonoBehaviour:
   triggerAtCenter: 1
   centerTolerance: 0.01
   usePixelTolerance: 1
-  centerTolerancePx: 5
+  centerTolerancePx: 20
   autoTightenCenterTolerance: 1
   autoCenterTolerancePx: 5
   autoCenterToleranceRatio: 0.01
-  unlockButton: {fileID: 981297323}
-  fadeDuration: 1
+  fadeDuration: 0.1
   snapOnApproach: 1
-  snapOnlyInProlog: 1
   snapUseVisibleRatio: 0
   snapThreshold: 0.25
   snapDuration: 0.35
@@ -5070,8 +5072,9 @@ MonoBehaviour:
   snapDisableInertia: 1
   autoEnableSnapInProlog: 1
   autoTuneSnap: 1
-  autoSnapThreshold: 0.75
-  autoSnapDuration: 0.45
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
   autoTuneScrollSensitivity: 1
   autoScrollSensitivity: 1.5
   autoClampScroll: 1
@@ -7397,9 +7400,9 @@ RectTransform:
   - {fileID: 2076303802}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -4860}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1608877462
@@ -7455,7 +7458,6 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 1608877461}
-  useChildGraphicCenter: 1
   excludeGraphicNameContains:
   - modal
   - layer
@@ -7464,6 +7466,9 @@ MonoBehaviour:
   - modeload
   - mode
   - load
+  unlockButton: {fileID: 981297323}
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
   lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
@@ -7471,14 +7476,12 @@ MonoBehaviour:
   triggerAtCenter: 1
   centerTolerance: 0.01
   usePixelTolerance: 1
-  centerTolerancePx: 5
+  centerTolerancePx: 20
   autoTightenCenterTolerance: 1
   autoCenterTolerancePx: 5
   autoCenterToleranceRatio: 0.01
-  unlockButton: {fileID: 981297323}
-  fadeDuration: 1
+  fadeDuration: 0.1
   snapOnApproach: 1
-  snapOnlyInProlog: 1
   snapUseVisibleRatio: 0
   snapThreshold: 0.25
   snapDuration: 0.35
@@ -7486,15 +7489,16 @@ MonoBehaviour:
   snapDisableInertia: 1
   autoEnableSnapInProlog: 1
   autoTuneSnap: 1
-  autoSnapThreshold: 0.75
-  autoSnapDuration: 0.45
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
   autoTuneScrollSensitivity: 1
   autoScrollSensitivity: 1.5
   autoClampScroll: 1
   autoElasticity: 0
   autoEnableLockInProlog: 1
   autoCenterLockTarget: 1
-  debugLog: 0
+  debugLog: 1
   debugInterval: 0.5
 --- !u!1 &1624548003
 GameObject:
@@ -8447,9 +8451,9 @@ RectTransform:
   - {fileID: 613631843}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -2160}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1742659098
@@ -8505,7 +8509,6 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 1742659097}
-  useChildGraphicCenter: 1
   excludeGraphicNameContains:
   - modal
   - layer
@@ -8514,6 +8517,9 @@ MonoBehaviour:
   - modeload
   - mode
   - load
+  unlockButton: {fileID: 981297323}
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
   lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
@@ -8521,14 +8527,12 @@ MonoBehaviour:
   triggerAtCenter: 1
   centerTolerance: 0.01
   usePixelTolerance: 1
-  centerTolerancePx: 5
+  centerTolerancePx: 20
   autoTightenCenterTolerance: 1
   autoCenterTolerancePx: 5
   autoCenterToleranceRatio: 0.01
-  unlockButton: {fileID: 981297323}
-  fadeDuration: 1
+  fadeDuration: 0.1
   snapOnApproach: 1
-  snapOnlyInProlog: 1
   snapUseVisibleRatio: 0
   snapThreshold: 0.25
   snapDuration: 0.35
@@ -8536,8 +8540,9 @@ MonoBehaviour:
   snapDisableInertia: 1
   autoEnableSnapInProlog: 1
   autoTuneSnap: 1
-  autoSnapThreshold: 0.75
-  autoSnapDuration: 0.45
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
   autoTuneScrollSensitivity: 1
   autoScrollSensitivity: 1.5
   autoClampScroll: 1
@@ -8692,7 +8697,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 3
   m_Viewport: {fileID: 1236333735}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -8738,9 +8743,9 @@ RectTransform:
   - {fileID: 1366043777}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -5940}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1826487520
@@ -8758,7 +8763,6 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 1826487519}
-  useChildGraphicCenter: 1
   excludeGraphicNameContains:
   - modal
   - layer
@@ -8767,6 +8771,9 @@ MonoBehaviour:
   - modeload
   - mode
   - load
+  unlockButton: {fileID: 981297323}
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
   lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
@@ -8774,14 +8781,12 @@ MonoBehaviour:
   triggerAtCenter: 1
   centerTolerance: 0.01
   usePixelTolerance: 1
-  centerTolerancePx: 5
+  centerTolerancePx: 20
   autoTightenCenterTolerance: 1
   autoCenterTolerancePx: 5
   autoCenterToleranceRatio: 0.01
-  unlockButton: {fileID: 981297323}
-  fadeDuration: 1
+  fadeDuration: 0.1
   snapOnApproach: 1
-  snapOnlyInProlog: 1
   snapUseVisibleRatio: 0
   snapThreshold: 0.25
   snapDuration: 0.35
@@ -8789,15 +8794,16 @@ MonoBehaviour:
   snapDisableInertia: 1
   autoEnableSnapInProlog: 1
   autoTuneSnap: 1
-  autoSnapThreshold: 0.75
-  autoSnapDuration: 0.45
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
   autoTuneScrollSensitivity: 1
   autoScrollSensitivity: 1.5
   autoClampScroll: 1
   autoElasticity: 0
   autoEnableLockInProlog: 1
   autoCenterLockTarget: 1
-  debugLog: 0
+  debugLog: 1
   debugInterval: 0.5
 --- !u!114 &1826487521
 MonoBehaviour:
@@ -10006,9 +10012,9 @@ RectTransform:
   - {fileID: 1299460282}
   m_Father: {fileID: 880475273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -3780}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2127125431
@@ -10064,7 +10070,6 @@ MonoBehaviour:
   scrollRect: {fileID: 1805780645}
   viewport: {fileID: 1236333735}
   target: {fileID: 2127125430}
-  useChildGraphicCenter: 1
   excludeGraphicNameContains:
   - modal
   - layer
@@ -10073,6 +10078,9 @@ MonoBehaviour:
   - modeload
   - mode
   - load
+  unlockButton: {fileID: 981297323}
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
   lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
@@ -10080,14 +10088,12 @@ MonoBehaviour:
   triggerAtCenter: 1
   centerTolerance: 0.01
   usePixelTolerance: 1
-  centerTolerancePx: 5
+  centerTolerancePx: 20
   autoTightenCenterTolerance: 1
   autoCenterTolerancePx: 5
   autoCenterToleranceRatio: 0.01
-  unlockButton: {fileID: 981297323}
-  fadeDuration: 1
+  fadeDuration: 0.1
   snapOnApproach: 1
-  snapOnlyInProlog: 1
   snapUseVisibleRatio: 0
   snapThreshold: 0.25
   snapDuration: 0.35
@@ -10095,15 +10101,16 @@ MonoBehaviour:
   snapDisableInertia: 1
   autoEnableSnapInProlog: 1
   autoTuneSnap: 1
-  autoSnapThreshold: 0.75
-  autoSnapDuration: 0.45
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
   autoTuneScrollSensitivity: 1
   autoScrollSensitivity: 1.5
   autoClampScroll: 1
   autoElasticity: 0
   autoEnableLockInProlog: 1
   autoCenterLockTarget: 1
-  debugLog: 0
+  debugLog: 1
   debugInterval: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

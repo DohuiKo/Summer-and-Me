@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
 OcclusionCullingSettings:
@@ -1576,6 +1576,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 381184165}
   m_CullTransparentMesh: 1
+--- !u!1 &389104322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 389104323}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &389104323
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389104322}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 756174215}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &403154408
 GameObject:
   m_ObjectHideFlags: 0
@@ -3395,11 +3430,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1397035184}
+  - {fileID: 1360608544}
   m_Father: {fileID: 1514092886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -540}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &703912411
@@ -3417,12 +3453,48 @@ MonoBehaviour:
   scrollRect: {fileID: 1844645475}
   viewport: {fileID: 617883099}
   target: {fileID: 703912410}
-  lockOnCenter: 0
-  unlockManually: 1
-  triggerAtCenter: 0
-  centerTolerance: 0.01
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
   unlockButton: {fileID: 0}
-  fadeDuration: 1
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
+  lockTargetName: LockTarget
+  lockOnCenter: 1
+  unlockManually: 0
+  lockOncePerPage: 1
+  triggerAtCenter: 1
+  centerTolerance: 0.01
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
+  fadeDuration: 0.1
+  snapOnApproach: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!114 &703912412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3697,11 +3769,12 @@ RectTransform:
   - {fileID: 1196149441}
   - {fileID: 8967840194108640790}
   - {fileID: 1130296978}
+  - {fileID: 389104323}
   m_Father: {fileID: 1514092886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -1620}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &756174217
@@ -3757,12 +3830,48 @@ MonoBehaviour:
   scrollRect: {fileID: 1844645475}
   viewport: {fileID: 617883099}
   target: {fileID: 756174215}
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  unlockButton: {fileID: 1074254410}
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
   centerTolerance: 0.01
-  unlockButton: {fileID: 1074254410}
-  fadeDuration: 1
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
+  fadeDuration: 0.1
+  snapOnApproach: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!1 &765220903
 GameObject:
   m_ObjectHideFlags: 0
@@ -5157,6 +5266,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1211346960}
   m_CullTransparentMesh: 1
+--- !u!1 &1360608543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1360608544}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1360608544
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360608543}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 703912410}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1368865403
 GameObject:
   m_ObjectHideFlags: 0
@@ -6689,11 +6833,12 @@ RectTransform:
   - {fileID: 1725947539}
   - {fileID: 86909213}
   - {fileID: 99735326}
+  - {fileID: 2142098316}
   m_Father: {fileID: 1514092886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -2700}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1556075852
@@ -6711,12 +6856,48 @@ MonoBehaviour:
   scrollRect: {fileID: 1844645475}
   viewport: {fileID: 617883099}
   target: {fileID: 1556075851}
+  excludeGraphicNameContains:
+  - modal
+  - layer
+  - bg
+  - background
+  - modeload
+  - mode
+  - load
+  unlockButton: {fileID: 0}
+  snapOnlyInProlog: 1
+  useChildGraphicCenter: 1
+  lockTargetName: LockTarget
   lockOnCenter: 1
   unlockManually: 0
+  lockOncePerPage: 1
   triggerAtCenter: 1
   centerTolerance: 0.01
-  unlockButton: {fileID: 0}
-  fadeDuration: 1
+  usePixelTolerance: 1
+  centerTolerancePx: 20
+  autoTightenCenterTolerance: 1
+  autoCenterTolerancePx: 5
+  autoCenterToleranceRatio: 0.01
+  fadeDuration: 0.1
+  snapOnApproach: 1
+  snapUseVisibleRatio: 0
+  snapThreshold: 0.25
+  snapDuration: 0.35
+  snapStopVelocity: 1
+  snapDisableInertia: 1
+  autoEnableSnapInProlog: 1
+  autoTuneSnap: 1
+  autoSnapThreshold: 0.5
+  autoSnapDuration: 0.4
+  autoEnableSnapInChapter4: 1
+  autoTuneScrollSensitivity: 1
+  autoScrollSensitivity: 1.5
+  autoClampScroll: 1
+  autoElasticity: 0
+  autoEnableLockInProlog: 1
+  autoCenterLockTarget: 1
+  debugLog: 1
+  debugInterval: 0.5
 --- !u!114 &1556075853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7354,6 +7535,8 @@ MonoBehaviour:
   scrollRect: {fileID: 0}
   allowHorizontal: 0
   enableInertia: 1
+  unlockContentLocks: 1
+  disableContentLocksAfterUnlock: 0
 --- !u!114 &1844645470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7962,6 +8145,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2060531763}
   m_CullTransparentMesh: 1
+--- !u!1 &2142098315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2142098316}
+  m_Layer: 0
+  m_Name: LockTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2142098316
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142098315}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1556075851}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &8967840194108640789
 PrefabInstance:
   m_ObjectHideFlags: 0
